@@ -10,6 +10,7 @@ __email__ = "rrkraghulkrishna@gmail.com"
 """
 import logging
 import os
+
 import yaml
 from google.cloud.storage import Client as GoogleClient
 from kubernetes import client as KubeClient
@@ -19,9 +20,9 @@ from mlflow.tracking import MlflowClient
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
-formatter = logging.Formatter('%(asctime)s:%(name)s:%(message)s')
+formatter = logging.Formatter("%(asctime)s:%(name)s:%(message)s")
 
-file_handler = logging.FileHandler('log.log')
+file_handler = logging.FileHandler("log.log")
 file_handler.setLevel(logging.ERROR)
 file_handler.setFormatter(formatter)
 
@@ -33,7 +34,7 @@ logger.addHandler(stream_handler)
 
 logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
 
-# os.environ["MLFLOW_TRACKING_URI"] = "http://localhost:54890"
+# os.environ["MLFLOW_TRACKING_URI"] = "http://localhost:57065"
 
 
 class DeployConroller:
@@ -59,14 +60,10 @@ class DeployConroller:
             config.load_incluster_config()
         self.kube_client = KubeClient.CustomObjectsApi()
         logger.info("KubeClient initialized")
-        with open("seldon-temp.yaml", "r", encoding="utf-8") as stream:
-            try:
-                self.seldon_deploy = yaml.safe_load(stream)
-            except yaml.YAMLError as exc:
-                logger.exception(exc)
         self.mlflow_deploy_config = "deploy.yaml"
-        self.stages = ["Staging", "Production"]
+        self.stage = os.environ["stage"]
         self.model_details = []
+        self.Namespace = "default"
 
     def __str__(self):
         return self.__class__.__name__
@@ -83,11 +80,15 @@ class DeployConroller:
             model_names = self.model_details
             manifest_name = manifest["metadata"]["name"]
             manifest_namespace = manifest["metadata"]["namespace"]
+            print(model_names, manifest_name, manifest_namespace)
             model = next(
-                item
-                for item in model_names
-                if item["name"] == manifest_name
-                and item["Namespace"] == manifest_namespace
+                (
+                    item
+                    for item in model_names
+                    if item["deploy_name"] == manifest_name
+                    and item["Namespace"] == manifest_namespace
+                ),
+                None,
             )
             if model:
                 logger.info(
@@ -108,6 +109,7 @@ class DeployConroller:
                     name=manifest["metadata"]["name"],
                     namespace=manifest["metadata"]["namespace"],
                 )
+        self.model_details = []
 
     def deploy_controller(self):
         """
@@ -118,7 +120,8 @@ class DeployConroller:
             for version in registered_model.latest_versions:
                 model_versions.append(version)
         for version in model_versions:
-            if version.current_stage in self.stages:
+            if version.current_stage == self.stage:
+                print(version.current_stage)
                 for file in self.mlflow_client.list_artifacts(version.run_id):
                     if file.path == self.mlflow_deploy_config:
                         model_name = version.name.lower()
@@ -143,56 +146,35 @@ class DeployConroller:
                         self.model_details.append(
                             {
                                 "name": model_name,
-                                "Namespace": deploy_yaml["Namespace"],
+                                "deploy_name": deploy_yaml["metadata"]["name"],
+                                "Namespace": self.Namespace,
                             }
                         )
-                        self.seldon_deploy["metadata"]["name"] = model_name
-                        self.seldon_deploy["spec"]["name"] = model_name
-                        self.seldon_deploy["metadata"]["labels"][
-                            "app.kubernetes.io/name"
-                        ] = model_name
-                        self.seldon_deploy["spec"]["predictors"][0]["graph"][
-                            "name"
-                        ] = model_name
-                        self.seldon_deploy["spec"]["predictors"][0]["componentSpecs"][
-                            0
-                        ]["spec"]["containers"][0]["name"] = model_name
-                        self.seldon_deploy["spec"]["predictors"][0]["graph"][
-                            "modelUri"
-                        ] = model_source
-                        if "logger" in deploy_yaml:
-                            self.seldon_deploy["spec"]["predictors"][0]["graph"][
-                                "logger"
-                            ] = deploy_yaml["logger"]
-                        else:
-                            self.seldon_deploy["spec"]["predictors"][0]["graph"].pop(
-                                "logger"
-                            )
                         try:
                             self.kube_client.create_namespaced_custom_object(
                                 group="machinelearning.seldon.io",
                                 version="v1",
                                 plural="seldondeployments",
-                                body=self.seldon_deploy,
-                                namespace=deploy_yaml["Namespace"],
+                                body=deploy_yaml,
+                                namespace=self.Namespace,
                             )
                             logger.info(
                                 "Created a Deployment %s Namespace %s",
                                 model_name,
-                                deploy_yaml["Namespace"],
+                                self.Namespace,
                             )
                         except KubeClient.rest.ApiException:
                             self.kube_client.patch_namespaced_custom_object(
                                 group="machinelearning.seldon.io",
                                 version="v1",
                                 plural="seldondeployments",
-                                body=self.seldon_deploy,
-                                name=model_name,
-                                namespace=deploy_yaml["Namespace"],
+                                body=deploy_yaml,
+                                name=deploy_yaml["metadata"]["name"],
+                                namespace=self.Namespace,
                             )
                             logger.info(
                                 "Patched a Deployment %s  Namespace %s",
                                 model_name,
-                                deploy_yaml["Namespace"],
+                                self.Namespace,
                             )
         self.state_manager()

@@ -8,15 +8,15 @@ __maintainer__ = "raghul Krishna"
 __email__ = "rrkraghulkrishna@gmail.com"
 
 """
-from time import sleep
 import logging
-from mlflow_controller.controller import DeployConroller
-from apscheduler.triggers.cron import CronTrigger
-from apscheduler.schedulers.background import BackgroundScheduler
+from time import sleep
 
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.cron import CronTrigger
+
+from mlflow_controller.controller import DeployConroller
 
 logging.getLogger("apscheduler").setLevel(logging.ERROR)
-
 
 if __name__ == "__main__":
     scheduler = BackgroundScheduler()

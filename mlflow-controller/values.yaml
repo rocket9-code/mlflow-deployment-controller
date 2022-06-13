@@ -8,11 +8,15 @@ image:
   repository: ragkrish9198/mlflow-controller
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+  tag: "v0.0.4"
 
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
+
+mlflow:
+  MLFLOW_TRACKING_URI: http://mlflow-service:5000
+  stage: Production
 
 serviceAccount:
   # Specifies whether a service account should be created

@@ -35,6 +35,14 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          env:
+          - name: MLFLOW_TRACKING_URI
+            value: {{ .Values.mlflow.MLFLOW_TRACKING_URI }}
+          - name: stage
+            value: {{ .Values.mlflow.stage }}
+          # envFrom:
+          # - configMapRef:
+          #     name: {{ include "mlflow-controller.fullname" . }}-cm
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
