@@ -17,6 +17,7 @@ fullnameOverride: ""
 mlflow:
   MLFLOW_TRACKING_URI: http://mlflow-service:5000
   stage: Production
+  namespace: default
 
 serviceAccount:
   # Specifies whether a service account should be created

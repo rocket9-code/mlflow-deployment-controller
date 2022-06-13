@@ -40,6 +40,8 @@ spec:
             value: {{ .Values.mlflow.MLFLOW_TRACKING_URI }}
           - name: stage
             value: {{ .Values.mlflow.stage }}
+          - name: namespace
+            value: {{ .Values.mlflow.namespace }}
           # envFrom:
           # - configMapRef:
           #     name: {{ include "mlflow-controller.fullname" . }}-cm

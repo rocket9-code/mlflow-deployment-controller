@@ -63,7 +63,7 @@ class DeployConroller:
         self.mlflow_deploy_config = "deploy.yaml"
         self.stage = os.environ["stage"]
         self.model_details = []
-        self.Namespace = "default"
+        self.Namespace = os.environ['namespace']
 
     def __str__(self):
         return self.__class__.__name__
