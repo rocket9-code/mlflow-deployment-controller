@@ -138,6 +138,7 @@ class DeployConroller:
                         blob = bucket.get_blob(object_name)
                         downloaded_file = blob.download_as_text(encoding="utf-8")
                         deploy_yaml = yaml.safe_load(downloaded_file)
+                        deploy_yaml['spec']['predictors'][0]['graph']['modelUri'] = model_source
                         logger.info(
                             "Model Name: %s, Model Run Id: %s",
                             model_name,
