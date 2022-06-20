@@ -59,6 +59,7 @@ class DeployConroller:
         except config.ConfigException:
             config.load_incluster_config()
         self.kube_client = KubeClient.CustomObjectsApi()
+        kube_client = KubeClient.CustomObjectsApi()
         logger.info("KubeClient initialized")
         self.mlflow_deploy_config = "deploy.yaml"
         self.stage = os.environ["stage"]
@@ -70,10 +71,11 @@ class DeployConroller:
 
     def state_manager(self):
         """To delete resources deleted in Mlflow"""
-        manifests = self.kube_client.list_cluster_custom_object(
+        manifests = self.kube_client.list_namespaced_custom_object(
             group="machinelearning.seldon.io",
             version="v1",
             plural="seldondeployments",
+            namespace=self.Namespace,
             label_selector="app.kubernetes.io/managed-by=mlflow-seldon",
         )
         for manifest in manifests["items"]:
