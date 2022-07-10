@@ -35,6 +35,13 @@ $ helm repo add wianai https://HelloMLOps.github.io/helm-charts
 $ helm install mlflow-controller-deployment wianai/mlflow-controller-deployment
 
 ```
+## Values
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| mlflow.MLFLOW_TRACKING_URI | string | `"http://mlflow-service.mlflow.svc.cluster.local:5000"` | Mlflow URI |
+| mlflow.stage | string | `"Production"` | Stage To be Tracked From Mlflow  |
+| mlflow.namespace | string | `"default"` | Namespace model to be deployed |
 
 ## :memo: License ##
 
