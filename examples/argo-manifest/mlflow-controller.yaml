@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mlflow-deployment-controller-staging
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/wianai/mlflow-deployment-controller
+    path: charts/mlflow-controller
+    targetRevision: main
+    helm:
+      releaseName: mlflow-deployment-controller-staging
+      parameters:
+        - name: "mlflow.stage"
+          value: "Staging"
+        - name: "mlflow.namespace"
+          value: "staging"
+  syncPolicy:
+      automated:
+        prune: true
+        allowEmpty: true
+        selfHeal: true
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: mlflow
