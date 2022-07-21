@@ -47,7 +47,7 @@ $ helm install mlflow-controller-deployment wianai/mlflow-controller-deployment
 | mlflow.stage | string | `"Production"` | Stage To be Tracked From Mlflow  |
 | mlflow.namespace | string | `"default"` | Namespace model to be deployed |
 
-## To Setup Deployment controller in diiferent environments
+## To Setup Deployment controller in different environments
 
 For Staging environment, Deployment controller will look for deploy.yaml Staging Mlflow models and deploys the model in staging Namespace
 
