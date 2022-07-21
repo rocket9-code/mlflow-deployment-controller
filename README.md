@@ -47,6 +47,26 @@ $ helm install mlflow-controller-deployment wianai/mlflow-controller-deployment
 | mlflow.stage | string | `"Production"` | Stage To be Tracked From Mlflow  |
 | mlflow.namespace | string | `"default"` | Namespace model to be deployed |
 
+## To Setup Deployment controller in diiferent environments
+
+For Staging environment, Deployment controller will look for deploy.yaml Staging Mlflow models and deploys the model in staging Namespace
+
+```bash
+$ helm repo add wianai https://HelloMLOps.github.io/helm-charts
+
+$ helm install mlflow-controller-deployment-staging  wianai/mlflow-controller-deployment --set mlflow.stage=Staging --set mlflow.namespace=staging
+
+```
+
+For Production environment, Deployment controller will look for deploy.yaml Production Mlflow models and deploys the model in production Namespace
+
+```bash
+$ helm repo add wianai https://HelloMLOps.github.io/helm-charts
+
+$ helm install mlflow-controller-deployment-production  wianai/mlflow-controller-deployment --set mlflow.stage=Production --set mlflow.namespace=production
+
+```
+
 Quick Start using argocd
 ---
 
