@@ -13,7 +13,7 @@
 
 ## :dart: About ##
 
-Mlflow Does not have integration with model servers ( Ex: Seldon-core) for automated deployment of models when registered or promoted to different stages, Mlflow deployment controller tries to solve this problem. Mlflow deployment controller is a python based controller which periodically checks the state between mlflow and model server's CRD's in k8s and acts accordingly. Every stage in Mlflow needs a seperate controller as in real world we would have different clusters for each stage. you can configure the controller to manage state for certain stage based on the use case. 
+Mlflow Does not have integration with model servers ( Ex: Seldon-core) for automated deployment of models when registered or promoted to different stages, Mlflow deployment controller tries to solve this problem. Mlflow deployment controller is a python based controller which periodically checks the state between mlflow and model server's CRDs in k8s and acts accordingly. Every stage in Mlflow needs a separate controller as in the real world we would have different clusters for each stage. you can configure the controller to manage the state for a certain stage based on the use case. 
 
 
 ## :rocket: Technologies ##
@@ -63,7 +63,17 @@ kubectl apply -f  examples/argo-manifest
 <img width="1409" alt="Screenshot 2022-07-10 at 6 25 47 PM" src="https://user-images.githubusercontent.com/62284209/178153272-ae254b27-47ed-4251-aa69-07a305223aee.png">
 
 
+
 Once the Model is logged with deploy.yaml deployment controller will deploy the model to the predefined namespace
+Currently, the deployment controller does not have a UI(But it is in our roadmap ) so you can check the logs of the Mlflow deployment controller to see the model deployment  and any errors
+
+        
+
+```
+kubectl logs -f deployment/mlflow-deploment-controller
+```
+
+
 
 <img width="1038" alt="Screenshot 2022-07-10 at 6 27 11 PM" src="https://user-images.githubusercontent.com/62284209/178153334-8909cecb-162e-4f86-ac22-f6cff0a7859d.png">
 
