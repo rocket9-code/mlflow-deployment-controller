@@ -49,7 +49,9 @@ $ helm install mlflow-controller-deployment wianai/mlflow-controller-deployment
 
 ## To Setup Deployment controller in different environments
 
-For Staging environment, Deployment controller will look for models logged with deploy.yaml in Mlflow Staging Environment and deploys the model in staging Namespace
+### For Staging environment
+
+Deployment controller will look for models logged with deploy.yaml in Mlflow Staging Environment and deploys the model in staging Namespace
 
 ```bash
 $ helm repo add wianai https://HelloMLOps.github.io/helm-charts
@@ -58,7 +60,9 @@ $ helm install mlflow-controller-deployment-staging  wianai/mlflow-controller-de
 
 ```
 
-For Production environment, Deployment controller will look models logged with deploy.yaml in Mlflow Production Environment and deploys the model in production Namespace
+### For Production environment
+
+Deployment controller will look models logged with deploy.yaml in Mlflow Production Environment and deploys the model in production Namespace
 
 ```bash
 $ helm repo add wianai https://HelloMLOps.github.io/helm-charts
