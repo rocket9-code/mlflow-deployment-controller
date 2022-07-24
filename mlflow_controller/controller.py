@@ -53,7 +53,7 @@ class DeployConroller:
     def __init__(self):
         self.mlflow_client = MlflowClient()
         logger.info("Mlflow client initialized")
-        self.object_init = storage.Artifact()
+        self.object_init = mlflow_controller.storage.Artifact()
         try:
             config.load_kube_config()
         except config.ConfigException:
