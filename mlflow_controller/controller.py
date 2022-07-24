@@ -16,7 +16,7 @@ from google.cloud.storage import Client as GoogleClient
 from kubernetes import client as KubeClient
 from kubernetes import config
 from mlflow.tracking import MlflowClient
-import storage 
+import mlflow_controller.storage 
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
