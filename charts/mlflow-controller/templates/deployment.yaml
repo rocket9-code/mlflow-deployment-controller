@@ -42,6 +42,13 @@ spec:
             value: {{ .Values.mlflow.stage }}
           - name: namespace
             value: {{ .Values.mlflow.namespace }}
+          - name: cloud
+            value: {{ .Values.mlflow.cloud }}
+          {{- if .Values.envFromSecret }}
+          envFrom:
+          - secretRef:
+              name: {{ .Values.envFromSecret }}
+          {{- end }}
           # envFrom:
           # - configMapRef:
           #     name: {{ include "mlflow-controller.fullname" . }}-cm

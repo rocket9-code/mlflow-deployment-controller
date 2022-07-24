@@ -16,6 +16,7 @@ from google.cloud.storage import Client as GoogleClient
 from kubernetes import client as KubeClient
 from kubernetes import config
 from mlflow.tracking import MlflowClient
+import storage 
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -52,8 +53,7 @@ class DeployConroller:
     def __init__(self):
         self.mlflow_client = MlflowClient()
         logger.info("Mlflow client initialized")
-        self.google_client = GoogleClient()
-        logger.info("Google client initialized")
+        self.object_init = storage.Artifact()
         try:
             config.load_kube_config()
         except config.ConfigException:
@@ -61,10 +61,11 @@ class DeployConroller:
         self.kube_client = KubeClient.CustomObjectsApi()
         kube_client = KubeClient.CustomObjectsApi()
         logger.info("KubeClient initialized")
-        self.mlflow_deploy_config = "deploy.yaml"
+        
         self.stage = os.environ["stage"]
         self.model_details = []
         self.Namespace = os.environ['namespace']
+        self.cloud = os.environ["cloud"]
 
     def __str__(self):
         return self.__class__.__name__
@@ -131,15 +132,13 @@ class DeployConroller:
                         model_source = version.source
                         run_details = self.mlflow_client.get_run(version.run_id)
                         artifact_uri = run_details.info.artifact_uri
-                        bucket = artifact_uri.split("/")[2]
-                        object_name = (
-                            "/".join(artifact_uri.split("/")[3:])
-                            + f"/{self.mlflow_deploy_config}"
-                        )
-                        bucket = self.google_client.get_bucket(bucket)
-                        blob = bucket.get_blob(object_name)
-                        downloaded_file = blob.download_as_text(encoding="utf-8")
-                        deploy_yaml = yaml.safe_load(downloaded_file)
+                        if self.cloud == "gcp":
+                            deploy_yaml = self.object_init.gcp_bucket(artifact_uri)
+                        elif self.cloud == "azure_blob":
+                            deploy_yaml = self.azure_blob.gcp_bucket(artifact_uri)
+                        else:
+                            raise("unsupported Object Storage")
+                        
                         deploy_yaml['spec']['predictors'][0]['graph']['modelUri'] = model_source
                         logger.info(
                             "Model Name: %s, Model Run Id: %s",
