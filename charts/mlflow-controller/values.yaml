@@ -18,6 +18,7 @@ mlflow:
   MLFLOW_TRACKING_URI: http://mlflow-service:5000
   stage: Production
   namespace: default
+  cloud: "azure_blob"
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -32,7 +33,7 @@ podAnnotations: {}
 
 podSecurityContext: {}
   # fsGroup: 2000
-
+envFromSecret: ""
 securityContext: {}
   # capabilities:
   #   drop:
