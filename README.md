@@ -46,6 +46,15 @@ $ helm install mlflow-controller-deployment wianai/mlflow-controller-deployment
 | mlflow.MLFLOW_TRACKING_URI | string | `"http://mlflow-service.mlflow.svc.cluster.local:5000"` | Mlflow URI |
 | mlflow.stage | string | `"Production"` | Stage To be Tracked From Mlflow  |
 | mlflow.namespace | string | `"default"` | Namespace model to be deployed |
+| mlflow.cloud | string | `"azure_blob"` | Object Storage Used by mlflow supported gcp-bucket , azure_blob (aws_s3 in roadmap) |
+
+## Compatabilty
+
+| cloud | storage | support status | 
+|-----|------|---------|
+| gcp | buckets | :white_check_mark: | 
+| azure | blob | :white_check_mark: | 
+| aws | s3 | ✖️ |
 
 ## To Setup Deployment controller in different environments
 
