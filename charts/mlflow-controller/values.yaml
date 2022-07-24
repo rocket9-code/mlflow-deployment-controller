@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: hellomlops/mlflow-deployment-controller
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "mlflow-controller-0.1.3"
 
