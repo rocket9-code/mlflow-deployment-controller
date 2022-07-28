@@ -56,6 +56,13 @@ $ helm install mlflow-controller-deployment wianai/mlflow-controller-deployment
 | azure | blob | :white_check_mark: | 
 | aws | s3 | ✖️ |
 
+| Model Servers | support status | 
+|-----|---------|
+| Seldon-Core  | :white_check_mark: | 
+| Kserve | ✖️ (in roadmap) | 
+| BentoML | ✖️ (in roadmap) | 
+
+
 ## To Setup Deployment controller in different environments
 
 ### For Staging environment
