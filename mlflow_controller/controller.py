@@ -35,7 +35,7 @@ logger.addHandler(stream_handler)
 
 logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
 
-# os.environ["MLFLOW_TRACKING_URI"] = "http://localhost:57065"
+# os.environ["MLFLOW_TRACKING_URI"] = "http://localhost:5000"
 
 
 class DeployConroller:
@@ -61,7 +61,7 @@ class DeployConroller:
         self.kube_client = KubeClient.CustomObjectsApi()
         kube_client = KubeClient.CustomObjectsApi()
         logger.info("KubeClient initialized")
-        
+        self.mlflow_deploy_config = "deploy.yaml"
         self.stage = os.environ["stage"]
         self.model_details = []
         self.Namespace = os.environ['namespace']
@@ -135,11 +135,12 @@ class DeployConroller:
                         if self.cloud == "gcp":
                             deploy_yaml = self.object_init.gcp_bucket(artifact_uri)
                         elif self.cloud == "azure_blob":
-                            deploy_yaml = self.azure_blob.gcp_bucket(artifact_uri)
+                            deploy_yaml = self.object_init.azure_blob(artifact_uri)
                         else:
                             raise("unsupported Object Storage")
-                        
+                        model_deploy_name = model_name.replace(" ","").replace("_","-")
                         deploy_yaml['spec']['predictors'][0]['graph']['modelUri'] = model_source
+                        deploy_yaml['metadata']['name'] = model_deploy_name
                         logger.info(
                             "Model Name: %s, Model Run Id: %s",
                             model_name,
