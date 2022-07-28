@@ -34,11 +34,10 @@ class Artifact:
         STORAGEACCOUNTURL = f"https://{acc_name}.blob.core.windows.net"
         blob_service_client_instance = BlobServiceClient(account_url=STORAGEACCOUNTURL,
                                                         credential=os.environ['AZURE_STORAGE_ACCESS_KEY'])
-        blob_location="/".join(artifact_uri.split("blob.core.windows.net")[1].split("/")[:-1])+ f"/{self.mlflow_deploy_config}"
+        blob_location="/".join(artifact_uri.split("blob.core.windows.net")[1].split("/")[1:-1])+ f"/artifacts/{self.mlflow_deploy_config}"
         blob_client_instance = blob_service_client_instance.get_blob_client(
             container, blob_location, snapshot=None)
         blob_data = blob_client_instance.download_blob()
         bl = blob_data.readall()
         deploy_yaml =  yaml.load(bl,Loader=yaml.FullLoader)
         return deploy_yaml
-        
