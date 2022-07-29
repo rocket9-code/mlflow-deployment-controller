@@ -19,11 +19,9 @@ jobs:
         run: |
           pip install --upgrade "pip>=21.3.1,<22.1"
       - name: requirements.txt
-        id: pip-cache
+        id: pip-requirements
         run: |
           pip install isort black flake8
 
-      - name: Install pip-tools
-        run: pip install pip-tools
       - name: Lint python
-        run: make lint-python
+        run: make lint-python-check
