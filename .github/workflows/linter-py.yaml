@@ -1,0 +1,27 @@
+name: linter
+
+on: [push, pull_request]
+
+jobs:
+  lint-python:
+    runs-on: [ubuntu-latest]
+    env:
+      PYTHON: 3.8
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        id: setup-python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+          architecture: x64
+      - name: Upgrade pip version
+        run: |
+          pip install --upgrade "pip>=21.3.1,<22.1"
+      - name: requirements.txt
+        id: pip-requirements
+        run: |
+          pip install isort black flake8
+
+      - name: Lint python
+        run: make lint-python-check
