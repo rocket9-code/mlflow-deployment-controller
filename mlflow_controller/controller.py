@@ -11,12 +11,11 @@ __email__ = "rrkraghulkrishna@gmail.com"
 import logging
 import os
 
-import yaml
-from google.cloud.storage import Client as GoogleClient
 from kubernetes import client as KubeClient
 from kubernetes import config
 from mlflow.tracking import MlflowClient
-import mlflow_controller.storage 
+
+import mlflow_controller.storage
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -59,12 +58,11 @@ class DeployConroller:
         except config.ConfigException:
             config.load_incluster_config()
         self.kube_client = KubeClient.CustomObjectsApi()
-        kube_client = KubeClient.CustomObjectsApi()
         logger.info("KubeClient initialized")
         self.mlflow_deploy_config = "deploy.yaml"
         self.stage = os.environ["stage"]
         self.model_details = []
-        self.Namespace = os.environ['namespace']
+        self.Namespace = os.environ["namespace"]
         self.cloud = os.environ["cloud"]
 
     def __str__(self):
@@ -137,10 +135,14 @@ class DeployConroller:
                         elif self.cloud == "azure_blob":
                             deploy_yaml = self.object_init.azure_blob(artifact_uri)
                         else:
-                            raise("unsupported Object Storage")
-                        model_deploy_name = model_name.replace(" ","").replace("_","-")
-                        deploy_yaml['spec']['predictors'][0]['graph']['modelUri'] = model_source
-                        deploy_yaml['metadata']['name'] = model_deploy_name
+                            raise ("unsupported Object Storage")
+                        model_deploy_name = model_name.replace(" ", "").replace(
+                            "_", "-"
+                        )
+                        deploy_yaml["spec"]["predictors"][0]["graph"][
+                            "modelUri"
+                        ] = model_source
+                        deploy_yaml["metadata"]["name"] = model_deploy_name
                         logger.info(
                             "Model Name: %s, Model Run Id: %s",
                             model_name,
