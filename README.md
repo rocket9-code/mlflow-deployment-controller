@@ -70,7 +70,7 @@ $ helm install mlflow-controller-deployment wianai/mlflow-controller-deployment
 Deployment controller will look for models logged with deploy.yaml in Mlflow Staging Environment and deploys the model in staging Namespace
 
 ```bash
-$ helm repo add wianai https://wianai.github.io/helm-charts
+$ helm repo add wianai https://wianai.github.io/mlflow-deployment-controller/
 
 $ helm install mlflow-controller-deployment-staging  wianai/mlflow-controller-deployment --set mlflow.stage=Staging --set mlflow.namespace=staging
 
