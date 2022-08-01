@@ -121,6 +121,10 @@ kubectl logs -f deployment/mlflow-deploment-controller
 
 <img width="1038" alt="Screenshot 2022-07-10 at 6 27 11 PM" src="https://user-images.githubusercontent.com/62284209/178153334-8909cecb-162e-4f86-ac22-f6cff0a7859d.png">
 
+
+https://user-images.githubusercontent.com/62284209/182024746-1fa281ac-a388-467e-98cd-98e9f40a0ed0.mp4
+
+
 ## :memo: License ##
 
 This project is under license from MIT. For more details, see the [LICENSE](LICENSE.md) file.
