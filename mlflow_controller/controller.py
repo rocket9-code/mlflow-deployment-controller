@@ -9,7 +9,8 @@ __email__ = "rrkraghulkrishna@gmail.com"
 
 """
 import logging
-import os,re
+import os
+import re
 
 from kubernetes import client as KubeClient
 from kubernetes import config
