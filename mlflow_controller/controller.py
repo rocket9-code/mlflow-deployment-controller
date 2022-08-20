@@ -129,6 +129,7 @@ class DeployConroller:
                         model_name = version.name.lower()
                         model_run_id = version.run_id
                         run_details = self.mlflow_client.get_run(version.run_id)
+                        model_version = version.version
                         artifact_uri = run_details.info.artifact_uri
                         if self.cloud == "gcp":
                             model_source = version.source
@@ -146,6 +147,9 @@ class DeployConroller:
                         deploy_yaml["spec"]["predictors"][0]["graph"][
                             "modelUri"
                         ] = model_source
+                        deploy_yaml["spec"]["predictors"][0]["annotations"][
+                            "predictor_version"
+                        ] = model_version
                         deploy_yaml["metadata"]["name"] = model_deploy_name
                         logger.info(
                             "Model Name: %s, Model Run Id: %s",
