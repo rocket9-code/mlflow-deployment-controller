@@ -1,11 +1,11 @@
 import os
 import re
+from io import BytesIO
 
+import boto3
 import yaml
 from azure.storage.blob import BlobServiceClient
 from google.cloud.storage import Client as GoogleClient
-import boto3
-from io import BytesIO
 
 
 class Artifact:
