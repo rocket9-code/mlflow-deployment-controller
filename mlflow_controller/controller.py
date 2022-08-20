@@ -147,7 +147,9 @@ class DeployConroller:
                         deploy_yaml["spec"]["predictors"][0]["graph"][
                             "modelUri"
                         ] = model_source
-                        deploy_yaml["spec"]["predictors"][0]['annotations']['predictor_version'] = model_version
+                        deploy_yaml["spec"]["predictors"][0]["annotations"][
+                            "predictor_version"
+                        ] = model_version
                         deploy_yaml["metadata"]["name"] = model_deploy_name
                         logger.info(
                             "Model Name: %s, Model Run Id: %s",
