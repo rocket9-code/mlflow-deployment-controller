@@ -9,7 +9,7 @@ __email__ = "rrkraghulkrishna@gmail.com"
 
 """
 import logging
-import os
+import os,re
 
 from kubernetes import client as KubeClient
 from kubernetes import config
@@ -127,12 +127,13 @@ class DeployConroller:
                     if file.path == self.mlflow_deploy_config:
                         model_name = version.name.lower()
                         model_run_id = version.run_id
-                        model_source = version.source
                         run_details = self.mlflow_client.get_run(version.run_id)
                         artifact_uri = run_details.info.artifact_uri
                         if self.cloud == "gcp":
+                            model_source = version.source
                             deploy_yaml = self.object_init.gcp_bucket(artifact_uri)
                         elif self.cloud == "azure_blob":
+                            model_source = re.sub(r"(?=\@)(.*?)(?=\/)", "",version.source)
                             deploy_yaml = self.object_init.azure_blob(artifact_uri)
                         else:
                             raise ("unsupported Object Storage")
