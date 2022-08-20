@@ -134,7 +134,9 @@ class DeployConroller:
                             model_source = version.source
                             deploy_yaml = self.object_init.gcp_bucket(artifact_uri)
                         elif self.cloud == "azure_blob":
-                            model_source = re.sub(r"(?=\@)(.*?)(?=\/)", "",version.source)
+                            model_source = re.sub(
+                                r"(?=\@)(.*?)(?=\/)", "", version.source
+                            )
                             deploy_yaml = self.object_init.azure_blob(artifact_uri)
                         else:
                             raise ("unsupported Object Storage")
