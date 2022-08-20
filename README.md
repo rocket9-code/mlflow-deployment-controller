@@ -54,7 +54,7 @@ $ helm install mlflow-controller-deployment wianai/mlflow-controller-deployment
 |-----|------|---------|
 | gcp | buckets | :white_check_mark: | 
 | azure | blob | :white_check_mark: | 
-| aws | s3 | ✖️ |
+| aws | s3 | :white_check_mark: |
 
 | Model Servers | support status | 
 |-----|---------|
