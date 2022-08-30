@@ -21,8 +21,11 @@ logging.getLogger("apscheduler").setLevel(logging.ERROR)
 if __name__ == "__main__":
     scheduler = BackgroundScheduler()
     controller = DeployConroller()
+    # scheduler.add_job(
+    #     controller.deploy_controller, CronTrigger.from_crontab("* * * * *")
+    # )
     scheduler.add_job(
-        controller.deploy_controller, CronTrigger.from_crontab("* * * * *")
+        id='controller', func=controller.deploy_controller, trigger='interval', seconds=15
     )
     scheduler.start()
     while True:
