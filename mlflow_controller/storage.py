@@ -1,6 +1,8 @@
 import os
 import re
+from io import BytesIO
 
+import boto3
 import yaml
 from azure.storage.blob import BlobServiceClient
 from google.cloud.storage import Client as GoogleClient
@@ -44,4 +46,17 @@ class Artifact:
         blob_data = blob_client_instance.download_blob()
         bl = blob_data.readall()
         deploy_yaml = yaml.load(bl, Loader=yaml.FullLoader)
+        return deploy_yaml
+
+    def aws_s3(self, artifact_uri):
+
+        session = boto3.Session()
+        s3_client = session.client("s3")
+        path_parts = artifact_uri.replace("s3://", "").split("/")
+        bucket = path_parts.pop(0)
+        key = "/".join(path_parts) + "/deploy.yaml"
+        f = BytesIO()
+        s3_client.download_fileobj(bucket, key, f)
+
+        deploy_yaml = yaml.load(f.getvalue(), Loader=yaml.FullLoader)
         return deploy_yaml
