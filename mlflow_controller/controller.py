@@ -139,6 +139,12 @@ class DeployConroller:
                                 r"(?=\@)(.*?)(?=\/)", "", version.source
                             )
                             deploy_yaml = self.object_init.azure_blob(artifact_uri)
+                        elif self.cloud == "aws_s3":
+                            model_source = re.sub(
+                                r"(?=\@)(.*?)(?=\/)", "", version.source
+                            )
+                            deploy_yaml = self.object_init.azure_blob(artifact_uri)
+
                         else:
                             raise ("unsupported Object Storage")
                         model_deploy_name = model_name.replace(" ", "").replace(
