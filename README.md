@@ -34,9 +34,9 @@ Before starting :checkered_flag:, you need to have [Helm](https://helm.sh/docs/h
 ## :checkered_flag: Starting ##
 
 ```bash
-$ helm repo add wianai https://HelloMLOps.github.io/helm-charts
+$ helm repo add f9n-code https://f9n-code.github.io/helm-charts
 
-$ helm install mlflow-controller-deployment wianai/mlflow-controller-deployment
+$ helm install mlflow-controller-deployment f9n-code/mlflow-controller-deployment
 
 ```
 ## Values
@@ -70,9 +70,9 @@ $ helm install mlflow-controller-deployment wianai/mlflow-controller-deployment
 Deployment controller will look for models logged with deploy.yaml in Mlflow Staging Environment and deploys the model in staging Namespace
 
 ```bash
-$ helm repo add wianai https://wianai.github.io/mlflow-deployment-controller/
+$ helm repo add f9n-code https://f9n-code.github.io/mlflow-deployment-controller/
 
-$ helm install mlflow-controller-deployment-staging  wianai/mlflow-controller-deployment --set mlflow.stage=Staging --set mlflow.namespace=staging
+$ helm install mlflow-controller-deployment-staging  f9n-code/mlflow-controller-deployment --set mlflow.stage=Staging --set mlflow.namespace=staging
 
 ```
 
@@ -81,9 +81,9 @@ $ helm install mlflow-controller-deployment-staging  wianai/mlflow-controller-de
 Deployment controller will look models logged with deploy.yaml in Mlflow Production Environment and deploys the model in production Namespace
 
 ```bash
-$ helm repo add wianai https://HelloMLOps.github.io/helm-charts
+$ helm repo add f9n-code https://f9n-code.github.io/helm-charts
 
-$ helm install mlflow-controller-deployment-production  wianai/mlflow-controller-deployment --set mlflow.stage=Production --set mlflow.namespace=production
+$ helm install mlflow-controller-deployment-production  f9n-code/mlflow-controller-deployment --set mlflow.stage=Production --set mlflow.namespace=production
 
 ```
 
@@ -130,7 +130,7 @@ https://user-images.githubusercontent.com/62284209/182024746-1fa281ac-a388-467e-
 This project is under license from MIT. For more details, see the [LICENSE](LICENSE.md) file.
 
 
-Made with :heart: by <a href="https://github.com/wianai" target="_blank">wianai</a>
+Made with :heart: by <a href="https://github.com/f9n-code" target="_blank">F9n</a>
 
 &#xa0;
 
