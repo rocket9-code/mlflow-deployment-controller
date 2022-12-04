@@ -16,3 +16,4 @@ googleapis-common-protos==1.52.0
 apscheduler
 azure-storage-blob
 azure-identity
+boto3
