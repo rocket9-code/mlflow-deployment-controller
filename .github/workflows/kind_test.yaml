@@ -43,9 +43,6 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     
     - name: Build and Push image
-      run:  |
-        export TAG=${{ env.GITHUB_SHA }}
-        echo $TAG
-        ./tests/docker_build_push.sh
+      run: ./tests/docker_build_push.sh
 
     
