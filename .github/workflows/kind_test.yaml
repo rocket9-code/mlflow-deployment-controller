@@ -1,0 +1,21 @@
+name: Build & Apply Seldon manifests in KinD
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Install KinD
+      run: ./tests/install_kind.sh
+
+    - name: Create KinD Cluster
+      run: kind create cluster --config tests/kind-cluster-1-24.yaml
+
+    - name: Install Istio
+      run: ./tests/install_seldon_core.sh
+
+    
