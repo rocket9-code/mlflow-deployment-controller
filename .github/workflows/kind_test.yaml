@@ -18,17 +18,22 @@ jobs:
       uses: azure/setup-helm@v1
       with:
         version: v3.8.1
-    # - name: Testing
-    #   run: |
-    #     kubectl cluster-info
-    #     kubectl get pods -n kube-system
-    #     echo "current-context:" $(kubectl config current-context)
-    #     echo "environment-kubeconfig:" ${KUBECONFIG}
+    
 
     - name: Create KinD Cluster
       run: kind create cluster --config tests/kind-cluster-1-24.yaml
+    
+    - name: Testing
+      run: |
+        kubectl cluster-info
+        kubectl get pods -n kube-system
+        echo "current-context:" $(kubectl config current-context)
+        echo "environment-kubeconfig:" ${KUBECONFIG}
+        
+    - name: Install Seldon Core
+      run: ./tests/install_istio.sh
 
-    - name: Install Istio
+    - name: Install Seldon Core
       run: ./tests/install_seldon_core.sh
 
     
