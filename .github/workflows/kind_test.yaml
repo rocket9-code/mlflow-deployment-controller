@@ -2,6 +2,7 @@ name: Build & Apply Seldon manifests in KinD
 on:
   pull_request:
 
+
 jobs:
   build:
     runs-on: ubuntu-latest
