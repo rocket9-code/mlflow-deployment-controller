@@ -1,4 +1,4 @@
-name: Build & Apply Seldon manifests in KinD
+name: Build & Apply manifests in KinD
 on:
   pull_request:
 
@@ -10,8 +10,13 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Install KinD
-      run: ./tests/install_kind.sh
+    - uses: engineerd/setup-kind@v0.5.0
+    - name: Testing
+      run: |
+        kubectl cluster-info
+        kubectl get pods -n kube-system
+        echo "current-context:" $(kubectl config current-context)
+        echo "environment-kubeconfig:" ${KUBECONFIG}
 
     - name: Create KinD Cluster
       run: kind create cluster --config tests/kind-cluster-1-24.yaml
