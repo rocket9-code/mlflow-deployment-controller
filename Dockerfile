@@ -1,6 +1,9 @@
-FROM continuumio/miniconda3:4.11.0
+FROM python:3.8.16-slim-buster
+RUN apt-get -y update
+RUN apt-get -y install git
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+RUN pip install protobuf==3.20
 WORKDIR /app
 COPY . /app
-RUN pip install -r requirements.txt --no-cache-dir
-RUN pip install protobuf==3.20
 CMD ["python", "main.py"]

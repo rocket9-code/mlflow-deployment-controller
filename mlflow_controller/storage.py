@@ -1,3 +1,4 @@
+import logging
 import os
 import re
 from io import BytesIO
@@ -6,6 +7,23 @@ import boto3
 import yaml
 from azure.storage.blob import BlobServiceClient
 from google.cloud.storage import Client as GoogleClient
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+formatter = logging.Formatter("%(asctime)s:%(name)s:%(message)s")
+
+file_handler = logging.FileHandler("log.log")
+file_handler.setLevel(logging.ERROR)
+file_handler.setFormatter(formatter)
+
+stream_handler = logging.StreamHandler()
+stream_handler.setFormatter(formatter)
+
+logger.addHandler(file_handler)
+logger.addHandler(stream_handler)
+
+logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
 
 
 class Artifact:
@@ -32,6 +50,7 @@ class Artifact:
         container = re.search(acc_name_re, artifact_uri).group(1)
         acc_name = re.search(container_re, artifact_uri).group(1).split(".")[0]
         STORAGEACCOUNTURL = f"https://{acc_name}.blob.core.windows.net"
+        logger.info(STORAGEACCOUNTURL)
         blob_service_client_instance = BlobServiceClient(
             account_url=STORAGEACCOUNTURL,
             credential=os.environ["AZURE_STORAGE_ACCESS_KEY"],

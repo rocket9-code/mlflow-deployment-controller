@@ -1,7 +1,13 @@
-mlflow
-kubernetes
-google
-gcloud
+
+mlflow==1.19.0
+kubernetes==22.6.0
+google==3.0.0
+gcloud==0.18.3
+apscheduler
+azure-storage-blob==12.14.1
+azure-identity==1.12.0
+boto3==1.26.25
+GitPython==3.1.29
 google-apitools==0.5.32
 google-auth==2.1.0
 google-auth-oauthlib==0.4.6
@@ -13,7 +19,3 @@ google-pasta==0.2.0
 google-reauth==0.1.1
 google-resumable-media==2.0.3
 googleapis-common-protos==1.52.0
-apscheduler
-azure-storage-blob
-azure-identity
-boto3

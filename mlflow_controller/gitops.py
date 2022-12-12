@@ -1,0 +1,100 @@
+import glob
+import logging
+import os
+import shutil
+import uuid
+
+import yaml
+from git import Repo
+from kubernetes import config
+from mlflow.tracking import MlflowClient
+
+from mlflow_controller.seldon import sync
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+formatter = logging.Formatter("%(asctime)s:%(name)s:%(message)s")
+
+file_handler = logging.FileHandler("log.log")
+file_handler.setLevel(logging.ERROR)
+file_handler.setFormatter(formatter)
+
+stream_handler = logging.StreamHandler()
+stream_handler.setFormatter(formatter)
+
+logger.addHandler(file_handler)
+logger.addHandler(stream_handler)
+
+logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
+
+TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000")
+GIT_USER = os.getenv("GIT_USER", "")
+GIT_PASSWORD = os.getenv("GIT_PASSWORD", "")
+GIT_REPO = os.getenv("GIT_REPO", "github.com/rocket9-code/model-deployments")
+if GIT_PASSWORD:
+    GIT_URL = f"https://{GIT_USER}:{GIT_PASSWORD}@{GIT_REPO}"
+else:
+    GIT_URL = f"https://{GIT_REPO}"
+
+MANIFEST_LOCATION = os.getenv("MANIFEST_LOCATION", "/")
+GLOBAL_NAMESPACE = os.getenv("namespace", "staging")
+MLFLOW_STAGE = os.getenv("stage", "Staging")
+
+
+class GitopsMDC:
+    def gitops_mlflow_controller(self):
+
+        mlflow_client = MlflowClient(tracking_uri=TRACKING_URI)
+
+        mlflow_models_metadata = {}
+        registered_models = mlflow_client.list_registered_models()
+        for registered_model in registered_models:
+            for version in registered_model.latest_versions:
+                if version.current_stage == MLFLOW_STAGE:
+                    model_details = dict(version)
+                    model_run_id = model_details["run_id"]
+                    run_details = dict(mlflow_client.get_run(model_run_id).info)
+                    name = model_details["name"]
+                    artifact_uri = run_details["artifact_uri"]
+                    mlflow_models_metadata[name] = {
+                        "name": name,
+                        "run_id": model_details["run_id"],
+                        "source": model_details["source"],
+                        "status": model_details["status"],
+                        "version": model_details["version"],
+                        "artifact_uri": artifact_uri,
+                    }
+        folder_name = str(uuid.uuid4())
+        path = "./tmp/" + folder_name
+        if not os.path.exists(path):
+            os.makedirs(path)
+        Repo.clone_from(GIT_URL, path)
+        try:
+            config.load_kube_config()
+        except config.ConfigException:
+            config.load_incluster_config()
+        manifest_path = path + MANIFEST_LOCATION
+        deploy_yamls = glob.glob(f"{manifest_path}/*.yaml") + glob.glob(
+            f"{manifest_path}/*.yml"
+        )
+        read_seldon_deploy_yamls = []
+        for i in deploy_yamls:
+            with open(i, "r") as stream:
+                try:
+                    deploy_yaml = yaml.safe_load(stream)
+                    resource_group = deploy_yaml["apiVersion"].split("/")[0]
+                    if resource_group == "machinelearning.seldon.io":
+                        read_seldon_deploy_yamls.append(deploy_yaml)
+                except yaml.YAMLError as exc:
+                    logger.error(exc)
+        logger.info(mlflow_models_metadata)
+        if len(mlflow_models_metadata.keys()) > 0:
+            sync(
+                read_seldon_deploy_yamls,
+                mlflow_models_metadata,
+                MLFLOW_STAGE,
+                GLOBAL_NAMESPACE,
+                "mdc-gitops",
+            )
+        shutil.rmtree(path, ignore_errors=True)

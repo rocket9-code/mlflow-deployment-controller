@@ -44,10 +44,23 @@ spec:
             value: {{ .Values.mlflow.namespace }}
           - name: cloud
             value: {{ .Values.mlflow.cloud }}
+            {{- if .Values.gitops.enabled }}
+          - name: GIT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.gitops.gitPasswordSecretName }}
+                key: {{ .Values.gitops.gitPasswordSecretKey }}
+                optional: false
+            {{- end }}
           {{- if .Values.envFromSecret }}
           envFrom:
           - secretRef:
               name: {{ .Values.envFromSecret }}
+          {{- end }}
+          {{- if .Values.gitops.enabled }}
+          envFrom:
+          - configMapRef:
+              name: {{ include "mlflow-controller.fullname" . }}-gitops-cm
           {{- end }}
           # envFrom:
           # - configMapRef:

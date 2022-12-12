@@ -65,6 +65,7 @@ class DeployConroller:
         self.model_details = []
         self.Namespace = os.environ["namespace"]
         self.cloud = os.environ["cloud"]
+        self.label = "app.kubernetes.io/managed-by=mdc-mlflow"
 
     def __str__(self):
         return self.__class__.__name__
@@ -76,7 +77,7 @@ class DeployConroller:
             version="v1",
             plural="seldondeployments",
             namespace=self.Namespace,
-            label_selector="app.kubernetes.io/managed-by=mlflow-seldon",
+            label_selector=self.label,
         )
         for manifest in manifests["items"]:
             model_names = self.model_details
@@ -157,6 +158,13 @@ class DeployConroller:
                             "predictor_version"
                         ] = model_version
                         deploy_yaml["metadata"]["name"] = model_deploy_name
+                        try:
+                            deploy_yaml["metadata"]["annotations"]
+                        except:
+                            deploy_yaml["metadata"]["annotations"] = {}
+                        deploy_yaml["metadata"]["labels"][
+                            "app.kubernetes.io/managed-by"
+                        ] = "mdc-mlflow"
                         logger.info(
                             "Model Name: %s, Model Run Id: %s",
                             model_name,
