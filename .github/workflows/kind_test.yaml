@@ -1,0 +1,48 @@
+name: Build & Apply manifests in KinD
+on:
+  pull_request:
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - uses: engineerd/setup-kind@v0.5.0
+      with:
+        skipClusterCreation: "true"
+    
+    - name: Install Helm
+      uses: azure/setup-helm@v1
+      with:
+        version: v3.8.1
+    
+
+    - name: Create KinD Cluster
+      run: kind create cluster --config tests/kind-cluster-1-24.yaml
+    
+    - name: Testing
+      run: |
+        kubectl cluster-info
+        kubectl get pods -n kube-system
+        echo "current-context:" $(kubectl config current-context)
+        echo "environment-kubeconfig:" ${KUBECONFIG}
+
+    - name: Install Istio Service Mesh
+      run: ./tests/install_istio.sh
+
+    - name: Install Seldon Core
+      run: ./tests/install_seldon_core.sh
+    
+    - name: Login to DockerHub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    
+    - name: Build and Push image
+      run: ./tests/docker_build_push.sh
+
+    
