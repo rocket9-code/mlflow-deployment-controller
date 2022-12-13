@@ -4,6 +4,8 @@ import logging
 from kubernetes import client as KubeClient
 from kubernetes import config
 
+from mlflow_controller.utils.var_extract import var_parser
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
@@ -49,7 +51,15 @@ def update_modeluris(json_para, search_para, replace_para):
     return json.loads(json.dumps(json_para), object_hook=decode_dict)
 
 
-def sync(deploy_yamls, model_metadata, stage, GLOBAL_NAMESPACE, controller_label_value):
+def sync(
+    deploy_yamls,
+    model_metadata,
+    stage,
+    GLOBAL_NAMESPACE,
+    controller_label_value,
+    registry_name,
+    backend,
+):
     git_models = []
     for deploy_yaml in deploy_yamls:
         resource_group = deploy_yaml["apiVersion"].split("/")[0]
@@ -57,19 +67,26 @@ def sync(deploy_yamls, model_metadata, stage, GLOBAL_NAMESPACE, controller_label
             models = list(
                 set(mlflow_model_search("modelUri", deploy_yaml, search_result=[]))
             )
-            logger.info(models)
-            logger.info(model_metadata)
             rep_deploy_yaml = deploy_yaml
             try:
                 rep_deploy_yaml["metadata"]["annotations"]
+
             except:
                 rep_deploy_yaml["metadata"]["annotations"] = {}
+            try:
+                rep_deploy_yaml["metadata"]["labels"]
+
+            except:
+                rep_deploy_yaml["metadata"]["labels"] = {}
             for m in models:
                 try:
-                    model = model_metadata[m]
+                    model_name, _, _ = var_parser(m)
+                    model = model_metadata[registry_name][backend][model_name]
                     run_id = model["run_id"]
                     rep_deploy_yaml = update_modeluris(
-                        rep_deploy_yaml, deploy_yaml, model["source"]
+                        rep_deploy_yaml,
+                        f'{registry_name}.{backend}["{model_name}"]',
+                        model["source"],
                     )
                     rep_deploy_yaml["metadata"]["annotations"][
                         f"mdc/mlflow-{run_id}"
@@ -78,12 +95,16 @@ def sync(deploy_yamls, model_metadata, stage, GLOBAL_NAMESPACE, controller_label
                         f"mdc/mlflow-stage"
                     ] = stage
                     rep_deploy_yaml["metadata"]["labels"][
-                        "app.kubernetes.io/managed-by"
+                        "app.kubernetes.io/mdc-type"
                     ] = controller_label_value
-                except:
+                    rep_deploy_yaml["metadata"]["labels"][
+                        "app.kubernetes.io/managed-by"
+                    ] = "mdc"
+
+                except Exception as e:
                     name = rep_deploy_yaml["metadata"]["name"]
                     logger.error(
-                        f"Error deploying {name} Model {m} not found in mlflow"
+                        f"Error deploying {name} Model {m} not found in mlflow {e}"
                     )
 
         try:
@@ -109,7 +130,7 @@ def sync(deploy_yamls, model_metadata, stage, GLOBAL_NAMESPACE, controller_label
         version="v1",
         plural="seldondeployments",
         namespace=GLOBAL_NAMESPACE,
-        label_selector=f"app.kubernetes.io/managed-by={controller_label_value}",
+        label_selector=f"app.kubernetes.io/mdc-type={controller_label_value}",
     )
     for i in manifests["items"]:
         model_name = i["metadata"]["name"]

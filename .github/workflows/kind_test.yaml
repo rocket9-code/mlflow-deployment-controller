@@ -45,4 +45,7 @@ jobs:
     - name: Build and Push image
       run: ./tests/docker_build_push.sh
 
+    - name: Install deployment controller
+      run: ./tests/install_deployment_controller.sh
+
     

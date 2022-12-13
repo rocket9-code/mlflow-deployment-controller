@@ -5,6 +5,7 @@ from io import BytesIO
 
 import boto3
 import yaml
+from azure.identity import DefaultAzureCredential
 from azure.storage.blob import BlobServiceClient
 from google.cloud.storage import Client as GoogleClient
 
@@ -50,10 +51,9 @@ class Artifact:
         container = re.search(acc_name_re, artifact_uri).group(1)
         acc_name = re.search(container_re, artifact_uri).group(1).split(".")[0]
         STORAGEACCOUNTURL = f"https://{acc_name}.blob.core.windows.net"
-        logger.info(STORAGEACCOUNTURL)
+        default_credential = DefaultAzureCredential()
         blob_service_client_instance = BlobServiceClient(
-            account_url=STORAGEACCOUNTURL,
-            credential=os.environ["AZURE_STORAGE_ACCESS_KEY"],
+            account_url=STORAGEACCOUNTURL, credential=default_credential
         )
         blob_location = (
             "/".join(artifact_uri.split("blob.core.windows.net")[1].split("/")[1:-1])

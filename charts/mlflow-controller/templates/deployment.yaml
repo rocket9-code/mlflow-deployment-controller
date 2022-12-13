@@ -42,8 +42,8 @@ spec:
             value: {{ .Values.mlflow.stage }}
           - name: namespace
             value: {{ .Values.mlflow.namespace }}
-          - name: cloud
-            value: {{ .Values.mlflow.cloud }}
+          - name: backend
+            value: {{ .Values.mlflow.backend }}
             {{- if .Values.gitops.enabled }}
           - name: GIT_PASSWORD
             valueFrom:
@@ -58,7 +58,7 @@ spec:
               name: {{ .Values.envFromSecret }}
           {{- end }}
           {{- if .Values.gitops.enabled }}
-          envFrom:
+          # envFrom:
           - configMapRef:
               name: {{ include "mlflow-controller.fullname" . }}-gitops-cm
           {{- end }}

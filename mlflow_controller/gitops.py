@@ -7,9 +7,9 @@ import uuid
 import yaml
 from git import Repo
 from kubernetes import config
-from mlflow.tracking import MlflowClient
 
-from mlflow_controller.seldon import sync
+from mlflow_controller.mlflow.oss import MLflowMetadata
+from mlflow_controller.mlservers.seldon import sync
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -28,7 +28,7 @@ logger.addHandler(stream_handler)
 
 logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
 
-TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000")
+TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "http://localhost:9000")
 GIT_USER = os.getenv("GIT_USER", "")
 GIT_PASSWORD = os.getenv("GIT_PASSWORD", "")
 GIT_REPO = os.getenv("GIT_REPO", "github.com/rocket9-code/model-deployments")
@@ -40,31 +40,16 @@ else:
 MANIFEST_LOCATION = os.getenv("MANIFEST_LOCATION", "/")
 GLOBAL_NAMESPACE = os.getenv("namespace", "staging")
 MLFLOW_STAGE = os.getenv("stage", "Staging")
+backend = os.getenv("backend", "")
 
 
 class GitopsMDC:
     def gitops_mlflow_controller(self):
 
-        mlflow_client = MlflowClient(tracking_uri=TRACKING_URI)
-
-        mlflow_models_metadata = {}
-        registered_models = mlflow_client.list_registered_models()
-        for registered_model in registered_models:
-            for version in registered_model.latest_versions:
-                if version.current_stage == MLFLOW_STAGE:
-                    model_details = dict(version)
-                    model_run_id = model_details["run_id"]
-                    run_details = dict(mlflow_client.get_run(model_run_id).info)
-                    name = model_details["name"]
-                    artifact_uri = run_details["artifact_uri"]
-                    mlflow_models_metadata[name] = {
-                        "name": name,
-                        "run_id": model_details["run_id"],
-                        "source": model_details["source"],
-                        "status": model_details["status"],
-                        "version": model_details["version"],
-                        "artifact_uri": artifact_uri,
-                    }
+        mlflowcontroller = MLflowMetadata(tracking_uri=TRACKING_URI, stage=MLFLOW_STAGE)
+        mlflow_models_metadata, _ = mlflowcontroller.get_model_metadata(
+            check_deploy=False, backend=backend
+        )
         folder_name = str(uuid.uuid4())
         path = "./tmp/" + folder_name
         if not os.path.exists(path):
@@ -95,6 +80,8 @@ class GitopsMDC:
                 mlflow_models_metadata,
                 MLFLOW_STAGE,
                 GLOBAL_NAMESPACE,
-                "mdc-gitops",
+                f"mdc-gitops-mlflow-{backend}",
+                "mlflow",
+                backend,
             )
         shutil.rmtree(path, ignore_errors=True)
