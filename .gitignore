@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 mdc/*
 *.DS_Store
+tmp/*
 # C extensions
 *.so
 scripts/*

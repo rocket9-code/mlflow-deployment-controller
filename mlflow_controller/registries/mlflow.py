@@ -3,7 +3,7 @@ import os
 
 from mlflow.tracking import MlflowClient
 
-from mlflow_controller.registries.mlflow_backend import storage
+from mlflow_controller.registries import mlflow_backend
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -27,7 +27,7 @@ class MLflowMetadata:
     def __init__(self, tracking_uri, stage):
         self.mlflow_client = MlflowClient(tracking_uri=tracking_uri)
         logger.info("Mlflow client initialized")
-        self.object_init = storage.Artifact()
+        self.object_init = mlflow_backend.Artifact()
         self.stage = stage
 
     def __str__(self):
