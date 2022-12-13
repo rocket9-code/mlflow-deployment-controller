@@ -3,7 +3,7 @@ import os
 
 from mlflow.tracking import MlflowClient
 
-from mlflow_controller.mlflow import storage
+from mlflow_controller.registries.mlflow_backend import storage
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
