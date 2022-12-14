@@ -21,7 +21,7 @@ mlflow:
   backend: "blob"
 
 gitops:
-  enabled: false
+  enabled: true
   repository: github.com/rocket9-code/model-deployments
   deploymentLocation: /
   gitUser: raghulkrishna
