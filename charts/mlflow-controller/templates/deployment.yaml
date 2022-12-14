@@ -44,14 +44,14 @@ spec:
             value: {{ .Values.mlflow.namespace }}
           - name: backend
             value: {{ .Values.mlflow.backend }}
-            {{- if .Values.gitops.enabled }}
-          - name: GIT_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Values.gitops.gitPasswordSecretName }}
-                key: {{ .Values.gitops.gitPasswordSecretKey }}
-                optional: false
-            {{- end }}
+          #   {{- if .Values.gitops.enabled }}
+          # - name: GIT_PASSWORD
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: {{ .Values.gitops.gitPasswordSecretName }}
+          #       key: {{ .Values.gitops.gitPasswordSecretKey }}
+          #       optional: false
+          #   {{- end }}
           {{- if .Values.envFromSecret }}
           envFrom:
           - secretRef:
