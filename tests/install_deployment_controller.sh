@@ -5,6 +5,7 @@ echo "Installing Deployment Controller ..."
 kubectl create ns mlflow
 helm install mlflow-controller charts/mlflow-controller  --set image.tag=$GITHUB_SHA -n mlflow
 kubectl get deployment -n mlflow
+kubectl get cm -n mlflow
 kubectl get po -n mlflow
 kubectl create secret generic github-secret --from-literal=githubtoken=testpw
 echo "Waiting for Deployment Controller to be ready ..."
