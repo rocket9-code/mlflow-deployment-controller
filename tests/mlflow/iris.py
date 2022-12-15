@@ -90,4 +90,5 @@ def main(MODEL_NAME="iris gitops", stage="Staging"):
 
 
 if __name__ == "__main__":
-    main()
+    for i in range(4):
+        main(MODEL_NAME=f"iris demo{i}")
