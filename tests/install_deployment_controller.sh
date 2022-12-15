@@ -14,3 +14,4 @@ export POD_NAME=$(kubectl get pods --namespace mlflow -l "app.kubernetes.io/name
 sleep 180
 kubectl describe po $POD_NAME -n mlflow
 kubectl logs deployment/mlflow-controller -n mlflow
+kubectl get seldondeployment --all-namespaces
