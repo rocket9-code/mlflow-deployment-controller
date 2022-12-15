@@ -2,7 +2,6 @@
 set -e
 echo "Installing Deployment Controller ..."
 
-kubectl create ns mlflow
 helm install mlflow-controller charts/mlflow-controller  --set image.tag=$GITHUB_SHA -n mlflow
 kubectl get deployment -n mlflow
 kubectl get cm -n mlflow
