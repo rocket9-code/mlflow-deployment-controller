@@ -1,0 +1,9 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: minio-cm
+  namespace: mlflow
+data:
+  MLFLOW_S3_ENDPOINT_URL: 'http://192.168.86.64:9001'
+  AWS_ACCESS_KEY_ID: minioadmin
+  AWS_SECRET_ACCESS_KEY: minioadmin
