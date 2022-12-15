@@ -59,10 +59,6 @@ def main(MODEL_NAME="iris gitops", stage="Staging"):
         roc_auc_score_val = roc_auc_score(y_test, clf.predict_proba(X_test), multi_class='ovr')
         mlflow.log_metric("test roc_auc_score", roc_auc_score_val)
 
-        accuracy_score = accuracy_score(y_test, iris_predict_y)
-        mlflow.log_metric("test accuracy_score", accuracy_score)
-        mlflow.log_artifact("test.yaml")
-
         # Log model
         result = mlflow.sklearn.log_model(clf, artifact_path="model")
 
