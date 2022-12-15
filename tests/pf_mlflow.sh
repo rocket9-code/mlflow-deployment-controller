@@ -9,4 +9,4 @@ echo PIPELINES_PID=$PIPELINES_PID >> pids.env
 
 sleep 1
 
-curl localhost:5000
+curl -X POST http://localhost:5000/api/2.0/preview/mlflow/experiments/create -d '{"name":"test"}'
