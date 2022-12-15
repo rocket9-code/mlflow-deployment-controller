@@ -6,6 +6,7 @@ helm repo add minio https://charts.bitnami.com/bitnami
 helm install minio minio/minio -n mlflow
 kubectl get po -n mlflow
 kubectl get sc
+kubectl get pvc , pv -n mlflow
 export ROOT_USER=$(kubectl get secret --namespace mlflow minio -o jsonpath="{.data.root-user}" | base64 -d)
 export ROOT_PASSWORD=$(kubectl get secret --namespace mlflow minio -o jsonpath="{.data.root-password}" | base64 -d)
 echo $ROOT_USER
