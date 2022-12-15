@@ -2,7 +2,7 @@
 set -e
 echo "Installing Deployment Controller ..."
 kubectl create ns staging
-helm install mlflow-controller charts/mlflow-controller  --set image.tag=$GITHUB_SHA -n mlflow --set mlflow.backend==s3
+helm install mlflow-controller charts/mlflow-controller  --set image.tag=$GITHUB_SHA -n mlflow --set mlflow.backend=s3
 kubectl get deployment -n mlflow
 kubectl get cm -n mlflow
 kubectl get po -n mlflow
