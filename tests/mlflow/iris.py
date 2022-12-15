@@ -14,6 +14,8 @@ client = Minio(
     "http://localhost:9001",
     access_key="minioadmin",
     secret_key="minioadmin",
+    secure=False,
+    http_client=True
 )
 
 # Create bucket.
