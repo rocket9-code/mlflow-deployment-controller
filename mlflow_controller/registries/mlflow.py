@@ -50,7 +50,7 @@ class MLflowMetadata:
                     model_run_id = model_details["run_id"]
                     run_details = dict(self.mlflow_client.get_run(model_run_id).info)
                     name = model_details["name"]
-                    model_template = f'mlflow.{backend}["{name}"]'
+                    model_template = f'{{{{ mlflow.{backend}["{name}"] }}}}'
                     artifact_uri = run_details["artifact_uri"]
                     mlflow_models_metadata[name] = {
                         "name": name,

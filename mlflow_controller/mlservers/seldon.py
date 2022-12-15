@@ -85,7 +85,7 @@ def sync(
                     run_id = model["run_id"]
                     rep_deploy_yaml = update_modeluris(
                         rep_deploy_yaml,
-                        f'{registry_name}.{backend}["{model_name}"]',
+                        f'{{{{ {registry_name}.{backend}["{model_name}"] }}}}',
                         model["source"],
                     )
                     rep_deploy_yaml["metadata"]["annotations"][
