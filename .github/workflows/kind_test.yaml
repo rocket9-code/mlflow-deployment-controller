@@ -35,6 +35,9 @@ jobs:
     - name: Install Mlflow
       run: ./tests/install_mlflow.sh
 
+    - name: PF Mlflow
+      run: ./tests/pf_mlflow.sh
+
     - name: Install Istio Service Mesh
       run: ./tests/install_istio.sh
 
