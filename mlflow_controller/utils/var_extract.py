@@ -26,7 +26,6 @@ def var_parser(placeholder):
     vendor_pattern = r"\..*\["
     vendor = re.search(vendor_pattern, placeholder)
     vendor_name = vendor.group().replace(".", "").replace("[", "")
-    logger.info(vendor_name)
     registry_pattern = r"^[a-zA-Z0-9_]*"
     registry = re.search(registry_pattern, placeholder)
     registry_name = registry.group()
