@@ -38,6 +38,8 @@ jobs:
     - name: PF Mlflow
       run: ./tests/pf_mlflow.sh
     - uses: actions/setup-python@v4
+      with:
+        python-version: '3.7' 
 
     - name: Log model Mlflow
       run: ./tests/log_mlflow_model.sh
