@@ -12,7 +12,7 @@ echo $ROOT_USER
 echo $ROOT_PASSWORD
 
 kubectl wait --for=condition=ready pod -l 'app.kubernetes.io/name in (minio)' --timeout=180s -n mlflow
-
+kubectl apply -f tests/mlflow-cm.yaml -n mlflow
 helm repo add rocket9-code https://rocket9-code.github.io/hello-mlflow/
-helm install mlflow rocket9-code/mlflow 
+helm install mlflow rocket9-code/mlflow  --set artifact.ArtifactRoot=s3://artifacts  --set envFromconfigMap=minio-cm
 kubectl wait --for=condition=ready pod -l 'app.kubernetes.io/name in (mlflow)' --timeout=180s -n mlflow
