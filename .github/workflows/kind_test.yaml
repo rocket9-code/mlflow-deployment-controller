@@ -30,6 +30,8 @@ jobs:
         kubectl get pods -n kube-system
         echo "current-context:" $(kubectl config current-context)
         echo "environment-kubeconfig:" ${KUBECONFIG}
+    - name: Install Mlflow
+      run: ./tests/install_mlflow.sh
 
     - name: Install Istio Service Mesh
       run: ./tests/install_istio.sh
