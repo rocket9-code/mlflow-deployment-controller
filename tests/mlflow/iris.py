@@ -14,9 +14,7 @@ try:
         "localhost:9000",
         access_key="minioadmin",
         secret_key="minioadmin",
-        secure=False,
-        http_client=True
-    )
+        secure=False)
 
     # Create bucket.
     client.make_bucket("artifacts")
