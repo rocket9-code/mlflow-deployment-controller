@@ -2,10 +2,19 @@
 set -euo pipefail
 
 kubectl port-forward -n mlflow svc/mlflow-service 5000:5000 &
-PIPELINES_PID=$!
+MLFLOW_PID=$!
 
-echo "Started mlflow port-forward, pid: $PIPELINES_PID"
-echo PIPELINES_PID=$PIPELINES_PID >> pids.env
+echo "Started mlflow port-forward, pid: $MLFLOW_PID"
+echo MLFLOW_PID=$MLFLOW_PID >> pids.env
+
+sleep 1
+
+
+kubectl port-forward --namespace mlflow svc/minio 9001:9001 &
+MINIO_PID=$!
+
+echo "Started mlflow port-forward, pid: $MINIO_PID"
+echo MINIO_PID=$MINIO_PID >> pids.env
 
 sleep 1
 
