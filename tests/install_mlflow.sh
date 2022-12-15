@@ -13,4 +13,4 @@ export ROOT_USER=$(kubectl get secret --namespace mlflow minio -o jsonpath="{.da
 export ROOT_PASSWORD=$(kubectl get secret --namespace mlflow minio -o jsonpath="{.data.root-password}" | base64 -d)
 echo $ROOT_USER
 echo $ROOT_PASSWORD
-kubectl wait --for=condition=ready pod -l 'app in (minio)' --timeout=180s -n mlflow
+kubectl wait --for=condition=ready pod -l 'app.kubernetes.io/name in (minio)' --timeout=180s -n mlflow
