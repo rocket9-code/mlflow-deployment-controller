@@ -1,10 +1,12 @@
 import json
 import logging
+import re
 
 from kubernetes import client as KubeClient
 from kubernetes import config
 
 from mlflow_controller.utils.var_extract import var_parser
+from mlflow_controller.mlservers.rclone import rclone_source
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -80,13 +82,15 @@ def sync(
                 rep_deploy_yaml["metadata"]["labels"] = {}
             for m in models:
                 try:
-                    model_name, _, _ = var_parser(m)
+                    pattern = r"{{(.*?)}}"
+                    model_jinja = re.search(pattern, m).group()
+                    model_name, _, _ = var_parser(model_jinja)
                     model = model_metadata[registry_name][backend][model_name]
                     run_id = model["run_id"]
                     rep_deploy_yaml = update_modeluris(
                         rep_deploy_yaml,
                         f'{{{{ {registry_name}.{backend}["{model_name}"] }}}}',
-                        model["source"],
+                        rclone_source(model["source"], backend),
                     )
                     rep_deploy_yaml["metadata"]["annotations"][
                         f"mdc/mlflow-{run_id}"
@@ -100,6 +104,7 @@ def sync(
                     rep_deploy_yaml["metadata"]["labels"][
                         "app.kubernetes.io/managed-by"
                     ] = "mdc"
+                    print(rep_deploy_yaml)
 
                 except Exception as e:
                     name = rep_deploy_yaml["metadata"]["name"]
