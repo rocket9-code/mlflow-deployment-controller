@@ -8,6 +8,17 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn import datasets
 import pandas as pd
 
+from minio import Minio
+
+client = Minio(
+    "http://localhost:9001",
+    access_key="minioadmin",
+    secret_key="minioadmin",
+)
+
+# Create bucket.
+client.make_bucket("my-bucket")
+
 
 def main(MODEL_NAME="iris gitops", stage="Staging"):
 
