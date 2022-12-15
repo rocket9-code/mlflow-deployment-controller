@@ -43,6 +43,9 @@ def mlflow_model_search(lookup_key, json_dict, search_result=[]):
 
 
 def update_modeluris(json_para, search_para, replace_para):
+    logger.ingo(search_para)
+    logger.ingo(replace_para)
+
     def decode_dict(a_dict):
         if search_para in a_dict.values():
             for key, value in a_dict.items():
