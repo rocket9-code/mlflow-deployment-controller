@@ -1,7 +1,7 @@
 import os
 import mlflow
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import roc_auc_score, accuracy_score
+from sklearn.metrics import roc_auc_score
 from mlflow.tracking import MlflowClient
 import mlflow.sklearn
 from sklearn.ensemble import RandomForestClassifier
@@ -90,5 +90,5 @@ def main(MODEL_NAME="iris gitops", stage="Staging"):
 
 
 if __name__ == "__main__":
-    for i in range(4):
+    for i in range(5):
         main(MODEL_NAME=f"iris demo{i}")

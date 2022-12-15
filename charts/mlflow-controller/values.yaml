@@ -17,8 +17,8 @@ fullnameOverride: ""
 mlflow:
   enabled: true
   MLFLOW_TRACKING_URI: http://mlflow-service:5000
-  stage: Production
-  namespace: production
+  stage: Staging
+  namespace: staging
   backend: "blob"
 
 gitops:
