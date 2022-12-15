@@ -81,39 +81,39 @@ def sync(
             except:
                 rep_deploy_yaml["metadata"]["labels"] = {}
             for m in models:
-                # try:
-                pattern = r"{{(.*?)}}"
-                model_jinja = re.search(pattern, m).group()
-                logger.info(model_jinja)
-                model_name, _, _ = var_parser(model_jinja)
-                logger.info(model_name)
-                model = model_metadata[registry_name][backend][model_name]
-                logger.info(model)
-                run_id = model["run_id"]
-                rep_deploy_yaml = update_modeluris(
-                    rep_deploy_yaml,
-                    f'{{{{ {registry_name}.{backend}["{model_name}"] }}}}',
-                    rclone_source(model["source"], backend),
-                )
-                rep_deploy_yaml["metadata"]["annotations"][
-                    f"mdc/mlflow-{run_id}"
-                ] = str(model)
-                rep_deploy_yaml["metadata"]["annotations"][
-                    f"mdc/mlflow-stage"
-                ] = stage
-                rep_deploy_yaml["metadata"]["labels"][
-                    "app.kubernetes.io/mdc-type"
-                ] = controller_label_value
-                rep_deploy_yaml["metadata"]["labels"][
-                    "app.kubernetes.io/managed-by"
-                ] = "mdc"
-                logger.info(rep_deploy_yaml["spec"])
+                try:
+                    pattern = r"{{(.*?)}}"
+                    model_jinja = re.search(pattern, m).group()
+                    logger.info(model_jinja)
+                    model_name, _, _ = var_parser(model_jinja)
+                    logger.info(model_name)
+                    model = model_metadata[registry_name][backend][model_name]
+                    logger.info(model)
+                    run_id = model["run_id"]
+                    rep_deploy_yaml = update_modeluris(
+                        rep_deploy_yaml,
+                        f'{{{{ {registry_name}.{backend}["{model_name}"] }}}}',
+                        rclone_source(model["source"], backend),
+                    )
+                    rep_deploy_yaml["metadata"]["annotations"][
+                        f"mdc/mlflow-{run_id}"
+                    ] = str(model)
+                    rep_deploy_yaml["metadata"]["annotations"][
+                        f"mdc/mlflow-stage"
+                    ] = stage
+                    rep_deploy_yaml["metadata"]["labels"][
+                        "app.kubernetes.io/mdc-type"
+                    ] = controller_label_value
+                    rep_deploy_yaml["metadata"]["labels"][
+                        "app.kubernetes.io/managed-by"
+                    ] = "mdc"
+                    logger.info(rep_deploy_yaml["spec"])
 
-                # except Exception as e:
-                #     name = rep_deploy_yaml["metadata"]["name"]
-                #     logger.error(
-                #         f"Error deploying {name} Model {m} not found in mlflow {e}"
-                #     )
+                except Exception as e:
+                    name = rep_deploy_yaml["metadata"]["name"]
+                    logger.error(
+                        f"Error deploying {name} Model {m} not found in mlflow {e}"
+                    )
 
         try:
             kube_client.create_namespaced_custom_object(
