@@ -26,8 +26,8 @@ gitops:
   repository: github.com/rocket9-code/model-deployments
   deploymentLocation: /
   gitUser: raghulkrishna
-  gitPasswordSecretName: github-secret
-  gitPasswordSecretKey: githubtoken
+  gitPasswordSecretName: ""
+  gitPasswordSecretKey: ""
 
 serviceAccount:
   # Specifies whether a service account should be created

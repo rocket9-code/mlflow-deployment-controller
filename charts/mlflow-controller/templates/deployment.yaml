@@ -35,7 +35,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-             {{- if .Values.gitops.enabled }}
+             {{- if .Values.gitops.gitPasswordSecretName }}
           env:
           - name: GIT_PASSWORD
             valueFrom:
