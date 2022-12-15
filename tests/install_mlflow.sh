@@ -8,7 +8,7 @@ helm install minio minio/minio -n mlflow --set auth.rootUser=admin --set auth.ro
 export ROOT_USER=$(kubectl get secret --namespace mlflow minio -o jsonpath="{.data.root-user}" | base64 -d)
 export ROOT_PASSWORD=$(kubectl get secret --namespace mlflow minio -o jsonpath="{.data.root-password}" | base64 -d)
 
-kubectl wait --for=condition=ready pod -l 'app.kubernetes.io/name in (minio)' --timeout=380s -n mlflow
+# kubectl wait --for=condition=ready pod -l 'app.kubernetes.io/name in (minio)' --timeout=380s -n mlflow
 kubectl apply -f tests/mlflow-cm.yaml -n mlflow
 helm repo add rocket9-code https://rocket9-code.github.io/hello-mlflow/
 helm install mlflow rocket9-code/mlflow  -n mlflow --set artifact.ArtifactRoot=s3://artifacts  --set envFromconfigMap=minio-cm
