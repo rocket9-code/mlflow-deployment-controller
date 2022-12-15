@@ -17,7 +17,7 @@ client = Minio(
 )
 
 # Create bucket.
-client.make_bucket("my-bucket")
+client.make_bucket("artifacts")
 
 
 def main(MODEL_NAME="iris gitops", stage="Staging"):
