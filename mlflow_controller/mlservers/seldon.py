@@ -107,7 +107,7 @@ def sync(
                 rep_deploy_yaml["metadata"]["labels"][
                     "app.kubernetes.io/managed-by"
                 ] = "mdc"
-                print(rep_deploy_yaml)
+                logger.info(rep_deploy_yaml["spec"])
 
                 # except Exception as e:
                 #     name = rep_deploy_yaml["metadata"]["name"]
