@@ -88,6 +88,7 @@ def sync(
                 model_name, _, _ = var_parser(model_jinja)
                 logger.info(model_name)
                 model = model_metadata[registry_name][backend][model_name]
+                logger.info(model)
                 run_id = model["run_id"]
                 rep_deploy_yaml = update_modeluris(
                     rep_deploy_yaml,
