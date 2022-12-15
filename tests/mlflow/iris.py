@@ -11,7 +11,7 @@ import pandas as pd
 from minio import Minio
 
 client = Minio(
-    "http://localhost:9001",
+    "localhost:9001",
     access_key="minioadmin",
     secret_key="minioadmin",
     secure=False,
