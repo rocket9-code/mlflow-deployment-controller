@@ -3,7 +3,7 @@ set -e
 echo "Installing Mlflow ..."
 kubectl create ns mlflow
 helm repo add minio https://charts.bitnami.com/bitnami
-helm install minio minio/minio -n mlflow --set auth.rootUser=minioadmin --set auth.rootPassword=minioadmin --set livenessProbe.enabled=false --set readinessProbe.enabled=false --set mode=distributed
+helm install minio minio/minio -n mlflow --set auth.rootUser=minioadmin --set auth.rootPassword=minioadmin --set livenessProbe.enabled=false --set readinessProbe.enabled=false #--set mode=distributed
 
 export ROOT_USER=$(kubectl get secret --namespace mlflow minio -o jsonpath="{.data.root-user}" | base64 -d)
 export ROOT_PASSWORD=$(kubectl get secret --namespace mlflow minio -o jsonpath="{.data.root-password}" | base64 -d)
