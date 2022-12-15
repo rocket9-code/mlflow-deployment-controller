@@ -10,7 +10,7 @@ echo MLFLOW_PID=$MLFLOW_PID >> pids.env
 sleep 1
 
 
-kubectl port-forward --namespace mlflow svc/minio 9001:9001 &
+kubectl port-forward --namespace mlflow svc/minio 9000:9000 &
 MINIO_PID=$!
 
 echo "Started mlflow port-forward, pid: $MINIO_PID"

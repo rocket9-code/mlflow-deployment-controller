@@ -9,17 +9,19 @@ from sklearn import datasets
 import pandas as pd
 
 from minio import Minio
+try:
+    client = Minio(
+        "localhost:9000",
+        access_key="minioadmin",
+        secret_key="minioadmin",
+        secure=False,
+        http_client=True
+    )
 
-client = Minio(
-    "localhost:9001",
-    access_key="minioadmin",
-    secret_key="minioadmin",
-    secure=False,
-    http_client=True
-)
-
-# Create bucket.
-client.make_bucket("artifacts")
+    # Create bucket.
+    client.make_bucket("artifacts")
+except Exception as e:
+    print(e)
 
 
 def main(MODEL_NAME="iris gitops", stage="Staging"):
