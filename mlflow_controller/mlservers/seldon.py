@@ -72,17 +72,16 @@ def sync(
             models = list(
                 set(mlflow_model_search("modelUri", deploy_yaml, search_result=[]))
             )
-            rep_deploy_yaml = deploy_yaml
             try:
-                rep_deploy_yaml["metadata"]["annotations"]
+                deploy_yaml["metadata"]["annotations"]
 
             except:
-                rep_deploy_yaml["metadata"]["annotations"] = {}
+                deploy_yaml["metadata"]["annotations"] = {}
             try:
-                rep_deploy_yaml["metadata"]["labels"]
+                deploy_yaml["metadata"]["labels"]
 
             except:
-                rep_deploy_yaml["metadata"]["labels"] = {}
+                deploy_yaml["metadata"]["labels"] = {}
             for m in models:
                 try:
                     pattern = r"{{(.*?)}}"
@@ -94,7 +93,7 @@ def sync(
                     logger.info(model)
                     run_id = model["run_id"]
                     rep_deploy_yaml = update_modeluris(
-                        rep_deploy_yaml,
+                        deploy_yaml,
                         f'{{{{ {registry_name}.{backend}["{model_name}"] }}}}',
                         rclone_source(model["source"], backend),
                     )
