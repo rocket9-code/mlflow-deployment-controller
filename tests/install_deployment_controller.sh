@@ -16,3 +16,4 @@ sleep 180
 kubectl logs deployment/mlflow-controller -n mlflow
 kubectl get seldondeployment --all-namespaces
 kubectl get seldondeployment mlflow-var-minio   -n staging -o yaml
+python ./tests/mlflow/list_model.py

@@ -106,6 +106,7 @@ def sync(
                     rep_deploy_yaml["metadata"]["labels"][
                         "app.kubernetes.io/mdc-type"
                     ] = controller_label_value
+                    logger.info(controller_label_value)
                     rep_deploy_yaml["metadata"]["labels"][
                         "app.kubernetes.io/managed-by"
                     ] = "mdc"
