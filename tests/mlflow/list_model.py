@@ -47,11 +47,10 @@ while True:
     ]
     demo3 = manifest["spec"]["predictors"][0]["graph"]["children"][1]["modelUri"]
     demo4 = manifest["spec"]["predictors"][0]["graph"]["modelUri"]
-    # if (
-    #     (demo1 == mlflow_models_metadata["iris demo1"]["source"])
-    #     & (demo2 == mlflow_models_metadata["iris demo2"]["source"])
-    #     & (demo4 == mlflow_models_metadata["iris demo4"]["source"])
-    # ):
-    if demo1 == mlflow_models_metadata["iris demo1"]["source"]:
+    if (
+        (demo1 == mlflow_models_metadata["iris demo1"]["source"])
+        & (demo2 == mlflow_models_metadata["iris demo2"]["source"])
+        & (demo4 == mlflow_models_metadata["iris demo4"]["source"])
+    ):
         print(demo1, demo2, demo3, demo4)
         break
