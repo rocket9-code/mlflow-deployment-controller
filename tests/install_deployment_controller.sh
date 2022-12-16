@@ -15,4 +15,4 @@ kubectl describe po $POD_NAME -n mlflow
 sleep 180
 kubectl logs deployment/mlflow-controller -n mlflow
 kubectl get seldondeployment --all-namespaces
-kubectl get seldondeployment mlflow-var   -n staging -o yaml
+kubectl get seldondeployment mlflow-var-minio   -n staging -o yaml
