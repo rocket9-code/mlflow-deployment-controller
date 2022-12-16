@@ -33,7 +33,7 @@ timeout = time.time() + 60 * 2
 while True:
     test = 0
     if test == 5 or time.time() > timeout:
-        break
+        raise ("Timeout error")
     manifest = kube_client.get_namespaced_custom_object(group="machinelearning.seldon.io",
                                                         version="v1",
                                                         plural="seldondeployments",
@@ -44,7 +44,7 @@ while True:
     demo2 = manifest["spec"]["predictors"][0]["graph"]["children"][0]["children"][0]["modelUri"]
     demo3 = manifest["spec"]["predictors"][0]["graph"]["children"][1]["modelUri"]
     demo4 = manifest["spec"]["predictors"][0]["graph"]["modelUri"]
-    if demo1 == mlflow_models_metadata["iris demo1"]["source"]:
-        print(demo1)
+    if (demo1 == mlflow_models_metadata["iris demo1"]["source"]) & (demo2 == mlflow_models_metadata["iris demo2"]["source"]) & (demo4 == mlflow_models_metadata["iris demo4"]["source"]):
+        print(demo1, demo2, demo3, demo4)
         break
     test = test - 1
