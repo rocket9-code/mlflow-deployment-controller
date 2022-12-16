@@ -8,8 +8,8 @@ import yaml
 from git import Repo
 from kubernetes import config
 
-from mlflow_controller.registries.mlflow import MLflowMetadata
 from mlflow_controller.mlservers.seldon import sync
+from mlflow_controller.registries.mlflow import MLflowMetadata
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)

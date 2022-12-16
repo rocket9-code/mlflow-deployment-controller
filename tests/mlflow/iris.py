@@ -1,20 +1,19 @@
 import os
-import mlflow
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import roc_auc_score
-from mlflow.tracking import MlflowClient
-import mlflow.sklearn
-from sklearn.ensemble import RandomForestClassifier
-from sklearn import datasets
-import pandas as pd
 
+import mlflow
+import mlflow.sklearn
+import pandas as pd
 from minio import Minio
+from mlflow.tracking import MlflowClient
+from sklearn import datasets
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import roc_auc_score
+from sklearn.model_selection import train_test_split
+
 try:
     client = Minio(
-        "localhost:9000",
-        access_key="minioadmin",
-        secret_key="minioadmin",
-        secure=False)
+        "localhost:9000", access_key="minioadmin", secret_key="minioadmin", secure=False
+    )
 
     # Create bucket.
     client.make_bucket("artifacts")
@@ -27,15 +26,31 @@ def main(MODEL_NAME="iris gitops", stage="Staging"):
     iris = datasets.load_iris()
     iris_df = pd.DataFrame(iris.data, columns=iris.feature_names)
     y = iris.target
-    iris_df['target'] = y
+    iris_df["target"] = y
 
     print(iris_df.head())
 
-    train_df, test_df = train_test_split(iris_df, test_size=0.3, random_state=42, stratify=iris_df["target"])
-    X_train = train_df[["sepal length (cm)", "sepal width (cm)", "petal length (cm)", "petal width (cm)"]]
+    train_df, test_df = train_test_split(
+        iris_df, test_size=0.3, random_state=42, stratify=iris_df["target"]
+    )
+    X_train = train_df[
+        [
+            "sepal length (cm)",
+            "sepal width (cm)",
+            "petal length (cm)",
+            "petal width (cm)",
+        ]
+    ]
     y_train = train_df["target"]
 
-    X_test = test_df[["sepal length (cm)", "sepal width (cm)", "petal length (cm)", "petal width (cm)"]]
+    X_test = test_df[
+        [
+            "sepal length (cm)",
+            "sepal width (cm)",
+            "petal length (cm)",
+            "petal width (cm)",
+        ]
+    ]
     y_test = test_df["target"]
 
     EXPERIMENT_NAME = MODEL_NAME
@@ -59,7 +74,9 @@ def main(MODEL_NAME="iris gitops", stage="Staging"):
         experiment_id = mlflow.create_experiment(EXPERIMENT_NAME)
 
     # Start an MLFlow experiment run
-    with mlflow.start_run(experiment_id=experiment_id, run_name="iris dataset rf run") as run:
+    with mlflow.start_run(
+        experiment_id=experiment_id, run_name="iris dataset rf run"
+    ) as run:
         # Log parameters
 
         mlflow.log_param("max_depth", 10)
@@ -69,23 +86,20 @@ def main(MODEL_NAME="iris gitops", stage="Staging"):
         clf.fit(X_train, y_train)
         iris_predict_y = clf.predict(X_test)
 
-        roc_auc_score_val = roc_auc_score(y_test, clf.predict_proba(X_test), multi_class='ovr')
+        roc_auc_score_val = roc_auc_score(
+            y_test, clf.predict_proba(X_test), multi_class="ovr"
+        )
         mlflow.log_metric("test roc_auc_score", roc_auc_score_val)
 
         # Log model
         result = mlflow.sklearn.log_model(clf, artifact_path="model")
 
         # Register a new version
-    result = mlflow.register_model(
-        result.model_uri,
-        MODEL_NAME
-    )
+    result = mlflow.register_model(result.model_uri, MODEL_NAME)
 
     client = MlflowClient()
     client.transition_model_version_stage(
-        name=MODEL_NAME,
-        version=result.version,
-        stage=stage
+        name=MODEL_NAME, version=result.version, stage=stage
     )
 
 

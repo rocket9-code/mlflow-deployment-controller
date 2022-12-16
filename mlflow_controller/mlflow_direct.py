@@ -1,8 +1,8 @@
 import logging
 import os
 
-from mlflow_controller.registries.mlflow import MLflowMetadata
 from mlflow_controller.mlservers import seldon
+from mlflow_controller.registries.mlflow import MLflowMetadata
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
