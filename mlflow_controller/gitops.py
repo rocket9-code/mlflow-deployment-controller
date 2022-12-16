@@ -55,7 +55,7 @@ class GitopsMDC:
         path = "./tmp/" + folder_name
         if not os.path.exists(path):
             os.makedirs(path)
-        Repo.clone_from(GIT_URL, path, branch=BRANCH)
+        Repo.clone_from(GIT_URL, path, single_branch=True, branch=BRANCH)
         try:
             config.load_kube_config()
         except config.ConfigException:
