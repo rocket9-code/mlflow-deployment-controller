@@ -38,7 +38,7 @@ while True:
                                                         version="v1",
                                                         plural="seldondeployments",
                                                         namespace="staging",
-                                                        name="mlflow-var")
+                                                        name="mlflow-var-minio")
     print(manifest)
     demo1 = manifest["spec"]["predictors"][0]["graph"]["children"][0]['modelUri']
     demo2 = manifest["spec"]["predictors"][0]["graph"]["children"][0]["children"][0]["modelUri"]
