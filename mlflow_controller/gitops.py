@@ -41,6 +41,7 @@ MANIFEST_LOCATION = os.getenv("MANIFEST_LOCATION", "/")
 GLOBAL_NAMESPACE = os.getenv("namespace", "staging")
 MLFLOW_STAGE = os.getenv("stage", "Staging")
 backend = os.getenv("backend", "")
+BRANCH = os.getenv("BRANCH", "main")
 
 
 class GitopsMDC:
@@ -54,7 +55,7 @@ class GitopsMDC:
         path = "./tmp/" + folder_name
         if not os.path.exists(path):
             os.makedirs(path)
-        Repo.clone_from(GIT_URL, path)
+        Repo.clone_from(GIT_URL, path, branch=BRANCH)
         try:
             config.load_kube_config()
         except config.ConfigException:

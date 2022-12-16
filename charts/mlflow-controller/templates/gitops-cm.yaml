@@ -9,5 +9,6 @@ data:
   GIT_USER: {{ .Values.gitops.gitUser }}
   MANIFEST_LOCATION: {{ .Values.gitops.deploymentLocation }}
   GIT_REPO: {{ .Values.gitops.repository }}
+  BRANCH: {{ .Values.gitops.BRANCH }}
   GITOPS_ENABLED: "True"
 {{- end }}
