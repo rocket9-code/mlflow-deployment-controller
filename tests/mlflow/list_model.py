@@ -39,6 +39,7 @@ while True:
                                                         plural="seldondeployments",
                                                         namespace="staging",
                                                         name="mlflow-var")
+    print(manifest)
     demo1 = manifest["spec"]["predictors"][0]["graph"]["children"][0]['modelUri']
     demo2 = manifest["spec"]["predictors"][0]["graph"]["children"][0]["children"][0]["modelUri"]
     demo3 = manifest["spec"]["predictors"][0]["graph"]["children"][1]["modelUri"]
