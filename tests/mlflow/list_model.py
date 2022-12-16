@@ -43,7 +43,7 @@ while True:
     demo2 = manifest["spec"]["predictors"][0]["graph"]["children"][0]["children"][0]["modelUri"]
     demo3 = manifest["spec"]["predictors"][0]["graph"]["children"][1]["modelUri"]
     demo4 = manifest["spec"]["predictors"][0]["graph"]["modelUri"]
-    if demo1 == mlflow_models_metadata["source"]:
+    if demo1 == mlflow_models_metadata["iris demo1"]["source"]:
         print(demo1)
         break
     test = test - 1
