@@ -16,4 +16,9 @@ sleep 180
 kubectl logs deployment/mlflow-controller -n mlflow
 kubectl get seldondeployment --all-namespaces
 kubectl get seldondeployment mlflow-var-minio   -n staging -o yaml
+
+export MLFLOW_S3_ENDPOINT_URL=http://localhost:9000
+export AWS_ACCESS_KEY_ID=minioadmin
+export AWS_SECRET_ACCESS_KEY=minioadmin
+export MLFLOW_TRACKING_URI=http://localhost:5000
 python ./tests/mlflow/list_model.py
