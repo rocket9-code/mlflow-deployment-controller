@@ -72,6 +72,7 @@ def sync(
             models = list(
                 set(mlflow_model_search("modelUri", deploy_yaml, search_result=[]))
             )
+            logger.info(f"models {models}")
             try:
                 deploy_yaml["metadata"]["annotations"]
 
