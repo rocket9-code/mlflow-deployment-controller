@@ -114,3 +114,14 @@ registes: mlflow
 backend: blob , gcs , s3
 
 in future releases we can support azureml registries and databricks mlflow
+
+Support matrix
+| Ml endpoints | Seldon core |  Kserve |
+|-----|---------|---------|
+| Registries | |
+| mlflow oss  gcs | :white_check_mark: |  ✖️ (in roadmap) | 
+| mlflow oss blob | :white_check_mark: |  ✖️ (in roadmap) | 
+| mlflow oss s3 | :white_check_mark: |  ✖️ (in roadmap) | 
+| databricks mlflow| ✖️ (in roadmap) |  ✖️ (in roadmap) | 
+| databricks azureml | ✖️ (in roadmap) |  ✖️ (in roadmap) | 
+| vertexai  registry | ✖️ (in roadmap) |  ✖️ (in roadmap) | 
