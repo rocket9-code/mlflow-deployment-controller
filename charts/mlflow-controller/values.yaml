@@ -1,13 +1,15 @@
 # Default values for mlflow-controller.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-
+# -- replica count
 replicaCount: 1
 
 image:
+  # -- image repository  
   repository: hellomlops/mlflow-deployment-controller
+  # -- image pull policy
   pullPolicy: Always
-  # Overrides the image tag whose default is the chart appVersion.
+  # -- image tag
   tag: "mlflow-controller-0.1.4"
 
 imagePullSecrets: []
@@ -16,34 +18,47 @@ fullnameOverride: ""
 
 mlflow:
   enabled: true
+  # -- mlflow tracking uri
   MLFLOW_TRACKING_URI: http://mlflow-service:5000
+  # -- Stage To be Tracked From Mlflow
   stage: Staging
+  # -- Namespace model to be deployed
   namespace: staging
+  # -- Object Storage Used by mlflow supported gcs , blob , s3 
   backend: "blob"
 
 gitops:
+  # -- enable/disable gitops
   enabled: true
+  # -- git repository
   repository: github.com/rocket9-code/model-deployments
+  # -- deployment files folder location
   deploymentLocation: /
+  # -- git username
   gitUser: raghulkrishna
+  # -- git password secret name
   gitPasswordSecretName: ""
+  # -- git password secret key
   gitPasswordSecretKey: ""
+  # git branch to be tracked
   BRANCH: main
 
 serviceAccount:
-  # Specifies whether a service account should be created
+  # -- Specifies whether a service account should be created
   create: true
-  # Annotations to add to the service account
+  # -- Annotations to add to the service account
   annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
+  # -- The name of the service account to use.
+  # -- If not set and create is true, a name is generated using the fullname template
   name: ""
-
+# -- pod annotations
 podAnnotations: {}
-
+# pod security context
 podSecurityContext: {}
   # fsGroup: 2000
+# -- additional ENV from secret
 envFromSecret: ""
+# -- security context
 securityContext: {}
   # capabilities:
   #   drop:
@@ -52,7 +67,7 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
-
+# -- cpu memory resource config
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
@@ -65,15 +80,10 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
 
+# -- node selector
 nodeSelector: {}
-
+# -- tolerations
 tolerations: []
-
+# -- affinity
 affinity: {}

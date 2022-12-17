@@ -39,14 +39,7 @@ $ helm repo add f9n-code https://f9n-code.github.io/helm-charts
 $ helm install mlflow-controller-deployment f9n-code/mlflow-controller-deployment
 
 ```
-## Values
 
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| mlflow.MLFLOW_TRACKING_URI | string | `"http://mlflow-service.mlflow.svc.cluster.local:5000"` | Mlflow URI |
-| mlflow.stage | string | `"Production"` | Stage To be Tracked From Mlflow  |
-| mlflow.namespace | string | `"default"` | Namespace model to be deployed |
-| mlflow.cloud | string | `"azure_blob"` | Object Storage Used by mlflow supported gcp-bucket , azure_blob (aws_s3 in roadmap) |
 
 ## Compatabilty
 
