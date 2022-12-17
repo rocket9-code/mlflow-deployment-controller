@@ -5,6 +5,8 @@ Controller expected a templated variable in place of modelUri of the deplyment f
 avalilable from the registies certain stage. For example if a controller is prod namespaces and production stage in mlflow and looking at the git repostory 
 under folder production. it will get the manifest from the git repo's folder and the latest version from mlflow and deploy the model servers.
 
+<img width="811" alt="Screenshot 2022-12-17 at 6 33 32 PM" src="https://user-images.githubusercontent.com/62284209/208243176-62c032ab-870a-4ebf-badc-cc4f2e5a025f.png">
+
 Create a new repository for deployment controller and create a seldon manifest in the place of modelUri use this template '{{ mlflow.blob["iris demo1"] }}' 
 to specify the model metadata the syntax of the template is {{ registry.backend["MODEL NAME IN REGISTRY"]}}
 
@@ -102,10 +104,11 @@ spec:
 
 To enable gitops in the controller 
 
+```
 ! git clone https://github.com/rocket9-code/mlflow-deployment-controller
 
 ! helm install mlflow-controller mlflow-deployment-controller/charts/mlflow-controller  -n mlflow --set gitops.enabled=true  
-
+```
 Supported values 
 registes: mlflow
 backend: blob , gcs , s3
