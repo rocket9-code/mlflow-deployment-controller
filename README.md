@@ -15,9 +15,7 @@
 
 Mlflow Does not have integration with model servers ( Ex: Seldon-core) for automated deployment of models when registered or promoted to different stages, Mlflow deployment controller tries to solve this problem. Mlflow deployment controller is a python based controller which periodically checks the state between mlflow and model server's CRDs in k8s and acts accordingly. Every stage in Mlflow needs a separate controller as in the real world we would have different clusters for each stage. you can configure the controller to manage the state for a certain stage based on the use case. 
 
-
-![Mlflow Deployment controller drawio (1)](https://user-images.githubusercontent.com/62284209/180271769-d24c58bb-7a37-416d-b110-f860bee951df.png)
-
+<img width="808" alt="Screenshot 2022-12-17 at 5 36 52 PM" src="https://user-images.githubusercontent.com/62284209/208241065-a297f111-6e2f-4e68-b430-a8b5ba455804.png">
 
 
 ## :rocket: Technologies ##
