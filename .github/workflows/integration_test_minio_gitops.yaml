@@ -1,4 +1,4 @@
-name: Build & Apply manifests in KinD
+name: Integration test gitops in KinD [minio]
 on:
   pull_request:
 
@@ -34,6 +34,7 @@ jobs:
         echo "environment-kubeconfig:" ${KUBECONFIG}
         kubectl get nodes
         kubectl wait --for=condition=Ready nodes --all --timeout=600s
+        
     - name: Install Mlflow
       run: ./tests/install_mlflow.sh
 
