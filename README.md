@@ -43,16 +43,21 @@ $ helm install mlflow-controller-deployment f9n-code/mlflow-controller-deploymen
 
 | cloud | storage | support status | 
 |-----|------|---------|
-| gcp | buckets | :white_check_mark: | 
+| gcp | gcs | :white_check_mark: | 
 | azure | blob | :white_check_mark: | 
 | aws | s3 | :white_check_mark: |
+| databricks | ✖️ (in roadmap) | 
+| azureml | ✖️ (in roadmap) | 
+| vertexai | ✖️ (in roadmap) | 
 
 | Model Servers | support status | 
 |-----|---------|
 | Seldon-Core  | :white_check_mark: | 
 | Kserve | ✖️ (in roadmap) | 
+| databricks | ✖️ (in roadmap) | 
+| azureml | ✖️ (in roadmap) | 
+| vertexai | ✖️ (in roadmap) | 
 | BentoML | ✖️ (in roadmap) | 
-
 
 ## To Setup Deployment controller in different environments
 
