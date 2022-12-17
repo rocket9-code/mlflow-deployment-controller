@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2022-07-21T16:58:07.500Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36" etag="IJ5DmgVJkRK3BCCqrE9U" version="20.1.4" type="github">
+<mxfile host="app.diagrams.net" modified="2022-12-17T12:05:39.277Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36" etag="VOU0pEia0VELiml7k_OZ" version="20.7.4" type="github">
   <diagram id="ixByIET1eY-oSuqdCUhO" name="Page-1">
-    <mxGraphModel dx="946" dy="529" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="954" dy="531" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -42,6 +42,18 @@
         </mxCell>
         <mxCell id="Tl1Lc56jeloKBUfB4NoX-25" value="Production Seldon Deployment" style="whiteSpace=wrap;html=1;rounded=1;" parent="1" vertex="1">
           <mxGeometry x="510" y="140" width="230" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="TayfgcwyeuGKzidpnfEU-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="TayfgcwyeuGKzidpnfEU-2" target="Tl1Lc56jeloKBUfB4NoX-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="TayfgcwyeuGKzidpnfEU-2" value="GIT Repository" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="180" y="380" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="TayfgcwyeuGKzidpnfEU-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="TayfgcwyeuGKzidpnfEU-4" target="Tl1Lc56jeloKBUfB4NoX-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="TayfgcwyeuGKzidpnfEU-4" value="GIT Repository" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="525" y="380" width="200" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
