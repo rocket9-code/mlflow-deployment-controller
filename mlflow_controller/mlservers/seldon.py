@@ -103,7 +103,7 @@ def sync(
                         f"mdc/mlflow-{run_id}"
                     ] = str(model)
                     rep_deploy_yaml["metadata"]["annotations"][
-                        f"mdc/mlflow-stage"
+                        "mdc/mlflow-stage"
                     ] = stage
                     rep_deploy_yaml["metadata"]["labels"][
                         "app.kubernetes.io/mdc-type"
