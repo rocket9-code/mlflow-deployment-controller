@@ -84,7 +84,7 @@ class MLflowMetadata:
                             ] = model_details["version"]
                             try:
                                 deploy_yaml["metadata"]["annotations"]
-                            except:
+                            except KeyError:
                                 deploy_yaml["metadata"]["annotations"] = {}
                             deploy_yaml["metadata"]["labels"][
                                 "app.kubernetes.io/mdc-type"

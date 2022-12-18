@@ -77,12 +77,12 @@ def sync(
             try:
                 rep_deploy_yaml["metadata"]["annotations"]
 
-            except:
+            except KeyError:
                 rep_deploy_yaml["metadata"]["annotations"] = {}
             try:
                 rep_deploy_yaml["metadata"]["labels"]
 
-            except:
+            except KeyError:
                 rep_deploy_yaml["metadata"]["labels"] = {}
             for m in models:
                 try:

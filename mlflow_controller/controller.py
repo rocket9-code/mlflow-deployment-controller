@@ -160,7 +160,7 @@ class DeployConroller:
                         deploy_yaml["metadata"]["name"] = model_deploy_name
                         try:
                             deploy_yaml["metadata"]["annotations"]
-                        except:
+                        except KeyError:
                             deploy_yaml["metadata"]["annotations"] = {}
                         deploy_yaml["metadata"]["labels"][
                             "app.kubernetes.io/managed-by"
