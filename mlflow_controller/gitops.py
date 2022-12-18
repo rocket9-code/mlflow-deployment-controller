@@ -37,7 +37,7 @@ if GIT_PASSWORD:
 else:
     GIT_URL = f"https://{GIT_REPO}"
 
-MANIFEST_LOCATION = os.getenv("MANIFEST_LOCATION", "/")
+MANIFEST_LOCATION = os.getenv("MANIFEST_LOCATION", "staging")
 GLOBAL_NAMESPACE = os.getenv("namespace", "staging")
 MLFLOW_STAGE = os.getenv("stage", "Staging")
 backend = os.getenv("backend", "")
@@ -47,10 +47,6 @@ BRANCH = os.getenv("BRANCH", "main")
 class GitopsMDC:
     def gitops_mlflow_controller(self):
 
-        mlflowcontroller = MLflowMetadata(tracking_uri=TRACKING_URI, stage=MLFLOW_STAGE)
-        mlflow_models_metadata, _ = mlflowcontroller.get_model_metadata(
-            check_deploy=False, backend=backend
-        )
         folder_name = str(uuid.uuid4())
         path = "./tmp/" + folder_name
         if not os.path.exists(path):
@@ -60,9 +56,15 @@ class GitopsMDC:
             config.load_kube_config()
         except config.ConfigException:
             config.load_incluster_config()
-        manifest_path = path + MANIFEST_LOCATION
+        manifest_path = path + "/" + MANIFEST_LOCATION
+        logger.info(manifest_path)
+
         deploy_yamls = glob.glob(f"{manifest_path}/*.yaml") + glob.glob(
             f"{manifest_path}/*.yml"
+        )
+        mlflowcontroller = MLflowMetadata(tracking_uri=TRACKING_URI, stage=MLFLOW_STAGE)
+        mlflow_models_metadata, _ = mlflowcontroller.get_model_metadata(
+            check_deploy=False, backend=backend
         )
         read_seldon_deploy_yamls = []
         for i in deploy_yamls:
