@@ -13,6 +13,7 @@ to specify the model metadata the syntax of the template is {{ registry.backend[
 Example deployment file deploying multiple models in seldon-core 
 <details>
   <summary>Expand me</summary>
+  
  ```
 apiVersion: machinelearning.seldon.io/v1
 kind: SeldonDeployment
