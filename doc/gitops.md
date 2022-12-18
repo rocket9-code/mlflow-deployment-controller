@@ -126,3 +126,34 @@ Support matrix
 | databricks mlflow| ✖️ (in roadmap) |  ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | 
 | databricks azureml | ✖️ (in roadmap) |  ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | 
 | vertexai  registry | ✖️ (in roadmap) |  ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | 
+
+
+## To Setup Deployment controller in different environments with Gitops Enabled
+
+### For Staging environment
+
+Deployment controller will look for models logged with deploy.yaml in Mlflow Staging Environment and deploys the model in staging Namespace
+
+```bash
+$ helm repo add f9n-code https://f9n-code.github.io/mlflow-deployment-controller/
+
+$ helm install mlflow-controller-deployment-staging  f9n-code/mlflow-controller-deployment --set gitops.enabled=true \ 
+                                                      --set gitops.repository= github.com/rocket9-code/model-deployments  \
+                                                      --set gitops.deploymentLocation=staging --set mlflow.stage=Staging \
+                                                      --set mlflow.namespace=staging
+
+```
+
+### For Production environment
+
+Deployment controller will look models logged with deploy.yaml in Mlflow Production Environment and deploys the model in production Namespace
+
+```bash
+$ helm repo add f9n-code https://f9n-code.github.io/helm-charts
+
+$ helm install mlflow-controller-deployment-production  f9n-code/mlflow-controller-deployment --set gitops.enabled=true  \
+                                                          --set gitops.repository= github.com/rocket9-code/model-deployments \ 
+                                                          --set gitops.deploymentLocation=production --set mlflow.stage=Production \
+                                                          --set mlflow.namespace=production
+
+```
