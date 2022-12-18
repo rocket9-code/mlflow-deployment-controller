@@ -41,7 +41,6 @@ logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
 class DeployConroller:
     """
     A class to Matain the controller
-
     ...
 
     Methods
