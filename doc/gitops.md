@@ -132,7 +132,7 @@ Support matrix
 
 ### For Staging environment
 
-Deployment controller will look for models logged with deploy.yaml in Mlflow Staging Environment and deploys the model in staging Namespace
+Deployment controller will look for  yaml files staging folder and model in Mlflow Staging Environment and deploys the model in staging Namespace
 
 ```bash
 $ helm repo add f9n-code https://f9n-code.github.io/mlflow-deployment-controller/
@@ -146,7 +146,7 @@ $ helm install mlflow-controller-deployment-staging  f9n-code/mlflow-controller-
 
 ### For Production environment
 
-Deployment controller will look models logged with deploy.yaml in Mlflow Production Environment and deploys the model in production Namespace
+Deployment controller will look for  yaml files in production folder and model in Mlflow Production Environment and deploys the model in production Namespace
 
 ```bash
 $ helm repo add f9n-code https://f9n-code.github.io/helm-charts
