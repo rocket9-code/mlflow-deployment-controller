@@ -106,7 +106,7 @@ spec:
 To enable gitops in the controller 
 
 ```
-! git clone https://github.com/rocket9-code/mlflow-deployment-controller
+! git clone -b gitops-enable https://github.com/rocket9-code/mlflow-deployment-controller
 
 ! helm install mlflow-controller mlflow-deployment-controller/charts/mlflow-controller  -n mlflow --set gitops.enabled=true  
 ```
