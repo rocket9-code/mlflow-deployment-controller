@@ -1,7 +1,7 @@
 ## Gitops based deployment controller 
 
 Gitops based deployment controller helps to version control seldon deployments as well as version control the models in ml registries in a automated way. 
-Controller expected a templated variable in place of modelUri of the deplyment files which will be updated by the controller with the lastest version 
+Controller expects a templated variable in place of modelUri of the deplyment files which will be updated by the controller with the lastest version 
 avalilable from the registies certain stage. For example if a controller is prod namespaces and production stage in mlflow and looking at the git repostory 
 under folder production. it will get the manifest from the git repo's folder and the latest version from mlflow and deploy the model servers.
 
