@@ -28,6 +28,7 @@ backend = os.getenv("backend", "")
 ML_SERVER = os.getenv("ML_SERVER", "kserve")
 
 
+
 class DeployConroller:
     """
     A class to Matain the controller
@@ -41,7 +42,8 @@ class DeployConroller:
     """
 
     def __init__(self):
-        self.managed_label = "mdc-mlflow-direct"
+        self.managed_label = "mdc-direct"
+
 
     def __str__(self):
         return self.__class__.__name__
@@ -80,3 +82,4 @@ class DeployConroller:
                             "mlflow",
                             backend,
                             )
+

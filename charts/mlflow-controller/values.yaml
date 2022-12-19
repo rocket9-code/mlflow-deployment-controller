@@ -29,7 +29,6 @@ mlflow:
 
 mlserver: seldon
 
-
 gitops:
   # -- enable/disable gitops
   enabled: true
