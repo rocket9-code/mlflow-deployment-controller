@@ -46,7 +46,6 @@ BRANCH = os.getenv("BRANCH", "main")
 ML_SERVER = os.getenv("ML_SERVER", "kserve")
 
 
-
 class GitopsMDC:
     def gitops_mlflow_controller(self):
 
@@ -104,4 +103,5 @@ class GitopsMDC:
                     GLOBAL_NAMESPACE,
                     f"mdc-gitops-{backend}-mlflow-kserve",
                     "mlflow",
+                    backend)
         shutil.rmtree(path, ignore_errors=True)
