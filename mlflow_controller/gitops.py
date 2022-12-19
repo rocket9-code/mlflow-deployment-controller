@@ -84,7 +84,7 @@ class GitopsMDC:
                 mlflow_models_metadata,
                 MLFLOW_STAGE,
                 GLOBAL_NAMESPACE,
-                f"mdc-gitops-{backend}-seldon-mlflow",
+                f"mdc-gitops-{backend}-mlflow-seldon",
                 "mlflow",
                 backend,
             )
