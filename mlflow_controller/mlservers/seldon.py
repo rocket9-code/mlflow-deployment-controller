@@ -91,11 +91,10 @@ def sync(
                 rep_deploy_yaml["metadata"]["labels"] = {}
             for m in models:
                 try:
-                    pattern = r"{{(.*?)}}"
-                    model_jinja = re.search(pattern, m).group()
-                    logger.info(model_jinja)
+                    pattern = r'\{\{\s(.*)\s\}\}'
+                    model_jinja = re.findall(pattern, m)[0]
                     model_name, bk_name, rg_name = var_parser(model_jinja)
-                    logger.info(model_name)
+                    logger.info(f"{model_name}, {bk_name} , {rg_name}")
                     if (bk_name != backend) or (rg_name != registry_name):
                         raise InvalidVariable
                     model = model_metadata[registry_name][backend][model_name]
