@@ -33,7 +33,6 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-             {{- if .Values.gitops.gitPasswordSecretName }}
           env:
           - name: ML_SERVER
             value: {{ .Values.mlserver }}
