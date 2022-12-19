@@ -1,4 +1,8 @@
-from mlflow_controller.controller import DeployConroller
+from mlflow_controller.gitops import GitopsMDC
+from mlflow_controller.mlflow_direct import DeployConroller
 
-controller = DeployConroller()
-controller.deploy_controller()
+controller = GitopsMDC()
+controller.gitops_mlflow_controller()
+
+# controller = DeployConroller()
+# controller.deploy_controller()

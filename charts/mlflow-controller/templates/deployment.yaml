@@ -5,9 +5,7 @@ metadata:
   labels:
     {{- include "mlflow-controller.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
-  {{- end }}
   selector:
     matchLabels:
       {{- include "mlflow-controller.selectorLabels" . | nindent 6 }}
@@ -35,23 +33,26 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+             {{- if .Values.gitops.gitPasswordSecretName }}
           env:
-          - name: MLFLOW_TRACKING_URI
-            value: {{ .Values.mlflow.MLFLOW_TRACKING_URI }}
-          - name: stage
-            value: {{ .Values.mlflow.stage }}
-          - name: namespace
-            value: {{ .Values.mlflow.namespace }}
-          - name: cloud
-            value: {{ .Values.mlflow.cloud }}
-          {{- if .Values.envFromSecret }}
+          - name: GIT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.gitops.gitPasswordSecretName }}
+                key: {{ .Values.gitops.gitPasswordSecretKey }}
+                optional: false
+            {{- end }}
           envFrom:
+          - configMapRef:
+              name: {{ include "mlflow-controller.fullname" . }}-mlflow-cm
+          {{- if .Values.envFromSecret }}
           - secretRef:
               name: {{ .Values.envFromSecret }}
           {{- end }}
-          # envFrom:
-          # - configMapRef:
-          #     name: {{ include "mlflow-controller.fullname" . }}-cm
+          {{- if .Values.gitops.enabled }}
+          - configMapRef:
+              name: {{ include "mlflow-controller.fullname" . }}-gitops-cm
+          {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

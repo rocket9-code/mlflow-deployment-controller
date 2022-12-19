@@ -1,4 +1,4 @@
-name: Build & Apply manifests in KinD
+name: Integration test gitops in KinD [minio]
 on:
   pull_request:
 
@@ -9,10 +9,13 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
 
     - uses: engineerd/setup-kind@v0.5.0
       with:
         skipClusterCreation: "true"
+        version: v0.17.0
     
     - name: Install Helm
       uses: azure/setup-helm@v1
@@ -29,6 +32,20 @@ jobs:
         kubectl get pods -n kube-system
         echo "current-context:" $(kubectl config current-context)
         echo "environment-kubeconfig:" ${KUBECONFIG}
+        kubectl get nodes
+        kubectl wait --for=condition=Ready nodes --all --timeout=600s
+        
+    - name: Install Mlflow
+      run: ./tests/install_mlflow.sh
+
+    - name: PF Mlflow
+      run: ./tests/pf_mlflow.sh
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.7' 
+
+    - name: Log model Mlflow
+      run: ./tests/log_mlflow_model.sh
 
     - name: Install Istio Service Mesh
       run: ./tests/install_istio.sh
@@ -44,5 +61,8 @@ jobs:
     
     - name: Build and Push image
       run: ./tests/docker_build_push.sh
+
+    - name: Install deployment controller
+      run: ./tests/install_deployment_controller.sh
 
     

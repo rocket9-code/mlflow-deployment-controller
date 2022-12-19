@@ -1,0 +1,14 @@
+{{- if .Values.gitops.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "mlflow-controller.fullname" . }}-gitops-cm
+  labels:
+    {{- include "mlflow-controller.labels" . | nindent 4 }}
+data:
+  GIT_USER: {{ .Values.gitops.gitUser }}
+  MANIFEST_LOCATION: {{ .Values.gitops.deploymentLocation }}
+  GIT_REPO: {{ .Values.gitops.repository }}
+  BRANCH: {{ .Values.gitops.BRANCH }}
+  GITOPS_ENABLED: "True"
+{{- end }}
