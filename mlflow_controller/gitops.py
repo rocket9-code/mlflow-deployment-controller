@@ -51,18 +51,20 @@ class GitopsMDC:
         path = "./tmp/" + folder_name
         if not os.path.exists(path):
             os.makedirs(path)
+        logger.info(f"Cloning repo {GIT_URL} with branch {BRANCH}")
         Repo.clone_from(GIT_URL, path, single_branch=True, branch=BRANCH)
         try:
             config.load_kube_config()
         except config.ConfigException:
             config.load_incluster_config()
         manifest_path = path + "/" + MANIFEST_LOCATION
-        logger.info(manifest_path)
-
         deploy_yamls = glob.glob(f"{manifest_path}/*.yaml") + glob.glob(
             f"{manifest_path}/*.yml"
         )
         mlflowcontroller = MLflowMetadata(tracking_uri=TRACKING_URI, stage=MLFLOW_STAGE)
+        logger.info(f"Mlflow tracking uri {TRACKING_URI}")
+        logger.info(f"Mlflow Stage {MLFLOW_STAGE}")
+        logger.info(f"backende {backend}")
         mlflow_models_metadata, _ = mlflowcontroller.get_model_metadata(
             check_deploy=False, backend=backend
         )
@@ -76,7 +78,6 @@ class GitopsMDC:
                         read_seldon_deploy_yamls.append(deploy_yaml)
                 except yaml.YAMLError as exc:
                     logger.error(exc)
-        logger.info(mlflow_models_metadata)
         if len(mlflow_models_metadata.keys()) > 0:
             sync(
                 read_seldon_deploy_yamls,

@@ -43,9 +43,6 @@ def mlflow_model_search(lookup_key, json_dict, search_result=[]):
 
 
 def update_modeluris(json_para, search_para, replace_para):
-    logger.info(search_para)
-    logger.info(replace_para)
-
     def decode_dict(a_dict):
         if search_para in a_dict.values():
             for key, value in a_dict.items():
@@ -89,16 +86,15 @@ def sync(
 
             except KeyError:
                 rep_deploy_yaml["metadata"]["labels"] = {}
+            deploy = False
             for m in models:
                 try:
-                    pattern = r'\{\{\s(.*)\s\}\}'
+                    pattern = r"\{\{\s(.*)\s\}\}"
                     model_jinja = re.findall(pattern, m)[0]
                     model_name, bk_name, rg_name = var_parser(model_jinja)
-                    logger.info(f"{model_name}, {bk_name} , {rg_name}")
                     if (bk_name != backend) or (rg_name != registry_name):
                         raise InvalidVariable
                     model = model_metadata[registry_name][backend][model_name]
-                    logger.info(model)
                     run_id = model["run_id"]
                     rep_deploy_yaml = update_modeluris(
                         rep_deploy_yaml,
@@ -114,12 +110,11 @@ def sync(
                     rep_deploy_yaml["metadata"]["labels"][
                         "app.kubernetes.io/mdc-type"
                     ] = controller_label_value
-                    logger.info(controller_label_value)
                     rep_deploy_yaml["metadata"]["labels"][
                         "app.kubernetes.io/managed-by"
                     ] = "mdc"
-                    logger.info(rep_deploy_yaml["spec"])
                     deploy = True
+                    name = rep_deploy_yaml["metadata"]["name"]
                 except InvalidVariable:
                     deploy = False
                     logger.error(
@@ -127,11 +122,13 @@ def sync(
                     )
                 except Exception as e:
                     deploy = False
-                    name = rep_deploy_yaml["metadata"]["name"]
                     logger.error(
                         f"Error deploying {name} Model {m} not found in mlflow {e}"
                     )
         if deploy:
+            logger.info(
+                f"deploying seldon deployment {name} in namespace {GLOBAL_NAMESPACE}"
+            )
             try:
                 kube_client.create_namespaced_custom_object(
                     group=resource_group,
@@ -160,7 +157,7 @@ def sync(
     for i in manifests["items"]:
         model_name = i["metadata"]["name"]
         if model_name in git_models:
-            logger.info(f"model in sync {model_name}")
+            logger.info(f"seldon dpeloyment in sync {model_name}")
         else:
             kube_client.delete_namespaced_custom_object(
                 group="machinelearning.seldon.io",

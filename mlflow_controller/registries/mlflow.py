@@ -26,7 +26,7 @@ logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
 class MLflowMetadata:
     def __init__(self, tracking_uri, stage):
         self.mlflow_client = MlflowClient(tracking_uri=tracking_uri)
-        logger.info("Mlflow client initialized")
+        logger.debug("Mlflow client initialized")
         self.object_init = mlflow_backend.Artifact()
         self.stage = stage
 
@@ -60,7 +60,7 @@ class MLflowMetadata:
                         "version": model_details["version"],
                         "artifact_uri": artifact_uri,
                     }
-                    logger.info(artifact_uri)
+                    logger.debug(artifact_uri)
                     if check_deploy:
                         for file in self.mlflow_client.list_artifacts(model_run_id):
                             if file.path == mlflow_deploy_config:

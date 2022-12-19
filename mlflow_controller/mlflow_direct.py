@@ -49,13 +49,15 @@ class DeployConroller:
         Manages the deployments from Mlflow
         """
         mlflowcontroller = MLflowMetadata(tracking_uri=TRACKING_URI, stage=MLFLOW_STAGE)
+        logger.info(f"Mlflow tracking uri {TRACKING_URI}")
+        logger.info(f"Mlflow Stage {MLFLOW_STAGE}")
+        logger.info(f"backende {backend}")
         mlflow_models_metadata, read_deploy_yaml = mlflowcontroller.get_model_metadata(
             check_deploy=True,
             backend=backend,
             manager_label=self.managed_label,
             mlflow_deploy_config="deploy.yaml",
         )
-        logger.info(mlflow_models_metadata)
         if len(mlflow_models_metadata.keys()) > 0:
             seldon.sync(
                 read_deploy_yaml,
