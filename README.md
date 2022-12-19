@@ -222,9 +222,9 @@ Support matrix
 | Ml endpoints | Seldon core |  Kserve |  Databricks | Azure ml | Vertex AI | SageMaker | 
 |-----|---------|---------|---------|---------|---------|---------|
 | Registries | | | | | |
-| mlflow oss  gcs | :white_check_mark: |  ✖️ (in roadmap) |  ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | 
-| mlflow oss blob | :white_check_mark: |  ✖️ (in roadmap) |  ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | 
-| mlflow oss s3 | :white_check_mark: |  ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | 
+| mlflow oss  gcs | :white_check_mark: |  :white_check_mark: |  ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | 
+| mlflow oss blob | :white_check_mark: |  :white_check_mark: |  ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | 
+| mlflow oss s3 | :white_check_mark: |  :white_check_mark: | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | 
 | databricks mlflow| ✖️ (in roadmap) |  ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | 
 | databricks azureml | ✖️ (in roadmap) |  ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | 
 | vertexai  registry | ✖️ (in roadmap) |  ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | 
