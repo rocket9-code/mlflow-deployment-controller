@@ -8,7 +8,8 @@ import yaml
 from git import Repo
 from kubernetes import config
 
-from mlflow_controller.mlservers.seldon import sync
+from mlflow_controller.mlservers import seldon
+from mlflow_controller.mlservers import kserve
 from mlflow_controller.registries.mlflow import MLflowMetadata
 
 logger = logging.getLogger(__name__)
@@ -42,6 +43,7 @@ GLOBAL_NAMESPACE = os.getenv("namespace", "staging")
 MLFLOW_STAGE = os.getenv("stage", "Staging")
 backend = os.getenv("backend", "")
 BRANCH = os.getenv("BRANCH", "main")
+ML_SERVER = os.getenv("ML_SERVER", "kserve")
 
 
 class GitopsMDC:
@@ -64,7 +66,7 @@ class GitopsMDC:
         mlflowcontroller = MLflowMetadata(tracking_uri=TRACKING_URI, stage=MLFLOW_STAGE)
         logger.info(f"Mlflow tracking uri {TRACKING_URI}")
         logger.info(f"Mlflow Stage {MLFLOW_STAGE}")
-        logger.info(f"backende {backend}")
+        logger.info(f"backend {backend}")
         mlflow_models_metadata, _ = mlflowcontroller.get_model_metadata(
             check_deploy=False, backend=backend
         )
@@ -74,18 +76,32 @@ class GitopsMDC:
                 try:
                     deploy_yaml = yaml.safe_load(stream)
                     resource_group = deploy_yaml["apiVersion"].split("/")[0]
-                    if resource_group == "machinelearning.seldon.io":
-                        read_seldon_deploy_yamls.append(deploy_yaml)
+                    if ML_SERVER == "seldon":
+                        if resource_group == "machinelearning.seldon.io":
+                            read_seldon_deploy_yamls.append(deploy_yaml)
+                    elif ML_SERVER == "kserve":
+                        if resource_group == "serving.kserve.io":
+                            read_seldon_deploy_yamls.append(deploy_yaml)
                 except yaml.YAMLError as exc:
                     logger.error(exc)
         if len(mlflow_models_metadata.keys()) > 0:
-            sync(
-                read_seldon_deploy_yamls,
-                mlflow_models_metadata,
-                MLFLOW_STAGE,
-                GLOBAL_NAMESPACE,
-                f"mdc-gitops-{backend}-mlflow",
-                "mlflow",
-                backend,
-            )
+            if ML_SERVER == "seldon":
+                seldon.sync(
+                    read_seldon_deploy_yamls,
+                    mlflow_models_metadata,
+                    MLFLOW_STAGE,
+                    GLOBAL_NAMESPACE,
+                    f"mdc-gitops-{backend}-mlflow-seldon",
+                    "mlflow",
+                    backend
+                )
+            elif ML_SERVER == "kserve":
+                kserve.sync(
+                    read_seldon_deploy_yamls,
+                    mlflow_models_metadata,
+                    MLFLOW_STAGE,
+                    GLOBAL_NAMESPACE,
+                    f"mdc-gitops-{backend}-mlflow-kserve",
+                    "mlflow",
+                    backend)
         shutil.rmtree(path, ignore_errors=True)
