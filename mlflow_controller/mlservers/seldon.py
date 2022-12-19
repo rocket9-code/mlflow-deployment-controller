@@ -56,6 +56,11 @@ def update_modeluris(json_para, search_para, replace_para):
     return json.loads(json.dumps(json_para), object_hook=decode_dict)
 
 
+class InvalidVariable(Exception):
+    "Raised when wrong templates"
+    pass
+
+
 def sync(
     deploy_yamls,
     model_metadata,
@@ -89,8 +94,10 @@ def sync(
                     pattern = r"{{(.*?)}}"
                     model_jinja = re.search(pattern, m).group()
                     logger.info(model_jinja)
-                    model_name, _, _ = var_parser(model_jinja)
+                    model_name, bk_name, rg_name = var_parser(model_jinja)
                     logger.info(model_name)
+                    if (bk_name != backend) or (rg_name != registry_name):
+                        raise InvalidVariable
                     model = model_metadata[registry_name][backend][model_name]
                     logger.info(model)
                     run_id = model["run_id"]
@@ -113,7 +120,10 @@ def sync(
                         "app.kubernetes.io/managed-by"
                     ] = "mdc"
                     logger.info(rep_deploy_yaml["spec"])
-
+                except InvalidVariable:
+                    logger.error(
+                        f"Error in variable for model {m}"
+                    )
                 except Exception as e:
                     name = rep_deploy_yaml["metadata"]["name"]
                     logger.error(
