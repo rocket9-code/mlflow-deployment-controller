@@ -122,7 +122,7 @@ def sync(
                     logger.info(rep_deploy_yaml["spec"])
                 except InvalidVariable:
                     logger.error(
-                        f"Error in variable for model {m}"
+                        f"Error in variable for model {m} backend {bk_name} registry {rg_name}"
                     )
                 except Exception as e:
                     name = rep_deploy_yaml["metadata"]["name"]
