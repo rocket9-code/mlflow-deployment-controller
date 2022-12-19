@@ -27,6 +27,9 @@ mlflow:
   # -- Object Storage Used by mlflow supported gcs , blob , s3 
   backend: "blob"
 
+mlserver: seldon
+
+
 gitops:
   # -- enable/disable gitops
   enabled: true

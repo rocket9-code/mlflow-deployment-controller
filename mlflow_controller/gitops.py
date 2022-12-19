@@ -43,7 +43,7 @@ GLOBAL_NAMESPACE = os.getenv("namespace", "staging")
 MLFLOW_STAGE = os.getenv("stage", "Staging")
 backend = os.getenv("backend", "")
 BRANCH = os.getenv("BRANCH", "main")
-ML_SERVER = os.getenv("ML_SERVER", "seldon")
+ML_SERVER = os.getenv("ML_SERVER", "kserve")
 
 
 class GitopsMDC:
