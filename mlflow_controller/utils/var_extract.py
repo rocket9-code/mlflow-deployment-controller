@@ -1,27 +1,10 @@
 import ast
-import logging
 import re
-
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-
-formatter = logging.Formatter("%(asctime)s:%(name)s:%(message)s")
-
-file_handler = logging.FileHandler("log.log")
-file_handler.setLevel(logging.ERROR)
-file_handler.setFormatter(formatter)
-
-stream_handler = logging.StreamHandler()
-stream_handler.setFormatter(formatter)
-
-logger.addHandler(file_handler)
-logger.addHandler(stream_handler)
 
 
 def var_parser(placeholder):
     model_pattern = r"\[.*\]"
     model = re.search(model_pattern, placeholder)
-    logger.info(placeholder)
     model_name = ast.literal_eval(model.group())[0]
     vendor_pattern = r"\..*\["
     vendor = re.search(vendor_pattern, placeholder)

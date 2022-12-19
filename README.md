@@ -260,6 +260,8 @@ $ helm install mlflow-controller-deployment-production  f9n-code/mlflow-controll
 
 ```
 
+quick start example is available at examples/gitops
+
 
 ## :memo: License ##
 
