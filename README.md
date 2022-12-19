@@ -38,27 +38,6 @@ $ helm install mlflow-controller-deployment f9n-code/mlflow-controller-deploymen
 
 ```
 
-
-## Compatabilty
-
-| cloud | storage | support status | 
-|-----|------|---------|
-| gcp | gcs | :white_check_mark: | 
-| azure | blob | :white_check_mark: | 
-| aws | s3 | :white_check_mark: |
-| databricks | ✖️ (in roadmap) | 
-| azureml | ✖️ (in roadmap) | 
-| vertexai | ✖️ (in roadmap) | 
-
-| Model Servers | support status | 
-|-----|---------|
-| Seldon-Core  | :white_check_mark: | 
-| Kserve | ✖️ (in roadmap) | 
-| databricks | ✖️ (in roadmap) | 
-| azureml | ✖️ (in roadmap) | 
-| vertexai | ✖️ (in roadmap) | 
-| BentoML | ✖️ (in roadmap) | 
-
 ## To Setup Deployment controller in different environments
 
 ### For Staging environment
@@ -229,9 +208,9 @@ spec:
 To enable gitops in the controller 
 
 ```
-! git clone -b gitops-enable https://github.com/rocket9-code/mlflow-deployment-controller
+! helm repo add f9n-code https://f9n-code.github.io/helm-charts
 
-! helm install mlflow-controller mlflow-deployment-controller/charts/mlflow-controller  -n mlflow --set gitops.enabled=true  
+! helm install mlflow-controller f9n-code/mlflow-controller-deployment  -n mlflow --set gitops.enabled=true  
 ```
 Supported values 
 registes: mlflow
