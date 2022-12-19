@@ -39,7 +39,7 @@ class DeployConroller:
     """
 
     def __init__(self):
-        self.managed_label = "mdc-mlflow-direct"
+        self.managed_label = "mdc-direct"
 
     def __str__(self):
         return self.__class__.__name__
