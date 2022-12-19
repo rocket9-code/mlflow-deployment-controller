@@ -64,7 +64,7 @@ class DeployConroller:
                 mlflow_models_metadata,
                 MLFLOW_STAGE,
                 GLOBAL_NAMESPACE,
-                f"{self.managed_label}-mlflow-{backend}",
+                f"{self.managed_label}-mlflow-{backend}-seldon",
                 "mlflow",
                 backend,
             )
