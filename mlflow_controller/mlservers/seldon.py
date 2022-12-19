@@ -120,34 +120,37 @@ def sync(
                         "app.kubernetes.io/managed-by"
                     ] = "mdc"
                     logger.info(rep_deploy_yaml["spec"])
+                    deploy = True
                 except InvalidVariable:
+                    deploy = False
                     logger.error(
                         f"Error in variable for model {m} backend {bk_name} registry {rg_name}"
                     )
                 except Exception as e:
+                    deploy = False
                     name = rep_deploy_yaml["metadata"]["name"]
                     logger.error(
                         f"Error deploying {name} Model {m} not found in mlflow {e}"
                     )
-
-        try:
-            kube_client.create_namespaced_custom_object(
-                group=resource_group,
-                version="v1",
-                plural="seldondeployments",
-                body=rep_deploy_yaml,
-                namespace=GLOBAL_NAMESPACE,
-            )
-        except KubeClient.rest.ApiException:
-            kube_client.patch_namespaced_custom_object(
-                group=resource_group,
-                version="v1",
-                plural="seldondeployments",
-                body=rep_deploy_yaml,
-                name=rep_deploy_yaml["metadata"]["name"],
-                namespace=GLOBAL_NAMESPACE,
-            )
-        git_models.append(rep_deploy_yaml["metadata"]["name"])
+        if deploy:
+            try:
+                kube_client.create_namespaced_custom_object(
+                    group=resource_group,
+                    version="v1",
+                    plural="seldondeployments",
+                    body=rep_deploy_yaml,
+                    namespace=GLOBAL_NAMESPACE,
+                )
+            except KubeClient.rest.ApiException:
+                kube_client.patch_namespaced_custom_object(
+                    group=resource_group,
+                    version="v1",
+                    plural="seldondeployments",
+                    body=rep_deploy_yaml,
+                    name=rep_deploy_yaml["metadata"]["name"],
+                    namespace=GLOBAL_NAMESPACE,
+                )
+            git_models.append(rep_deploy_yaml["metadata"]["name"])
     manifests = kube_client.list_namespaced_custom_object(
         group="machinelearning.seldon.io",
         version="v1",
