@@ -218,17 +218,6 @@ backend: blob , gcs , s3
 
 in future releases we can support azureml registries and databricks mlflow
 
-Support matrix
-| Ml endpoints | Seldon core |  Kserve |  Databricks | Azure ml | Vertex AI | SageMaker | 
-|-----|---------|---------|---------|---------|---------|---------|
-| Registries | | | | | |
-| mlflow oss  gcs | :white_check_mark: |  ✖️ (in roadmap) |  ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | 
-| mlflow oss blob | :white_check_mark: |  ✖️ (in roadmap) |  ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | 
-| mlflow oss s3 | :white_check_mark: |  ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | 
-| databricks mlflow| ✖️ (in roadmap) |  ✖️ (in roadmap) | --- | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | 
-| azureml | ✖️ (in roadmap) |  ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | 
-| vertexai  registry | ✖️ (in roadmap) |  ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | 
-
 
 ## To Setup Deployment controller in different environments with Gitops Enabled
 
@@ -262,6 +251,16 @@ $ helm install mlflow-controller-deployment-production  f9n-code/mlflow-controll
 
 quick start example is available at examples/gitops
 
+Support matrix
+| Ml endpoints | Seldon core |  Kserve |  Databricks | Azure ml | Vertex AI | SageMaker | 
+|-----|---------|---------|---------|---------|---------|---------|
+| Registries | | | | | |
+| mlflow oss  gcs | :white_check_mark: |  ✖️ (in roadmap) |  ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | 
+| mlflow oss blob | :white_check_mark: |  ✖️ (in roadmap) |  ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | 
+| mlflow oss s3 | :white_check_mark: |  ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | 
+| databricks mlflow| ✖️ (in roadmap) |  ✖️ (in roadmap) | --- | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | 
+| azureml | ✖️ (in roadmap) |  ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | 
+| vertexai  registry | ✖️ (in roadmap) |  ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | ✖️ (in roadmap) | 
 
 ## :memo: License ##
 
