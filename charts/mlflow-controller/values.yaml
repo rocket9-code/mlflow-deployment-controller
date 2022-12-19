@@ -10,7 +10,7 @@ image:
   # -- image pull policy
   pullPolicy: Always
   # -- image tag
-  tag: "mlflow-controller-1.0.0s"
+  tag: "mlflow-controller-0.1.5"
 
 imagePullSecrets: []
 nameOverride: ""
