@@ -8,6 +8,8 @@
 
 <h1 align="center">Mlflow Deployment Controller</h1>
 
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/mlflow-deployment-controller)](https://artifacthub.io/packages/search?repo=mlflow-deployment-controller)
+
 
 <br>
 
