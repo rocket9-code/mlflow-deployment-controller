@@ -43,16 +43,6 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-06-19T19:02:28.903805524Z"
-    description: A Helm chart for Kubernetes
-    digest: 37124dec497d7c87c5974ff5999ae78be1655d73fe76b46ce4bc77ef8951aec2
-    name: mlflow-controller
-    type: application
-    urls:
-    - https://github.com/wianai/mlflow-deployment-controller/releases/download/mlflow-controller-0.1.1/mlflow-controller-0.1.1.tgz
-    version: 0.1.1
-  - apiVersion: v2
-    appVersion: 1.16.0
     created: "2022-06-13T18:55:27.120790145Z"
     description: A Helm chart for Kubernetes
     digest: 15a6a469b5293e776d92254dda7f166ec9d15bf7bf7da74eb79992d0ad32b0d7
