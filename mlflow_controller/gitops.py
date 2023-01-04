@@ -64,7 +64,7 @@ class GitopsMDC:
         mlflowcontroller = MLflowMetadata(tracking_uri=TRACKING_URI, stage=MLFLOW_STAGE)
         logger.info(f"Mlflow tracking uri {TRACKING_URI}")
         logger.info(f"Mlflow Stage {MLFLOW_STAGE}")
-        logger.info(f"backende {backend}")
+        logger.info(f"backend {backend}")
         mlflow_models_metadata, _ = mlflowcontroller.get_model_metadata(
             check_deploy=False, backend=backend
         )
