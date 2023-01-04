@@ -51,7 +51,7 @@ class GitopsMDC:
         path = "./tmp/" + folder_name
         if not os.path.exists(path):
             os.makedirs(path)
-        logger.info(f"Cloning repo {GIT_URL} with branch {BRANCH}")
+        logger.info(f"Cloning repo {GIT_REPO} with branch {BRANCH}")
         Repo.clone_from(GIT_URL, path, single_branch=True, branch=BRANCH)
         try:
             config.load_kube_config()
@@ -64,7 +64,7 @@ class GitopsMDC:
         mlflowcontroller = MLflowMetadata(tracking_uri=TRACKING_URI, stage=MLFLOW_STAGE)
         logger.info(f"Mlflow tracking uri {TRACKING_URI}")
         logger.info(f"Mlflow Stage {MLFLOW_STAGE}")
-        logger.info(f"backende {backend}")
+        logger.info(f"backend {backend}")
         mlflow_models_metadata, _ = mlflowcontroller.get_model_metadata(
             check_deploy=False, backend=backend
         )
