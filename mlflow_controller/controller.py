@@ -10,12 +10,13 @@ __email__ = "rrkraghulkrishna@gmail.com"
 """
 import logging
 import os
+import re
 
-import yaml
-from google.cloud.storage import Client as GoogleClient
 from kubernetes import client as KubeClient
 from kubernetes import config
 from mlflow.tracking import MlflowClient
+
+import mlflow_controller.storage
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -34,13 +35,12 @@ logger.addHandler(stream_handler)
 
 logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
 
-# os.environ["MLFLOW_TRACKING_URI"] = "http://localhost:57065"
+# os.environ["MLFLOW_TRACKING_URI"] = "http://localhost:5000"
 
 
 class DeployConroller:
     """
     A class to Matain the controller
-
     ...
 
     Methods
@@ -52,8 +52,7 @@ class DeployConroller:
     def __init__(self):
         self.mlflow_client = MlflowClient()
         logger.info("Mlflow client initialized")
-        self.google_client = GoogleClient()
-        logger.info("Google client initialized")
+        self.object_init = mlflow_controller.storage.Artifact()
         try:
             config.load_kube_config()
         except config.ConfigException:
@@ -63,18 +62,21 @@ class DeployConroller:
         self.mlflow_deploy_config = "deploy.yaml"
         self.stage = os.environ["stage"]
         self.model_details = []
-        self.Namespace = os.environ['namespace']
+        self.Namespace = os.environ["namespace"]
+        self.cloud = os.environ["cloud"]
+        self.label = "app.kubernetes.io/managed-by=mdc-mlflow"
 
     def __str__(self):
         return self.__class__.__name__
 
     def state_manager(self):
         """To delete resources deleted in Mlflow"""
-        manifests = self.kube_client.list_cluster_custom_object(
+        manifests = self.kube_client.list_namespaced_custom_object(
             group="machinelearning.seldon.io",
             version="v1",
             plural="seldondeployments",
-            label_selector="app.kubernetes.io/managed-by=mlflow-seldon",
+            namespace=self.Namespace,
+            label_selector=self.label,
         )
         for manifest in manifests["items"]:
             model_names = self.model_details
@@ -126,18 +128,42 @@ class DeployConroller:
                     if file.path == self.mlflow_deploy_config:
                         model_name = version.name.lower()
                         model_run_id = version.run_id
-                        model_source = version.source
                         run_details = self.mlflow_client.get_run(version.run_id)
+                        model_version = version.version
                         artifact_uri = run_details.info.artifact_uri
-                        bucket = artifact_uri.split("/")[2]
-                        object_name = (
-                            "/".join(artifact_uri.split("/")[3:])
-                            + f"/{self.mlflow_deploy_config}"
+                        if self.cloud == "gcp":
+                            model_source = version.source
+                            deploy_yaml = self.object_init.gcp_bucket(artifact_uri)
+                        elif self.cloud == "azure_blob":
+                            model_source = re.sub(
+                                r"(?=\@)(.*?)(?=\/)", "", version.source
+                            )
+                            deploy_yaml = self.object_init.azure_blob(artifact_uri)
+                        elif self.cloud == "aws_s3":
+                            model_source = re.sub(
+                                r"(?=\@)(.*?)(?=\/)", "", version.source
+                            )
+                            deploy_yaml = self.object_init.azure_blob(artifact_uri)
+
+                        else:
+                            raise ("unsupported Object Storage")
+                        model_deploy_name = model_name.replace(" ", "").replace(
+                            "_", "-"
                         )
-                        bucket = self.google_client.get_bucket(bucket)
-                        blob = bucket.get_blob(object_name)
-                        downloaded_file = blob.download_as_text(encoding="utf-8")
-                        deploy_yaml = yaml.safe_load(downloaded_file)
+                        deploy_yaml["spec"]["predictors"][0]["graph"][
+                            "modelUri"
+                        ] = model_source
+                        deploy_yaml["spec"]["predictors"][0]["annotations"][
+                            "predictor_version"
+                        ] = model_version
+                        deploy_yaml["metadata"]["name"] = model_deploy_name
+                        try:
+                            deploy_yaml["metadata"]["annotations"]
+                        except KeyError:
+                            deploy_yaml["metadata"]["annotations"] = {}
+                        deploy_yaml["metadata"]["labels"][
+                            "app.kubernetes.io/managed-by"
+                        ] = "mdc-mlflow"
                         logger.info(
                             "Model Name: %s, Model Run Id: %s",
                             model_name,

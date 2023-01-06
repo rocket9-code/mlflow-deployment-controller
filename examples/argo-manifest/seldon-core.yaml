@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: seldon-core-operator
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://storage.googleapis.com/seldon-charts
+    chart: seldon-core-operator
+    targetRevision: 1.14.0
+    helm:
+      releaseName: seldon-core-operator
+      parameters:
+        - name: "usageMetrics.enabled"
+          value: "false"
+        - name: "istio.enabled"
+          value: "true"
+  syncPolicy:
+      syncOptions:
+        - CreateNamespace=true
+      automated:
+        prune: true
+        allowEmpty: true
+        selfHeal: true
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: seldon-system

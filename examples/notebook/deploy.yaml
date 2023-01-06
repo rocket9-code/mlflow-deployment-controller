@@ -1,0 +1,48 @@
+apiVersion: machinelearning.seldon.io/v1
+kind: SeldonDeployment
+metadata:
+  name: mlflow
+  labels:
+    app.kubernetes.io/managed-by: mlflow-seldon
+    app.kubernetes.io/name: mlflow
+spec:
+  name: iris
+  predictors:
+  - componentSpecs:
+    - spec:
+        # We are setting high failureThreshold as installing conda dependencies
+        # can take long time and we want to avoid k8s killing the container prematurely
+        containers:
+        # - image: seldonio/mlflowserver:1.14.0-dev
+        #   imagePullPolicy: IfNotPresent
+        #   name: classifier
+        - name: classifier
+          livenessProbe:
+            initialDelaySeconds: 800
+            failureThreshold: 20000000
+            periodSeconds: 25
+            successThreshold: 1
+            httpGet:
+              path: /health/ping
+              port: http
+              scheme: HTTP
+          readinessProbe:
+            initialDelaySeconds: 800
+            failureThreshold: 2000000
+            periodSeconds: 25
+            successThreshold: 1
+            httpGet:
+              path: /health/ping
+              port: http
+              scheme: HTTP
+
+    graph:
+      children: []
+      implementation: MLFLOW_SERVER
+      modelUri: gs://hellomlops-mlflow/mlflow_artifacts/1/6887f98225b9419f9681d68e7cdd9335/artifacts/random-forest-model
+      logger:
+        url: http://broker-ingress.knative-eventing.svc.cluster.local/demo/default
+        mode: all
+      name: classifier
+    name: default
+    replicas: 1

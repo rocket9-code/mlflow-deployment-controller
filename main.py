@@ -9,21 +9,37 @@ __email__ = "rrkraghulkrishna@gmail.com"
 
 """
 import logging
+import os
 from time import sleep
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 
-from mlflow_controller.controller import DeployConroller
+from mlflow_controller.gitops import GitopsMDC
+from mlflow_controller.mlflow_direct import DeployConroller
 
 logging.getLogger("apscheduler").setLevel(logging.ERROR)
 
 if __name__ == "__main__":
     scheduler = BackgroundScheduler()
     controller = DeployConroller()
-    scheduler.add_job(
-        controller.deploy_controller, CronTrigger.from_crontab("* * * * *")
-    )
+    giopsmdc = GitopsMDC()
+    # scheduler.add_job(
+    #     controller.deploy_controller, CronTrigger.from_crontab("* * * * *")
+    # )
+    # scheduler.add_job(
+    #     id="controller",
+    #     func=controller.deploy_controller,
+    #     trigger="interval",
+    #     seconds=15,
+    # )
+    if os.getenv("GITOPS_ENABLED", "False"):
+        scheduler.add_job(
+            id="gitopsmdc",
+            func=giopsmdc.gitops_mlflow_controller,
+            trigger="interval",
+            seconds=15,
+        )
     scheduler.start()
     while True:
         sleep(1)

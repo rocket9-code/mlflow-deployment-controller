@@ -1,0 +1,14 @@
+{{- if .Values.mlflow.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "mlflow-controller.fullname" . }}-mlflow-cm
+  labels:
+    {{- include "mlflow-controller.labels" . | nindent 4 }}
+data:
+  MLFLOW_TRACKING_URI: {{ .Values.mlflow.MLFLOW_TRACKING_URI }}
+  stage: {{ .Values.mlflow.stage }}
+  namespace: {{ .Values.mlflow.namespace }}
+  backend: {{ .Values.mlflow.backend }}
+  MLFLOW_ENABLED: "True"
+{{- end }}

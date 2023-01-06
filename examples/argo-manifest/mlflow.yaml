@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mlflow
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/wianai/hello-mlflow
+    path: charts/mlflow
+    targetRevision: main
+    helm:
+      releaseName: mlflow
+      parameters:
+        - name: "artifact.ArtifactRoot"
+          value: "gs://wian-ai-lab-mlflow/mlflow_artifacts/"
+  syncPolicy:
+      automated:
+        prune: true
+        allowEmpty: true
+        selfHeal: true
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: mlflow
