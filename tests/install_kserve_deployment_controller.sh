@@ -22,7 +22,7 @@ kubectl wait --for=condition=ready pod -l 'app.kubernetes.io/instance in (mdc-pr
 
 kubectl describe po $POD_NAME -n mlflow
 sleep 180
-# kubectl logs deployment/mlflow-controller -n mlflow
+kubectl logs deployment/mdc-staging-mlflow-controller -n mlflow
 #kubectl get inferenceservice --all-namespaces
 kubectl get inferenceservice sklearn-iris-minio  -n staging -o yaml
 
