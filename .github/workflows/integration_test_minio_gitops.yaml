@@ -67,5 +67,7 @@ jobs:
 
     - name: Install deployment controller ${{matrix.Plan}}
       run: ./tests/install_${{matrix.Plan}}_deployment_controller.sh
+      env:
+        mlserver: ${{matrix.Plan}}
 
     

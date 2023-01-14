@@ -21,4 +21,4 @@ export MLFLOW_S3_ENDPOINT_URL=http://localhost:9000
 export AWS_ACCESS_KEY_ID=minioadmin
 export AWS_SECRET_ACCESS_KEY=minioadmin
 export MLFLOW_TRACKING_URI=http://localhost:5000
-python ./tests/mlflow/list_model.py
+python ./tests/mlflow/list_model.py $mlserver
