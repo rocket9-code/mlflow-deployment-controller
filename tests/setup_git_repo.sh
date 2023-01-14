@@ -13,7 +13,8 @@ curl -X 'POST' \
   "trust_model": "default"
 }'
 
-
+git config --global user.email "mdcadmin@example.com"
+git config --global user.name "mdcadmin"
 cd tests/repo-test
 git init
 git add .
