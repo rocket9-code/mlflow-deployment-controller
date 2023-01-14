@@ -62,7 +62,12 @@ jobs:
     - name: Build and Push image
       run: ./tests/docker_build_push.sh
 
-    - name: Install deployment controller
-      run: ./tests/install_deployment_controller.sh
+    - name: Install deployment controller [Seldon]
+      parallel: true
+      run: ./tests/install_seldon_deployment_controller.sh
+    
+    - name: Install deployment controller [Kserve]
+      parallel: true
+      run: ./tests/install_kserve_deployment_controller.sh
 
     

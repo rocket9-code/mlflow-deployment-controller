@@ -111,23 +111,43 @@ def sync(
                     )
         if deploy:
             logger.info(
-                f"deploying seldon deployment {name} in namespace {GLOBAL_NAMESPACE}"
+                f"deploying kserve deployment {name} in namespace {GLOBAL_NAMESPACE}"
             )
             try:
+                manifest = kube_client.get_namespaced_custom_object(
+                    group=resource_group,
+                    version="v1beta1",
+                    plural="inferenceservices",
+                    namespace=GLOBAL_NAMESPACE,
+                    name=rep_deploy_yaml["metadata"]["name"],
+                )
+                resourceVersion = manifest["metadata"]["resourceVersion"]
+                manifest["metadata"].pop("creationTimestamp")
+                manifest["metadata"].pop("generation")
+                manifest["metadata"].pop("managedFields")
+                manifest["metadata"].pop("resourceVersion")
+                manifest["metadata"].pop("uid")
+                manifest["metadata"].pop("namespace")
+                manifest.pop("status")
+                _name = rep_deploy_yaml["metadata"]["name"]
+                if rep_deploy_yaml == manifest:
+                    logger.info(f"Kserve deployment {_name} in sync")
+                else:
+                    rep_deploy_yaml["metadata"]["resourceVersion"] = resourceVersion
+                    kube_client.replace_namespaced_custom_object(
+                        group=resource_group,
+                        version="v1beta1",
+                        plural="inferenceservices",
+                        body=rep_deploy_yaml,
+                        name=_name,
+                        namespace=GLOBAL_NAMESPACE,
+                    )
+            except KubeClient.rest.ApiException:
                 kube_client.create_namespaced_custom_object(
                     group=resource_group,
                     version="v1beta1",
                     plural="inferenceservices",
                     body=rep_deploy_yaml,
-                    namespace=GLOBAL_NAMESPACE,
-                )
-            except KubeClient.rest.ApiException:
-                kube_client.patch_namespaced_custom_object(
-                    group=resource_group,
-                    version="v1beta1",
-                    plural="inferenceservices",
-                    body=rep_deploy_yaml,
-                    name=rep_deploy_yaml["metadata"]["name"],
                     namespace=GLOBAL_NAMESPACE,
                 )
             git_models.append(rep_deploy_yaml["metadata"]["name"])
@@ -141,7 +161,7 @@ def sync(
     for i in manifests["items"]:
         model_name = i["metadata"]["name"]
         if model_name in git_models:
-            logger.info(f"seldon dpeloyment in sync {model_name}")
+            logger.info(f"kserve dpeloyment in sync {model_name}")
         else:
             kube_client.delete_namespaced_custom_object(
                 group="serving.kserve.io",

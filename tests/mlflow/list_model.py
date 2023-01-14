@@ -1,5 +1,5 @@
 import time
-
+import sys
 from kubernetes import client as KubeClient
 from kubernetes import config
 from mlflow.tracking import MlflowClient
@@ -34,23 +34,36 @@ timeout = time.time() + 60 * 2
 while True:
     if time.time() > timeout:
         raise ("Timeout error")
-    manifest = kube_client.get_namespaced_custom_object(
-        group="machinelearning.seldon.io",
-        version="v1",
-        plural="seldondeployments",
-        namespace="staging",
-        name="mlflow-var-minio",
-    )
-    demo1 = manifest["spec"]["predictors"][0]["graph"]["children"][0]["modelUri"]
-    demo2 = manifest["spec"]["predictors"][0]["graph"]["children"][0]["children"][0][
-        "modelUri"
-    ]
-    demo3 = manifest["spec"]["predictors"][0]["graph"]["children"][1]["modelUri"]
-    demo4 = manifest["spec"]["predictors"][0]["graph"]["modelUri"]
-    if (
-        (demo1 == mlflow_models_metadata["iris demo1"]["source"])
-        & (demo2 == mlflow_models_metadata["iris demo2"]["source"])
-        & (demo4 == mlflow_models_metadata["iris demo4"]["source"])
-    ):
-        print(demo1, demo2, demo3, demo4)
-        break
+    if sys.argv[1] == "seldon":
+        manifest = kube_client.get_namespaced_custom_object(
+            group="machinelearning.seldon.io",
+            version="v1",
+            plural="seldondeployments",
+            namespace="staging",
+            name="mlflow-var-minio",
+        )
+        demo1 = manifest["spec"]["predictors"][0]["graph"]["children"][0]["modelUri"]
+        demo2 = manifest["spec"]["predictors"][0]["graph"]["children"][0]["children"][0][
+            "modelUri"
+        ]
+        demo3 = manifest["spec"]["predictors"][0]["graph"]["children"][1]["modelUri"]
+        demo4 = manifest["spec"]["predictors"][0]["graph"]["modelUri"]
+        if (
+            (demo1 == mlflow_models_metadata["iris demo1"]["source"])
+            & (demo2 == mlflow_models_metadata["iris demo2"]["source"])
+            & (demo4 == mlflow_models_metadata["iris demo4"]["source"])
+        ):
+            print(demo1, demo2, demo3, demo4)
+            break
+    elif sys.argv[1] == "kserve":
+        manifest = kube_client.get_namespaced_custom_object(
+            group="serving.kserve.io",
+            version="v1beta1",
+            plural="inferenceservices",
+            namespace="staging",
+            name="sklearn-iris",
+        )
+        demo2 = manifest["spec"]["predictor"]["model"]["storageUri"]
+        if demo2 == mlflow_models_metadata["iris demo2"]["source"]:
+            print(demo2)
+            break

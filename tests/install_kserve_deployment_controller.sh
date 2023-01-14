@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
-echo "Installing Deployment Controller ..."
+echo "Installing Kserve Deployment Controller ..."
 kubectl create ns staging
-helm install mlflow-controller charts/mlflow-controller  --set image.tag=$GITHUB_SHA -n mlflow --set mlflow.backend=s3 --set gitops.deploymentLocation=staging/
+helm install mlflow-controller charts/mlflow-controller  --set image.tag=$GITHUB_SHA -n mlflow --set mlflow.backend=s3 --set gitops.deploymentLocation=staging/ --set mlserver=kserve
 kubectl get deployment -n mlflow
 kubectl get cm -n mlflow
 kubectl get po -n mlflow
@@ -14,8 +14,8 @@ kubectl wait --for=condition=ready pod -l 'app.kubernetes.io/name in (mlflow-con
 kubectl describe po $POD_NAME -n mlflow
 sleep 180
 kubectl logs deployment/mlflow-controller -n mlflow
-kubectl get seldondeployment --all-namespaces
-kubectl get seldondeployment mlflow-var-minio   -n staging -o yaml
+kubectl get inferenceservice --all-namespaces
+kubectl get inferenceservice sklearn-iris  -n staging -o yaml
 
 export MLFLOW_S3_ENDPOINT_URL=http://localhost:9000
 export AWS_ACCESS_KEY_ID=minioadmin
