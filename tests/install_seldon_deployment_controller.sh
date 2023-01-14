@@ -13,7 +13,7 @@ export POD_NAME=$(kubectl get pods --namespace mlflow -l "app.kubernetes.io/name
 kubectl wait --for=condition=ready pod -l 'app.kubernetes.io/name in (mlflow-controller)' --timeout=180s -n mlflow
 kubectl describe po $POD_NAME -n mlflow
 sleep 180
-kubectl logs deployment/mlflow-controller -n mlflow
+kubectl logs deployment/mdc-staging-mlflow-controller -n mlflow
 kubectl get seldondeployment --all-namespaces
 kubectl get seldondeployment mlflow-var-minio   -n staging -o yaml
 
