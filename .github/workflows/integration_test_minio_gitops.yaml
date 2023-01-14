@@ -45,6 +45,9 @@ jobs:
     - name: setup git repo
       run: ./tests/setup_git_repo.sh
 
+    - name: Install mlflow
+      run: ./tests/install_mlflow.sh
+
     - name: PF Mlflow
       run: ./tests/pf_mlflow.sh
     - uses: actions/setup-python@v4
