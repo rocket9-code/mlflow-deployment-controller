@@ -1,3 +1,4 @@
+from termcolor import colored
 from iris import main
 from git import Repo
 import time
@@ -17,6 +18,7 @@ timeout = time.time() + 60 * 2
 
 for i in range(5):
     main(MODEL_NAME=f"iris demo{i}", version=2, stage="Staging")
+print(colored('Test', 'red'), colored('no1', 'green'))
 
 
 def test():
@@ -82,6 +84,7 @@ test()
 
 # Test transition
 
+print(colored('Test', 'red'), colored('no2', 'green'))
 
 for i in range(5):
     main(MODEL_NAME=f"iris demo{i}", version=3, stage="Staging")
@@ -89,6 +92,7 @@ for i in range(5):
 test()
 
 # Test removal
+print(colored('Test', 'red'), colored('no3', 'green'))
 
 if sys.argv[1] == "kserve":
 
