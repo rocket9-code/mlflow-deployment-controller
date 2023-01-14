@@ -38,9 +38,7 @@ jobs:
         echo "environment-kubeconfig:" ${KUBECONFIG}
         kubectl get nodes
         kubectl wait --for=condition=Ready nodes --all --timeout=600s
-    - name: Install Gitea
-      run: ./tests/install_kserve.sh
-        
+
     - name: Install Gitea
       run: ./tests/install_gitea.sh
 
