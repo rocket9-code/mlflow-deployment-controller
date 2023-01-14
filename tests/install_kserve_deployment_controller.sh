@@ -15,7 +15,7 @@ kubectl describe po $POD_NAME -n mlflow
 sleep 180
 kubectl logs deployment/mlflow-controller -n mlflow
 kubectl get inferenceservice --all-namespaces
-kubectl get inferenceservice sklearn-iris  -n staging -o yaml
+kubectl get inferenceservice sklearn-iris-minio  -n staging -o yaml
 
 export MLFLOW_S3_ENDPOINT_URL=http://localhost:9000
 export AWS_ACCESS_KEY_ID=minioadmin

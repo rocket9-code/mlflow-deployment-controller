@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        Plan: [seldon,kserve]
+        mlserver: [seldon,kserve]
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -68,6 +68,6 @@ jobs:
     - name: Install deployment controller ${{matrix.Plan}}
       run: ./tests/install_${{matrix.Plan}}_deployment_controller.sh
       env:
-        mlserver: ${{matrix.Plan}}
+        mlserver: ${{matrix.mlserver}}
 
     
