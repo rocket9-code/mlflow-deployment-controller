@@ -6,6 +6,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        Plan: [seldon,kserve]
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -62,12 +65,7 @@ jobs:
     - name: Build and Push image
       run: ./tests/docker_build_push.sh
 
-    - name: Install deployment controller [Seldon]
-      parallel: true
-      run: ./tests/install_seldon_deployment_controller.sh
-    
-    - name: Install deployment controller [Kserve]
-      parallel: true
-      run: ./tests/install_kserve_deployment_controller.sh
+    - name: Install deployment controller ${{matrix.Plan}}
+      run: ./tests/install_${{matrix.Plan}}_deployment_controller.sh
 
     
