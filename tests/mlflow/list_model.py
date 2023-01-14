@@ -131,3 +131,41 @@ if sys.argv[1] == "kserve":
             print(model_names)
             print("Deletion test passed")
             break
+
+if sys.argv[1] == "seldon":
+
+    PATH_OF_GIT_REPO = "tests/repo-test"
+    COMMIT_MESSAGE = 'comment from python script'
+
+    def git_push():
+        import os
+        os.remove("tests/repo-test/staging/seldon-s3.yaml")
+        try:
+            repo = Repo(PATH_OF_GIT_REPO)
+            repo.git.add(update=True)
+            repo.index.commit(COMMIT_MESSAGE)
+            origin = repo.remote(name='origin')
+            origin.push()
+        except:
+            print('Some error occured while pushing the code')
+
+    git_push()
+
+    while True:
+        if time.time() > timeout:
+            raise ("Timeout error")
+        manifest = kube_client.list_namespaced_custom_object(
+            group="machinelearning.seldon.io",
+            version="v1",
+            plural="seldondeployments",
+            namespace="staging",
+        )
+        model_names = []
+        for i in manifest["items"]:
+            model_names.append(i["metadata"]["name"])
+        if "mlflow-var-minio" in model_names:
+            pass
+        else:
+            print(model_names)
+            print("Deletion test passed")
+            break
