@@ -66,8 +66,8 @@ jobs:
     - name: Build and Push image
       run: ./tests/docker_build_push.sh
 
-    - name: Install deployment controller ${{matrix.Plan}}
-      run: ./tests/install_${{matrix.Plan}}_deployment_controller.sh
+    - name: Install deployment controller ${{matrix.mlserver}}
+      run: ./tests/install_${{matrix.mlserver}}_deployment_controller.sh
       env:
         mlserver: ${{matrix.mlserver}}
 
