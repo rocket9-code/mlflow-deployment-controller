@@ -11,4 +11,5 @@ data:
   GIT_REPO: {{ .Values.gitops.repository }}
   BRANCH: {{ .Values.gitops.BRANCH }}
   GITOPS_ENABLED: "True"
+  GIT_PROTOCOL: {{ .Values.gitops.protocol }}
 {{- end }}

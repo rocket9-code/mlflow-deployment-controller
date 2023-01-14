@@ -33,15 +33,16 @@ gitops:
   # -- enable/disable gitops
   enabled: true
   # -- git repository
-  repository: github.com/rocket9-code/model-deployments
+  repository: gitea-http.default.svc.cluster.local/mdcadmin/repo-test #github.com/rocket9-code/model-deployments
+  protocol: http
   # -- deployment files folder location
   deploymentLocation: /
   # -- git username
-  gitUser: raghulkrishna
+  gitUser: mdcadmin
   # -- git password secret name
-  gitPasswordSecretName: ""
+  gitPasswordSecretName: "github-secret"
   # -- git password secret key
-  gitPasswordSecretKey: ""
+  gitPasswordSecretKey: "githubtoken"
   # git branch to be tracked
   BRANCH: main
 

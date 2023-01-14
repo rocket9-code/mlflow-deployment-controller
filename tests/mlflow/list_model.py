@@ -61,9 +61,27 @@ while True:
             version="v1beta1",
             plural="inferenceservices",
             namespace="staging",
-            name="sklearn-iris",
+            name="sklearn-iris-minio",
         )
         demo2 = manifest["spec"]["predictor"]["model"]["storageUri"]
         if demo2 == mlflow_models_metadata["iris demo2"]["source"]:
             print(demo2)
             break
+# # Test transition
+
+# while True:
+#     if time.time() > timeout:
+#         raise ("Timeout error")
+#     manifest = kube_client.list_namespaced_custom_object(
+#         group="serving.kserve.io",
+#         version="v1beta1",
+#         plural="inferenceservices",
+#         namespace="staging",
+#     )
+#     model_names = []
+#     for i in manifest["items"]:
+#         model_names.append(i["metadata"]["name"])
+#     if "sklearn-iris-minio" in model_names:
+#         pass
+#     else:
+#         break

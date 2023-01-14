@@ -1,4 +1,5 @@
 import os
+import sys
 
 import mlflow
 import mlflow.sklearn
@@ -21,7 +22,7 @@ except Exception as e:
     print(e)
 
 
-def main(MODEL_NAME="iris gitops", stage="Staging"):
+def main(MODEL_NAME="iris gitops", version=1, stage="Staging"):
 
     iris = datasets.load_iris()
     iris_df = pd.DataFrame(iris.data, columns=iris.feature_names)
@@ -99,10 +100,13 @@ def main(MODEL_NAME="iris gitops", stage="Staging"):
 
     client = MlflowClient()
     client.transition_model_version_stage(
-        name=MODEL_NAME, version=result.version, stage=stage
+        name=MODEL_NAME, version=version, stage=stage
     )
 
 
 if __name__ == "__main__":
     for i in range(5):
-        main(MODEL_NAME=f"iris demo{i}")
+        print(f"iris demo{i}")
+        version = sys.argv[1]
+        stage = sys.argv[2]
+        main(MODEL_NAME=f"iris demo{i}", version=version, stage=stage)

@@ -32,11 +32,12 @@ logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
 TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "http://localhost:9000")
 GIT_USER = os.getenv("GIT_USER", "")
 GIT_PASSWORD = os.getenv("GIT_PASSWORD", "")
+GIT_PROTOCOL = os.getenv("GIT_PROTOCOL", "https")
 GIT_REPO = os.getenv("GIT_REPO", "github.com/rocket9-code/model-deployments")
 if GIT_PASSWORD:
-    GIT_URL = f"https://{GIT_USER}:{GIT_PASSWORD}@{GIT_REPO}"
+    GIT_URL = f"{GIT_PROTOCOL}://{GIT_USER}:{GIT_PASSWORD}@{GIT_REPO}"
 else:
-    GIT_URL = f"https://{GIT_REPO}"
+    GIT_URL = f"{GIT_PROTOCOL}://{GIT_REPO}"
 
 MANIFEST_LOCATION = os.getenv("MANIFEST_LOCATION", "staging")
 GLOBAL_NAMESPACE = os.getenv("namespace", "staging")
