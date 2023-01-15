@@ -16,8 +16,6 @@ mlflow_client = MlflowClient()
 registered_models = mlflow_client.list_registered_models()
 timeout = time.time() + 60 * 2
 
-for i in range(5):
-    main(MODEL_NAME=f"iris demo{i}", version=2, stage="Staging")
 
 print(colored('Test', 'red'), colored('no1', 'green'))
 
@@ -92,7 +90,7 @@ test()
 print(colored('Test', 'red'), colored('no2', 'green'))
 
 for i in range(5):
-    main(MODEL_NAME=f"iris demo{i}", version=3, stage="Staging")
+    main(MODEL_NAME=f"iris demo{i}", version=2, stage="Staging")
 
 test()
 
