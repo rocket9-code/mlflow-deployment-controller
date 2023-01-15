@@ -1,11 +1,13 @@
-from termcolor import colored
-from iris import main
-from git import Repo
-import time
 import sys
+import time
+
+from git import Repo
 from kubernetes import client as KubeClient
 from kubernetes import config
 from mlflow.tracking import MlflowClient
+from termcolor import colored
+
+from iris import main
 
 try:
     config.load_kube_config()
@@ -16,7 +18,7 @@ kube_client = KubeClient.CustomObjectsApi()
 timeout = time.time() + 60 * 2
 
 
-print(colored('Test', 'red'), colored('no1', 'green'))
+print(colored("Test", "red"), colored("no1", "green"))
 
 
 def test():
@@ -51,11 +53,15 @@ def test():
                 namespace="staging",
                 name="mlflow-var-minio",
             )
-            demo1 = manifest["spec"]["predictors"][0]["graph"]["children"][0]["modelUri"]
-            demo2 = manifest["spec"]["predictors"][0]["graph"]["children"][0]["children"][0][
+            demo1 = manifest["spec"]["predictors"][0]["graph"]["children"][0][
                 "modelUri"
             ]
-            demo3 = manifest["spec"]["predictors"][0]["graph"]["children"][1]["modelUri"]
+            demo2 = manifest["spec"]["predictors"][0]["graph"]["children"][0][
+                "children"
+            ][0]["modelUri"]
+            demo3 = manifest["spec"]["predictors"][0]["graph"]["children"][1][
+                "modelUri"
+            ]
             demo4 = manifest["spec"]["predictors"][0]["graph"]["modelUri"]
             if (
                 (demo1 == mlflow_models_metadata["iris demo1"]["source"])
@@ -89,7 +95,7 @@ test()
 
 # Test transition
 
-print(colored('Test', 'red'), colored('no2', 'green'))
+print(colored("Test", "red"), colored("no2", "green"))
 
 for i in range(5):
     main(MODEL_NAME=f"iris demo{i}", version=2, stage="Staging")
@@ -97,24 +103,25 @@ for i in range(5):
 test()
 
 # Test removal
-print(colored('Test', 'red'), colored('no3', 'green'))
+print(colored("Test", "red"), colored("no3", "green"))
 
 if sys.argv[1] == "kserve":
 
     PATH_OF_GIT_REPO = "tests/repo-test"
-    COMMIT_MESSAGE = 'comment from python script'
+    COMMIT_MESSAGE = "comment from python script"
 
     def git_push():
         import os
+
         os.remove("tests/repo-test/staging/kserve-s3.yaml")
         try:
             repo = Repo(PATH_OF_GIT_REPO)
             repo.git.add(update=True)
             repo.index.commit(COMMIT_MESSAGE)
-            origin = repo.remote(name='origin')
+            origin = repo.remote(name="origin")
             origin.push()
         except:
-            print('Some error occured while pushing the code')
+            print("Some error occured while pushing the code")
 
     git_push()
 
@@ -140,19 +147,20 @@ if sys.argv[1] == "kserve":
 if sys.argv[1] == "seldon":
 
     PATH_OF_GIT_REPO = "tests/repo-test"
-    COMMIT_MESSAGE = 'comment from python script'
+    COMMIT_MESSAGE = "comment from python script"
 
     def git_push():
         import os
+
         os.remove("tests/repo-test/staging/seldon-s3.yaml")
         try:
             repo = Repo(PATH_OF_GIT_REPO)
             repo.git.add(update=True)
             repo.index.commit(COMMIT_MESSAGE)
-            origin = repo.remote(name='origin')
+            origin = repo.remote(name="origin")
             origin.push()
         except:
-            print('Some error occured while pushing the code')
+            print("Some error occured while pushing the code")
 
     git_push()
     time.sleep(60)

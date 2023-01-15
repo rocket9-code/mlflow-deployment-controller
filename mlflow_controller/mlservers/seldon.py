@@ -1,4 +1,3 @@
-import json
 import logging
 import re
 
@@ -6,8 +5,8 @@ from kubernetes import client as KubeClient
 from kubernetes import config
 
 from mlflow_controller.mlservers.rclone import rclone_source
+from mlflow_controller.mlservers.utils import mlflow_model_search, update_modeluris
 from mlflow_controller.utils.var_extract import var_parser
-from mlflow_controller.mlservers.utils import update_modeluris, mlflow_model_search
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)

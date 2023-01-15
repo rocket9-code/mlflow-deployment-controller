@@ -1,8 +1,7 @@
 import logging
 import os
 
-from mlflow_controller.mlservers import seldon
-from mlflow_controller.mlservers import kserve
+from mlflow_controller.mlservers import kserve, seldon
 from mlflow_controller.registries.mlflow import MLflowMetadata
 
 logger = logging.getLogger(__name__)
@@ -28,7 +27,6 @@ backend = os.getenv("backend", "")
 ML_SERVER = os.getenv("ML_SERVER", "kserve")
 
 
-
 class DeployConroller:
     """
     A class to Matain the controller
@@ -43,7 +41,6 @@ class DeployConroller:
 
     def __init__(self):
         self.managed_label = "mdc-direct"
-
 
     def __str__(self):
         return self.__class__.__name__
@@ -74,12 +71,12 @@ class DeployConroller:
                     backend,
                 )
             elif ML_SERVER == "kserve":
-                kserve.sync(read_deploy_yaml,
-                            mlflow_models_metadata,
-                            MLFLOW_STAGE,
-                            GLOBAL_NAMESPACE,
-                            f"{self.managed_label}-mlflow-{backend}-kserve",
-                            "mlflow",
-                            backend,
-                            )
-
+                kserve.sync(
+                    read_deploy_yaml,
+                    mlflow_models_metadata,
+                    MLFLOW_STAGE,
+                    GLOBAL_NAMESPACE,
+                    f"{self.managed_label}-mlflow-{backend}-kserve",
+                    "mlflow",
+                    backend,
+                )

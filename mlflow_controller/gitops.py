@@ -8,8 +8,7 @@ import yaml
 from git import Repo
 from kubernetes import config
 
-from mlflow_controller.mlservers import seldon
-from mlflow_controller.mlservers import kserve
+from mlflow_controller.mlservers import kserve, seldon
 from mlflow_controller.registries.mlflow import MLflowMetadata
 
 logger = logging.getLogger(__name__)
@@ -94,7 +93,7 @@ class GitopsMDC:
                     GLOBAL_NAMESPACE,
                     f"mdc-gitops-{backend}-mlflow-seldon",
                     "mlflow",
-                    backend
+                    backend,
                 )
             elif ML_SERVER == "kserve":
                 kserve.sync(
@@ -104,5 +103,6 @@ class GitopsMDC:
                     GLOBAL_NAMESPACE,
                     f"mdc-gitops-{backend}-mlflow-kserve",
                     "mlflow",
-                    backend)
+                    backend,
+                )
         shutil.rmtree(path, ignore_errors=True)

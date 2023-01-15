@@ -1,13 +1,12 @@
-import json
 import logging
 import re
 
 from kubernetes import client as KubeClient
 from kubernetes import config
 
-from mlflow_controller.mlservers.rclone import rclone_source
+from mlflow_controller.mlservers.utils import mlflow_model_search, update_modeluris
 from mlflow_controller.utils.var_extract import var_parser
-from mlflow_controller.mlservers.utils import update_modeluris, mlflow_model_search
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
@@ -32,7 +31,6 @@ kube_client = KubeClient.CustomObjectsApi()
 
 class InvalidVariable(Exception):
     "Raised when wrong templates"
-    pass
 
 
 def sync(
@@ -83,7 +81,7 @@ def sync(
                     rep_deploy_yaml = update_modeluris(
                         rep_deploy_yaml,
                         f'{{{{ {registry_name}.{backend}["{model_name}"] }}}}',
-                        model_source
+                        model_source,
                     )
                     rep_deploy_yaml["metadata"]["annotations"][
                         f"mdc/mlflow-{run_id}"
