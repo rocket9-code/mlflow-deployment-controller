@@ -30,7 +30,7 @@ spec:
     graph:
       implementation: MLFLOW_SERVER
       modelUri: '{{ mlflow.s3["iris demo3"] }}'
-      # envSecretRefName: seldon-init-container-secret
+      envSecretRefName: seldon-init-container-secret
       name: classifier
     name: default
     replicas: 1
