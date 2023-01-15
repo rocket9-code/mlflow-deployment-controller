@@ -1,5 +1,3 @@
-import os
-
 import mlflow
 import mlflow.sklearn
 import pandas as pd

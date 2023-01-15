@@ -55,7 +55,6 @@ def update_modeluris(json_para, search_para, replace_para):
 
 class InvalidVariable(Exception):
     "Raised when wrong templates"
-    pass
 
 
 def sync(
