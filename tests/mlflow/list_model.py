@@ -12,8 +12,7 @@ try:
 except config.ConfigException:
     config.load_incluster_config()
 kube_client = KubeClient.CustomObjectsApi()
-mlflow_client = MlflowClient()
-registered_models = mlflow_client.list_registered_models()
+
 timeout = time.time() + 60 * 2
 
 
@@ -22,6 +21,8 @@ print(colored('Test', 'red'), colored('no1', 'green'))
 
 def test():
     backend = "s3"
+    mlflow_client = MlflowClient()
+    registered_models = mlflow_client.list_registered_models()
     mlflow_models_metadata = {}
     for registered_model in registered_models:
         for version in registered_model.latest_versions:
