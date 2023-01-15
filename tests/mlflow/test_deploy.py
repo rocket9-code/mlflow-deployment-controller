@@ -15,7 +15,7 @@ except config.ConfigException:
     config.load_incluster_config()
 kube_client = KubeClient.CustomObjectsApi()
 status = ""
-timeout = time.time() + 60 * 2
+timeout = time.time() + 60 * 10
 
 while True:
     test = kube_client.get_namespaced_custom_object(group="machinelearning.seldon.io",
