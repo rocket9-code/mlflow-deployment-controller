@@ -29,4 +29,4 @@ export MLFLOW_TRACKING_URI=http://localhost:5000
 python ./tests/mlflow/list_model.py $mlserver
 
 
-# python ./tests/mlflow/test_deploy.py
+python ./tests/mlflow/test_deploy.py
