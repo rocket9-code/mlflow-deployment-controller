@@ -20,6 +20,7 @@ for i in range(5):
     main(MODEL_NAME=f"iris demo{i}", version=2, stage="Staging")
 
 print(colored('Test', 'red'), colored('no1', 'green'))
+time.sleep(60)
 
 
 def test():
@@ -44,6 +45,7 @@ def test():
                 }
     while True:
         if time.time() > timeout:
+            print(sys.argv[1])
             raise ("Timeout error")
         if sys.argv[1] == "seldon":
             manifest = kube_client.get_namespaced_custom_object(
@@ -89,6 +91,7 @@ print(colored('Test', 'red'), colored('no2', 'green'))
 
 for i in range(5):
     main(MODEL_NAME=f"iris demo{i}", version=3, stage="Staging")
+time.sleep(60)
 
 test()
 
@@ -151,6 +154,7 @@ if sys.argv[1] == "seldon":
             print('Some error occured while pushing the code')
 
     git_push()
+    time.sleep(60)
 
     while True:
         if time.time() > timeout:

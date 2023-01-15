@@ -10,7 +10,7 @@ helm install mdc-production charts/mlflow-controller  --set image.tag=$GITHUB_SH
 kubectl get deployment -n mlflow
 kubectl get cm -n mlflow
 kubectl get po -n mlflow
-kubectl create secret generic github-secret --from-literal=githubtoken=testpw
+
 echo "Waiting for Deployment Controller to be ready ..."
 export POD_NAME=$(kubectl get pods --namespace mlflow -l "app.kubernetes.io/instance=mdc-staging" -o jsonpath="{.items[0].metadata.name}")
 

@@ -29,8 +29,6 @@ def main(MODEL_NAME="iris gitops", version=1, stage="Staging"):
     y = iris.target
     iris_df["target"] = y
 
-    print(iris_df.head())
-
     train_df, test_df = train_test_split(
         iris_df, test_size=0.3, random_state=42, stratify=iris_df["target"]
     )
@@ -56,13 +54,13 @@ def main(MODEL_NAME="iris gitops", version=1, stage="Staging"):
 
     EXPERIMENT_NAME = MODEL_NAME
 
-    print("IRIS train df shape")
-    print(X_train.shape)
-    print(y_train.shape)
+    # print("IRIS train df shape")
+    # print(X_train.shape)
+    # print(y_train.shape)
 
-    print("IRIS test df shape")
-    print(X_test.shape)
-    print(y_test.shape)
+    # print("IRIS test df shape")
+    # print(X_test.shape)
+    # print(y_test.shape)
 
     mlflow_client = MlflowClient()
 
