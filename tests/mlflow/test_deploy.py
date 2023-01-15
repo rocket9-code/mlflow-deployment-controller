@@ -22,7 +22,7 @@ while True:
                                                     version="v1",
                                                     plural="seldondeployments",
                                                     namespace="staging",
-                                                    name="mlflow-var")
+                                                    name="mlflow")
     status = test["status"]["state"]
     print(status)
     if status == "Available":
