@@ -31,5 +31,11 @@ while True:
         print(test["status"])
         time.sleep(30)
     if time.time() > timeout:
-        print(test)
+        # print(test)
+        deploy_name = list(test["status"]["deploymentStatus"].keys())[0]
+        kube_client = KubeClient.AppsV1Api()
+        deployment = kube_client.read_namespaced_deployment(
+            name=deploy_name, namespace="staging"
+        )
+        print(deployment)
         raise ("Timeout error")
