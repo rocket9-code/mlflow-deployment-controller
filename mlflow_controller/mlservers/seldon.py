@@ -33,7 +33,6 @@ kube_client = KubeClient.CustomObjectsApi()
 
 class InvalidVariable(Exception):
     "Raised when wrong templates"
-    pass
 
 
 def sync(

@@ -13,7 +13,6 @@ import os
 from time import sleep
 
 from apscheduler.schedulers.background import BackgroundScheduler
-from apscheduler.triggers.cron import CronTrigger
 
 from mlflow_controller.gitops import GitopsMDC
 from mlflow_controller.mlflow_direct import DeployConroller
