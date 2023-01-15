@@ -100,7 +100,6 @@ def main(version, stage, MODEL_NAME):
         name=MODEL_NAME, version=version, stage=stage
     )
     registered_models = mlflow_client.list_registered_models()
-    print(registered_models)
 
 
 if __name__ == "__main__":
