@@ -17,6 +17,8 @@ try:
 
     # Create bucket.
     client.make_bucket("artifacts")
+    policy = '{"Version":"2012-10-17","Statement":[{"Action":["s3:GetBucketLocation","s3:ListBucket","s3:ListBucketMultipartUploads"],"Effect":"Allow","Principal":{"AWS":["*"]},"Resource":["arn:aws:s3:::artifacts"],"Sid":""},{"Action":["s3:AbortMultipartUpload","s3:DeleteObject","s3:GetObject","s3:ListMultipartUploadParts","s3:PutObject"],"Effect":"Allow","Principal":{"AWS":["*"]},"Resource":["arn:aws:s3:::artifacts/*"],"Sid":""}]}'
+    client.set_bucket_policy(bucket_name="artifacts", policy=policy)
 except Exception as e:
     print(e)
 
