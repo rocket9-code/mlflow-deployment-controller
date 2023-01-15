@@ -62,6 +62,7 @@ def test():
                 & (demo4 == mlflow_models_metadata["iris demo4"]["source"])
             ):
                 print(demo1, demo2, demo3, demo4)
+                print("test passed", mlflow_models_metadata)
                 break
         elif sys.argv[1] == "kserve":
             manifest = kube_client.get_namespaced_custom_object(
