@@ -22,7 +22,7 @@ except Exception as e:
     print(e)
 
 
-def main(MODEL_NAME="iris gitops", version=1, stage="Staging"):
+def main(version, stage, MODEL_NAME):
 
     iris = datasets.load_iris()
     iris_df = pd.DataFrame(iris.data, columns=iris.feature_names)
@@ -96,10 +96,11 @@ def main(MODEL_NAME="iris gitops", version=1, stage="Staging"):
         # Register a new version
     result = mlflow.register_model(result.model_uri, MODEL_NAME)
 
-    client = MlflowClient()
-    client.transition_model_version_stage(
+    mlflow_client.transition_model_version_stage(
         name=MODEL_NAME, version=version, stage=stage
     )
+    registered_models = mlflow_client.list_registered_models()
+    print(registered_models)
 
 
 if __name__ == "__main__":
