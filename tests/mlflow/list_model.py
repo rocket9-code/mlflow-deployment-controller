@@ -20,7 +20,6 @@ for i in range(5):
     main(MODEL_NAME=f"iris demo{i}", version=2, stage="Staging")
 
 print(colored('Test', 'red'), colored('no1', 'green'))
-time.sleep(60)
 
 
 def test():
@@ -94,7 +93,6 @@ print(colored('Test', 'red'), colored('no2', 'green'))
 
 for i in range(5):
     main(MODEL_NAME=f"iris demo{i}", version=3, stage="Staging")
-time.sleep(60)
 
 test()
 
