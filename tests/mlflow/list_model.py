@@ -44,9 +44,7 @@ def test():
                     "artifact_uri": artifact_uri,
                 }
     while True:
-        if time.time() > timeout:
-            print(sys.argv[1])
-            raise ("Timeout error")
+
         if sys.argv[1] == "seldon":
             manifest = kube_client.get_namespaced_custom_object(
                 group="machinelearning.seldon.io",
@@ -81,6 +79,11 @@ def test():
                 print(demo2)
                 print("test passed", mlflow_models_metadata)
                 break
+        if time.time() > timeout:
+            print(mlflow_models_metadata)
+            print(manifest)
+            print(sys.argv[1])
+            raise ("Timeout error")
 
 
 test()
