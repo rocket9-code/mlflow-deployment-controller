@@ -29,5 +29,4 @@ export MLFLOW_TRACKING_URI=http://localhost:5000
 python ./tests/mlflow/list_model.py $mlserver
 
 
-kubectl wait --for=condition=ready seldondeployment mlflow --timeout=600s -n staging
-
+python ./tests/mlflow/test_deploy.py
