@@ -27,14 +27,16 @@ mlflow:
   # -- Object Storage Used by mlflow supported gcs , blob , s3 
   backend: "blob"
 
+# -- mlserver one of [seldon, kserve]
 mlserver: seldon
 
 gitops:
   # -- enable/disable gitops
   enabled: true
   # -- git repository
-  repository: gitea-http.default.svc.cluster.local:3000/mdcadmin/repo-test #github.com/rocket9-code/model-deployments
-  protocol: http
+  repository: github.com/rocket9-code/model-deployments
+  # -- git repo protocol
+  protocol: https
   # -- deployment files folder location
   deploymentLocation: /
   # -- git username
