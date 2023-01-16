@@ -26,6 +26,5 @@ export AWS_SECRET_ACCESS_KEY=minioadmin
 export MLFLOW_TRACKING_URI=http://localhost:5000
 python ./tests/mlflow/list_model.py $mlserver
 
-# kubectl wait --for=condition=ready  inferenceservice sklearn-iris-miniot  -n staging  --timeout=380s
-sleep 380
+kubectl wait --for=condition=ready  inferenceservice sklearn-iris-miniot  -n staging  --timeout=380s
 kubectl describe inferenceservice sklearn-iris-miniot  -n staging
