@@ -4,6 +4,7 @@ metadata:
   name: "sklearn-iris-minio"
 spec:
   predictor:
+    serviceAccountName: sa
     model:
       modelFormat:
         name: mlflow
