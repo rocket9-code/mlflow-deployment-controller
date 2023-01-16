@@ -15,7 +15,7 @@ try:
 except config.ConfigException:
     config.load_incluster_config()
 GLOBAL_NAMESPACE = os.getenv("namespace", "staging")
-SELDON_URL = os.getenv("seldon_url", "https://seldon.mlops.wianai.com")
+SELDON_URL = os.getenv("seldon_url", "https://example.mlops.com")
 
 
 def card_layout(deploy_name=None):

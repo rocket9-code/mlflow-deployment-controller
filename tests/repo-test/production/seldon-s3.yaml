@@ -28,9 +28,6 @@ spec:
       implementation: MLFLOW_SERVER
       modelUri: '{{ mlflow.s3["iris demo4"] }}'
       envSecretRefName: seldon-rclone-secret
-      logger:
-        url: http://broker-ingress.knative-eventing.svc.cluster.local/demo/default
-        mode: all
       name: classifier
     name: default
     replicas: 1

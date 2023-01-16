@@ -16,6 +16,15 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+ui:
+  enabled: true
+  env:
+    seldon_url: https://seldon.mlops.wianai.com
+  image:
+    repository: ragkrish9198/mlflow-deployment-controller
+    tag: "t1"
+    pullPolicy: Always
+
 mlflow:
   enabled: true
   # -- mlflow tracking uri
@@ -71,6 +80,25 @@ securityContext: {}
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   # runAsUser: 1000
+service:
+  type: ClusterIP
+  port: 8000
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
 
 # -- cpu memory resource config
 resources: {}
@@ -84,7 +112,12 @@ resources: {}
   # requests:
   #   cpu: 100m
   #   memory: 128Mi
-
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
 
 # -- node selector
 nodeSelector: {}
