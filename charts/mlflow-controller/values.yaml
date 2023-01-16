@@ -18,8 +18,8 @@ fullnameOverride: ""
 
 ui:
   enabled: true
-  env:
-    seldon_url: https://seldon.mlops.wianai.com
+  
+  seldon_url: https://seldon.mlops.wianai.com
   image:
     repository: ragkrish9198/mlflow-deployment-controller
     tag: "t1"
