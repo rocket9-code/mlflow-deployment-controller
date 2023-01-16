@@ -6,6 +6,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        mlserver: [seldon,kserve]
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -34,8 +38,14 @@ jobs:
         echo "environment-kubeconfig:" ${KUBECONFIG}
         kubectl get nodes
         kubectl wait --for=condition=Ready nodes --all --timeout=600s
-        
-    - name: Install Mlflow
+
+    - name: Install Gitea
+      run: ./tests/install_gitea.sh
+
+    - name: setup git repo
+      run: ./tests/setup_git_repo.sh
+
+    - name: Install mlflow
       run: ./tests/install_mlflow.sh
 
     - name: PF Mlflow
@@ -47,22 +57,18 @@ jobs:
     - name: Log model Mlflow
       run: ./tests/log_mlflow_model.sh
 
-    - name: Install Istio Service Mesh
-      run: ./tests/install_istio.sh
+    - name: Install Kserve
+      run: ./tests/install_kserve.sh
 
     - name: Install Seldon Core
       run: ./tests/install_seldon_core.sh
     
-    - name: Login to DockerHub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-    
     - name: Build and Push image
       run: ./tests/docker_build_push.sh
 
-    - name: Install deployment controller
-      run: ./tests/install_deployment_controller.sh
+    - name: Install deployment controller ${{matrix.mlserver}}
+      run: ./tests/install_${{matrix.mlserver}}_deployment_controller.sh
+      env:
+        mlserver: ${{matrix.mlserver}}
 
     

@@ -1,3 +1,5 @@
+import sys
+
 import mlflow
 import mlflow.sklearn
 import pandas as pd
@@ -15,18 +17,18 @@ try:
 
     # Create bucket.
     client.make_bucket("artifacts")
+    policy = '{"Version":"2012-10-17","Statement":[{"Action":["s3:GetBucketLocation","s3:ListBucket","s3:ListBucketMultipartUploads"],"Effect":"Allow","Principal":{"AWS":["*"]},"Resource":["arn:aws:s3:::artifacts"],"Sid":""},{"Action":["s3:AbortMultipartUpload","s3:DeleteObject","s3:GetObject","s3:ListMultipartUploadParts","s3:PutObject"],"Effect":"Allow","Principal":{"AWS":["*"]},"Resource":["arn:aws:s3:::artifacts/*"],"Sid":""}]}'
+    client.set_bucket_policy(bucket_name="artifacts", policy=policy)
 except Exception as e:
     print(e)
 
 
-def main(MODEL_NAME="iris gitops", stage="Staging"):
+def main(version, stage, MODEL_NAME):
 
     iris = datasets.load_iris()
     iris_df = pd.DataFrame(iris.data, columns=iris.feature_names)
     y = iris.target
     iris_df["target"] = y
-
-    print(iris_df.head())
 
     train_df, test_df = train_test_split(
         iris_df, test_size=0.3, random_state=42, stratify=iris_df["target"]
@@ -53,13 +55,13 @@ def main(MODEL_NAME="iris gitops", stage="Staging"):
 
     EXPERIMENT_NAME = MODEL_NAME
 
-    print("IRIS train df shape")
-    print(X_train.shape)
-    print(y_train.shape)
+    # print("IRIS train df shape")
+    # print(X_train.shape)
+    # print(y_train.shape)
 
-    print("IRIS test df shape")
-    print(X_test.shape)
-    print(y_test.shape)
+    # print("IRIS test df shape")
+    # print(X_test.shape)
+    # print(y_test.shape)
 
     mlflow_client = MlflowClient()
 
@@ -95,12 +97,15 @@ def main(MODEL_NAME="iris gitops", stage="Staging"):
         # Register a new version
     result = mlflow.register_model(result.model_uri, MODEL_NAME)
 
-    client = MlflowClient()
-    client.transition_model_version_stage(
-        name=MODEL_NAME, version=result.version, stage=stage
+    mlflow_client.transition_model_version_stage(
+        name=MODEL_NAME, version=version, stage=stage
     )
+    registered_models = mlflow_client.list_registered_models()
 
 
 if __name__ == "__main__":
     for i in range(5):
-        main(MODEL_NAME=f"iris demo{i}")
+        print(f"iris demo{i}")
+        version = sys.argv[1]
+        stage = sys.argv[2]
+        main(MODEL_NAME=f"iris demo{i}", version=version, stage=stage)

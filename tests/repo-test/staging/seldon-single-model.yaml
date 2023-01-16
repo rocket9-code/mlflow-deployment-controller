@@ -1,0 +1,36 @@
+apiVersion: machinelearning.seldon.io/v1
+kind: SeldonDeployment
+metadata:
+  name: mlflow
+spec:
+  name: iris
+  predictors:
+  - componentSpecs:
+    - spec:
+        containers:
+        - name: classifier
+          livenessProbe:
+            initialDelaySeconds: 80
+            failureThreshold: 200
+            periodSeconds: 25
+            successThreshold: 1
+            httpGet:
+              path: /health/ping
+              port: http
+              scheme: HTTP
+          readinessProbe:
+            initialDelaySeconds: 80
+            failureThreshold: 20
+            periodSeconds: 25
+            successThreshold: 1
+            httpGet:
+              path: /health/ping
+              port: http
+              scheme: HTTP
+    graph:
+      implementation: MLFLOW_SERVER
+      modelUri: '{{ mlflow.s3["iris demo3"] }}'
+      envSecretRefName: seldon-init-container-secret
+      name: classifier
+    name: default
+    replicas: 1

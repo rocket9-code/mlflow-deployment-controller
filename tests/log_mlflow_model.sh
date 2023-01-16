@@ -8,9 +8,10 @@ pip install pandas==0.23.4
 pip install boto3==1.22.9
 pip install minio
 pip install kubernetes
+pip install termcolor
 export MLFLOW_S3_ENDPOINT_URL=http://localhost:9000
 export AWS_ACCESS_KEY_ID=minioadmin
 export AWS_SECRET_ACCESS_KEY=minioadmin
 export MLFLOW_TRACKING_URI=http://localhost:5000
-python ./tests/mlflow/iris.py
+python ./tests/mlflow/iris.py 1 staging
 

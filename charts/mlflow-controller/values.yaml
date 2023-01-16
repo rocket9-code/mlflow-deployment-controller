@@ -27,19 +27,24 @@ mlflow:
   # -- Object Storage Used by mlflow supported gcs , blob , s3 
   backend: "blob"
 
+# -- mlserver one of [seldon, kserve]
+mlserver: seldon
+
 gitops:
   # -- enable/disable gitops
   enabled: true
   # -- git repository
   repository: github.com/rocket9-code/model-deployments
+  # -- git repo protocol
+  protocol: https
   # -- deployment files folder location
   deploymentLocation: /
   # -- git username
-  gitUser: raghulkrishna
+  gitUser: mdcadmin
   # -- git password secret name
-  gitPasswordSecretName: ""
+  gitPasswordSecretName: "github-secret"
   # -- git password secret key
-  gitPasswordSecretKey: ""
+  gitPasswordSecretKey: "githubtoken"
   # git branch to be tracked
   BRANCH: main
 

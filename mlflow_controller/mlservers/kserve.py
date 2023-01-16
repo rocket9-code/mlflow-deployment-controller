@@ -4,7 +4,6 @@ import re
 from kubernetes import client as KubeClient
 from kubernetes import config
 
-from mlflow_controller.mlservers.rclone import rclone_source
 from mlflow_controller.mlservers.utils import mlflow_model_search, update_modeluris
 from mlflow_controller.utils.var_extract import var_parser
 
@@ -45,10 +44,13 @@ def sync(
 ):
     git_models = []
     for deploy_yaml in deploy_yamls:
+        logger.info(deploy_yamls)
         resource_group = deploy_yaml["apiVersion"].split("/")[0]
-        if resource_group == "machinelearning.seldon.io":
+        logger.info(resource_group)
+        if resource_group == "serving.kserve.io":
+
             models = list(
-                set(mlflow_model_search("modelUri", deploy_yaml, search_result=[]))
+                set(mlflow_model_search("storageUri", deploy_yaml, search_result=[]))
             )
             logger.info(f"models {models}")
             rep_deploy_yaml = deploy_yaml
@@ -72,10 +74,14 @@ def sync(
                         raise InvalidVariable
                     model = model_metadata[registry_name][backend][model_name]
                     run_id = model["run_id"]
+                    if backend == "blob":
+                        model_source = model["source"].replace("wasbs", "https")
+                    else:
+                        model_source = model["source"]
                     rep_deploy_yaml = update_modeluris(
                         rep_deploy_yaml,
                         f'{{{{ {registry_name}.{backend}["{model_name}"] }}}}',
-                        rclone_source(model["source"], backend),
+                        model_source,
                     )
                     rep_deploy_yaml["metadata"]["annotations"][
                         f"mdc/mlflow-{run_id}"
@@ -103,13 +109,13 @@ def sync(
                     )
         if deploy:
             logger.info(
-                f"deploying seldon deployment {name} in namespace {GLOBAL_NAMESPACE}"
+                f"deploying kserve deployment {name} in namespace {GLOBAL_NAMESPACE}"
             )
             try:
                 manifest = kube_client.get_namespaced_custom_object(
                     group=resource_group,
-                    version="v1",
-                    plural="seldondeployments",
+                    version="v1beta1",
+                    plural="inferenceservices",
                     namespace=GLOBAL_NAMESPACE,
                     name=rep_deploy_yaml["metadata"]["name"],
                 )
@@ -123,43 +129,42 @@ def sync(
                 manifest.pop("status")
                 _name = rep_deploy_yaml["metadata"]["name"]
                 if rep_deploy_yaml == manifest:
-                    logger.info(f"seldon deployment {_name} in sync")
+                    logger.info(f"Kserve deployment {_name} in sync")
                 else:
                     rep_deploy_yaml["metadata"]["resourceVersion"] = resourceVersion
                     kube_client.replace_namespaced_custom_object(
                         group=resource_group,
-                        version="v1",
-                        plural="seldondeployments",
+                        version="v1beta1",
+                        plural="inferenceservices",
                         body=rep_deploy_yaml,
                         name=_name,
                         namespace=GLOBAL_NAMESPACE,
                     )
-
             except KubeClient.rest.ApiException:
                 kube_client.create_namespaced_custom_object(
                     group=resource_group,
-                    version="v1",
-                    plural="seldondeployments",
+                    version="v1beta1",
+                    plural="inferenceservices",
                     body=rep_deploy_yaml,
                     namespace=GLOBAL_NAMESPACE,
                 )
             git_models.append(rep_deploy_yaml["metadata"]["name"])
     manifests = kube_client.list_namespaced_custom_object(
-        group="machinelearning.seldon.io",
-        version="v1",
-        plural="seldondeployments",
+        group="serving.kserve.io",
+        version="v1beta1",
+        plural="inferenceservices",
         namespace=GLOBAL_NAMESPACE,
         label_selector=f"app.kubernetes.io/mdc-type={controller_label_value}",
     )
     for i in manifests["items"]:
         model_name = i["metadata"]["name"]
         if model_name in git_models:
-            logger.info(f"seldon deployment in sync {model_name}")
+            logger.info(f"kserve dpeloyment in sync {model_name}")
         else:
             kube_client.delete_namespaced_custom_object(
-                group="machinelearning.seldon.io",
-                version="v1",
-                plural="seldondeployments",
+                group="serving.kserve.io",
+                version="v1beta1",
+                plural="inferenceservices",
                 name=model_name,
                 namespace=GLOBAL_NAMESPACE,
             )
