@@ -10,7 +10,7 @@ image:
   # -- image pull policy
   pullPolicy: Always
   # -- image tag
-  tag: "mlflow-controller-0.1.6"
+  tag: "mlflow-controller-0.1.7"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -22,7 +22,7 @@ ui:
   seldon_url: https://seldon.mlops.wianai.com
   image:
     repository: tachyongroup/mlflow-deployment-controller-ui
-    tag: "mlflow-controller-0.1.6"
+    tag: "mlflow-controller-0.1.7"
     pullPolicy: Always
 
 mlflow:
