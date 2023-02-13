@@ -1,13 +1,7 @@
-import sys
 import time
 
-from git import Repo
 from kubernetes import client as KubeClient
 from kubernetes import config
-from mlflow.tracking import MlflowClient
-from termcolor import colored
-
-from iris import main
 
 try:
     config.load_kube_config()

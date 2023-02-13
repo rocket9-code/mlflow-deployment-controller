@@ -1,11 +1,13 @@
-import dash
 import os
+
+import dash
 import dash_bootstrap_components as dbc
+import dash_html_components as html
 import pandas as pd
 from dash import Input, Output, dcc
 from kubernetes import client as kube_client
 from kubernetes import config
-import dash_html_components as html
+
 MLFLOW_NAMESPACE = os.getenv("namespace", "mlflow")
 MDC_LABEL = os.getenv("MDC_LABEL", "mdc-staging")
 
@@ -17,8 +19,10 @@ app = dash.Dash(
 )
 
 navbar = dbc.NavbarSimple(
-    [dbc.Button("Home", href="/", color="secondary", className="me-1"),
-     dbc.Button("Logs", href="/logs", color="secondary", className="me-1")],
+    [
+        dbc.Button("Home", href="/", color="secondary", className="me-1"),
+        dbc.Button("Logs", href="/logs", color="secondary", className="me-1"),
+    ],
     brand="Mlflow Deployment Controller",
     color="primary",
     dark=True,
@@ -92,24 +96,39 @@ def internal_seldon_deployment(n_intervals):
     return []
 
 
-@app.callback(Output('live-graph', 'children'),
-              [Input('graph-update', 'n_intervals')])
+@app.callback(Output("live-graph", "children"), [Input("graph-update", "n_intervals")])
 def update_graph_scatter(n_intervals):
     print(n_intervals)
     v1 = kube_client.CoreV1Api()
-    pod_name = v1.list_namespaced_pod(namespace=MLFLOW_NAMESPACE, label_selector=f'app.kubernetes.io/instance={MDC_LABEL}')
+    pod_name = v1.list_namespaced_pod(
+        namespace=MLFLOW_NAMESPACE,
+        label_selector=f"app.kubernetes.io/instance={MDC_LABEL}",
+    )
     pod_name = pod_name.items[0].metadata.name
     lines = []
-    lines = v1.read_namespaced_pod_log(name=pod_name,
-                                       pretty=True, since_seconds=60, namespace=MLFLOW_NAMESPACE,
-                                       follow=False, _preload_content=True)
+    lines = v1.read_namespaced_pod_log(
+        name=pod_name,
+        pretty=True,
+        since_seconds=60,
+        namespace=MLFLOW_NAMESPACE,
+        follow=False,
+        _preload_content=True,
+    )
     # print(lines)
-    return [html.Br(), html.H4("Controller Logs"), html.Plaintext(lines, style={
-        "display": "inline-block",
-        "fontSize": 15,
-        # "verticalAlign": "top",
-        "color": "white", 'backgroundColor': 'black'
-    })]
+    return [
+        html.Br(),
+        html.H4("Controller Logs"),
+        html.Plaintext(
+            lines,
+            style={
+                "display": "inline-block",
+                "fontSize": 15,
+                # "verticalAlign": "top",
+                "color": "white",
+                "backgroundColor": "black",
+            },
+        ),
+    ]
 
 
 @app.callback(
