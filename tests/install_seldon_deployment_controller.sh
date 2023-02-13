@@ -13,7 +13,7 @@ kubectl get po -n mlflow
 echo "Waiting for Deployment Controller to be ready ..."
 export POD_NAME=$(kubectl get pods --namespace mlflow -l "app.kubernetes.io/instance=mdc-staging" -o jsonpath="{.items[0].metadata.name}")
 
-kubectl wait --for=condition=ready pod -l 'app.kubernetes.io/instance in (mdc-staging)' --timeout=180s -n mlflow
+kubectl wait --for=condition=ready pod -l 'app.kubernetes.io/instance in (mdc-staging)' --timeout=380s -n mlflow
 
 
 kubectl describe po $POD_NAME -n mlflow
