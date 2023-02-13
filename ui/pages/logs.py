@@ -10,11 +10,11 @@ except config.ConfigException:
 
 
 def title():
-    return f"Logs"
+    return "Logs"
 
 
 def description(ticker=None):
-    return f"Controller Logs"
+    return "Controller Logs"
 
 
 dash.register_page(

@@ -7,7 +7,6 @@ import dash_bootstrap_components as dbc
 import yaml
 from dash import dcc, html
 from kubernetes import config
-
 from seldon_deployments.data import dataf
 
 try:

@@ -45,7 +45,6 @@ class Artifact:
         return deploy_yaml
 
     def azure_blob(self, artifact_uri):
-
         acc_name_re = r"(?<=\/\/)(.*)(?=\@)"
         container_re = r"(?<=\@)(.*)(?=[\.])"
         container = re.search(acc_name_re, artifact_uri).group(1)
@@ -68,7 +67,6 @@ class Artifact:
         return deploy_yaml
 
     def aws_s3(self, artifact_uri):
-
         session = boto3.Session()
         s3_client = session.client("s3")
         path_parts = artifact_uri.replace("s3://", "").split("/")

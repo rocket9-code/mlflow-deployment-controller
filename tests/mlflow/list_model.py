@@ -2,12 +2,11 @@ import sys
 import time
 
 from git import Repo
+from iris import main
 from kubernetes import client as KubeClient
 from kubernetes import config
 from mlflow.tracking import MlflowClient
 from termcolor import colored
-
-from iris import main
 
 try:
     config.load_kube_config()
@@ -44,7 +43,6 @@ def test():
                     "artifact_uri": artifact_uri,
                 }
     while True:
-
         if sys.argv[1] == "seldon":
             manifest = kube_client.get_namespaced_custom_object(
                 group="machinelearning.seldon.io",
@@ -106,7 +104,6 @@ test()
 print(colored("Test", "red"), colored("no3", "green"))
 
 if sys.argv[1] == "kserve":
-
     PATH_OF_GIT_REPO = "tests/repo-test"
     COMMIT_MESSAGE = "comment from python script"
 
@@ -145,7 +142,6 @@ if sys.argv[1] == "kserve":
             break
 
 if sys.argv[1] == "seldon":
-
     PATH_OF_GIT_REPO = "tests/repo-test"
     COMMIT_MESSAGE = "comment from python script"
 

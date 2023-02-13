@@ -48,7 +48,6 @@ def sync(
         resource_group = deploy_yaml["apiVersion"].split("/")[0]
         logger.info(resource_group)
         if resource_group == "serving.kserve.io":
-
             models = list(
                 set(mlflow_model_search("storageUri", deploy_yaml, search_result=[]))
             )
