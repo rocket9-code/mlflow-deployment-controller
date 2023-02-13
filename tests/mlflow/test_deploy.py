@@ -18,11 +18,13 @@ status = ""
 timeout = time.time() + 60 * 10
 
 while True:
-    test = kube_client.get_namespaced_custom_object(group="machinelearning.seldon.io",
-                                                    version="v1",
-                                                    plural="seldondeployments",
-                                                    namespace="staging",
-                                                    name="mlflow")
+    test = kube_client.get_namespaced_custom_object(
+        group="machinelearning.seldon.io",
+        version="v1",
+        plural="seldondeployments",
+        namespace="staging",
+        name="mlflow",
+    )
     status = test["status"]["state"]
     print(status)
     if status == "Available":

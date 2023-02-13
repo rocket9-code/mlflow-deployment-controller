@@ -70,7 +70,9 @@ def card_layout(deploy_name=None):
             [
                 dbc.CardBody(
                     [
-                        html.H4(i["name"], className="card-title"),
+                        html.H4(
+                            i["name"], id="seldon-deployment", className="card-title"
+                        ),
                         dbc.ListGroup(
                             [
                                 dbc.ListGroupItem(
@@ -198,7 +200,7 @@ def card_layout(deploy_name=None):
 
     tabs = [
         Overview_tab,
-        dcc.Tab(label="Details", children=model_cards),
+        dcc.Tab(label="Model Details", children=model_cards),
         dcc.Tab(label="Yaml", children=[dcc.Markdown(str(code))]),
     ]
     if status == "Available":
@@ -213,5 +215,15 @@ def card_layout(deploy_name=None):
             )
         )
 
-    layout = html.Div([dash.html.H3(f"{name}"), dcc.Tabs(tabs)])
+    layout = html.Div(
+        [
+            dash.html.H3(f"{name}"),
+            dcc.Tabs(tabs),
+            dcc.Interval(
+                id="interval-component-seldon",
+                interval=1 * 1000,  # in milliseconds
+                n_intervals=0,
+            ),
+        ]
+    )
     return layout

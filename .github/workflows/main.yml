@@ -62,5 +62,5 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: hellomlops/mlflow-deployment-controller:${{ steps.previoustag.outputs.tag }}
+          tags: tachyongroup/mlflow-deployment-controller:${{ steps.previoustag.outputs.tag }}
       

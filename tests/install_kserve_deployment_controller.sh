@@ -6,7 +6,7 @@ kubectl create ns production
 kubectl create secret generic github-secret -n mlflow --from-literal=githubtoken=password
 kubectl apply -f tests/repo-test/staging/kserve-sa.yaml -n staging
 
-helm install mdc-staging charts/mlflow-controller  -n mlflow  --set image.tag=$GITHUB_SHA  --set image.pullPolicy=Never  --set image.repository=docker.io/hellomlops/mlflow-deployment-controller --set mlflow.backend=s3 --set gitops.deploymentLocation=staging/ --set mlserver=kserve --set gitops.repository=gitea-http.default.svc.cluster.local:3000/mdcadmin/repo-test --set  gitops.protocol=http
+helm install mdc-staging charts/mlflow-controller  -n mlflow  --set image.tag=$GITHUB_SHA  --set image.pullPolicy=Never  --set image.repository=docker.io/tachyongroup/mlflow-deployment-controller --set mlflow.backend=s3 --set gitops.deploymentLocation=staging/ --set mlserver=kserve --set gitops.repository=gitea-http.default.svc.cluster.local:3000/mdcadmin/repo-test --set  gitops.protocol=http
 
 kubectl get deployment -n mlflow
 kubectl get cm -n mlflow
