@@ -3,6 +3,16 @@ entries:
   mlflow-controller:
   - apiVersion: v2
     appVersion: 0.1.7
+    created: "2023-02-18T08:20:13.850354883Z"
+    description: A Helm chart for Mlflow Deployment Controller
+    digest: c3eb590d55dcf7dee6fc7c673a7218aee3ae04a3ee5390660ba5296c5b7e8d72
+    name: mlflow-controller
+    type: application
+    urls:
+    - https://github.com/rocket9-code/mlflow-deployment-controller/releases/download/mlflow-controller-0.1.8/mlflow-controller-0.1.8.tgz
+    version: 0.1.8
+  - apiVersion: v2
+    appVersion: 0.1.7
     created: "2023-01-16T13:33:49.609531338Z"
     description: A Helm chart for Mlflow Deployment Controller
     digest: 808eb71df1d04859283eba8a902ec6a66c75e7bb734353b324738066469d937c
@@ -71,4 +81,4 @@ entries:
     urls:
     - https://github.com/wianai/mlflow-deployment-controller/releases/download/mlflow-controller-0.1.0/mlflow-controller-0.1.0.tgz
     version: 0.1.0
-generated: "2023-01-16T13:33:49.609553338Z"
+generated: "2023-02-18T08:20:13.850401284Z"
