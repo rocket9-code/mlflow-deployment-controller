@@ -69,6 +69,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          context: ui/Dockerfile
+          context: ui/
           tags: tachyongroup/mlflow-deployment-controller-ui:${{ steps.previoustag.outputs.tag }}
       
