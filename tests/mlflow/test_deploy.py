@@ -1,13 +1,7 @@
-import sys
 import time
 
-from git import Repo
 from kubernetes import client as KubeClient
 from kubernetes import config
-from mlflow.tracking import MlflowClient
-from termcolor import colored
-
-from iris import main
 
 try:
     config.load_kube_config()
@@ -18,11 +12,13 @@ status = ""
 timeout = time.time() + 60 * 10
 
 while True:
-    test = kube_client.get_namespaced_custom_object(group="machinelearning.seldon.io",
-                                                    version="v1",
-                                                    plural="seldondeployments",
-                                                    namespace="staging",
-                                                    name="mlflow")
+    test = kube_client.get_namespaced_custom_object(
+        group="machinelearning.seldon.io",
+        version="v1",
+        plural="seldondeployments",
+        namespace="staging",
+        name="mlflow",
+    )
     status = test["status"]["state"]
     print(status)
     if status == "Available":

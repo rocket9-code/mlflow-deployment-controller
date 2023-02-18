@@ -4,7 +4,7 @@ echo "Installing Seldon Deployment Controller ..."
 kubectl create ns staging
 kubectl create secret generic github-secret -n mlflow --from-literal=githubtoken=password
 
-helm install mdc-staging charts/mlflow-controller  -n mlflow  --set image.tag=$GITHUB_SHA  --set image.pullPolicy=Never  --set image.repository=docker.io/hellomlops/mlflow-deployment-controller --set mlflow.backend=s3 --set gitops.deploymentLocation=staging/ --set mlserver=seldon --set gitops.repository=gitea-http.default.svc.cluster.local:3000/mdcadmin/repo-test --set  gitops.protocol=http
+helm install mdc-staging charts/mlflow-controller  -n mlflow  --set image.tag=$GITHUB_SHA  --set image.pullPolicy=Never  --set image.repository=docker.io/tachyongroup/mdc-test --set mlflow.backend=s3 --set gitops.deploymentLocation=staging/ --set mlserver=seldon --set gitops.repository=gitea-http.default.svc.cluster.local:3000/mdcadmin/repo-test --set  gitops.protocol=http
 kubectl apply -f tests/repo-test/staging/seldon-secret.yaml -n staging
 kubectl get deployment -n mlflow
 kubectl get cm -n mlflow
@@ -12,8 +12,9 @@ kubectl get po -n mlflow
 
 echo "Waiting for Deployment Controller to be ready ..."
 export POD_NAME=$(kubectl get pods --namespace mlflow -l "app.kubernetes.io/instance=mdc-staging" -o jsonpath="{.items[0].metadata.name}")
-
-kubectl wait --for=condition=ready pod -l 'app.kubernetes.io/instance in (mdc-staging)' --timeout=180s -n mlflow
+sleep 180
+kubectl describe po $POD_NAME -n mlflow
+kubectl wait --for=condition=ready pod -l 'app.kubernetes.io/instance in (mdc-staging)' --timeout=380s -n mlflow
 
 
 kubectl describe po $POD_NAME -n mlflow

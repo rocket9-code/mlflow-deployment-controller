@@ -1,6 +1,5 @@
 import dash
 from kubernetes import config
-
 from seldon_deployments.card import card_layout
 
 try:

@@ -24,7 +24,6 @@ except Exception as e:
 
 
 def main(version, stage, MODEL_NAME):
-
     iris = datasets.load_iris()
     iris_df = pd.DataFrame(iris.data, columns=iris.feature_names)
     y = iris.target

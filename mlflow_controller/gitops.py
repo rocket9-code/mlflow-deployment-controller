@@ -48,7 +48,6 @@ ML_SERVER = os.getenv("ML_SERVER", "kserve")
 
 class GitopsMDC:
     def gitops_mlflow_controller(self):
-
         folder_name = str(uuid.uuid4())
         path = "./tmp/" + folder_name
         if not os.path.exists(path):

@@ -20,7 +20,7 @@ A Helm chart for Mlflow Deployment Controller
 | gitops.protocol | string | `"https"` | git repo protocol |
 | gitops.repository | string | `"github.com/rocket9-code/model-deployments"` | git repository |
 | image.pullPolicy | string | `"Always"` | image pull policy |
-| image.repository | string | `"hellomlops/mlflow-deployment-controller"` | image repository   |
+| image.repository | string | `"tachyongroup/mlflow-deployment-controller"` | image repository   |
 | image.tag | string | `"mlflow-controller-0.1.6"` | image tag |
 | imagePullSecrets | list | `[]` |  |
 | mlflow.MLFLOW_TRACKING_URI | string | `"http://mlflow-service:5000"` | mlflow tracking uri |
