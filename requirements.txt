@@ -1,4 +1,4 @@
-mlflow==1.25
+mlflow==2.2.1
 kubernetes==22.6.0
 google==3.0.0
 gcloud==0.18.3
